@@ -137,10 +137,15 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="HierarchyObject.cpp" />
+    <ClCompile Include="LightSource.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MeshCache.cpp" />
+    <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -148,15 +153,24 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="HierarchyObject.h" />
+    <ClInclude Include="LightSource.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MeshCache.h" />
+    <ClInclude Include="PointLight.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="SpotLight.h" />
     <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\ColorFrag.glsl" />
     <None Include="Shaders\ColorVert.glsl" />
+    <None Include="Shaders\HdrShaderFrag.glsl" />
+    <None Include="Shaders\HdrShaderVert.glsl" />
+    <None Include="Shaders\LightSourceFrag.glsl" />
+    <None Include="Shaders\LightSourceVert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

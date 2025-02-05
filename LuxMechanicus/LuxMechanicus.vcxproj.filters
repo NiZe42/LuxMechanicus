@@ -48,6 +48,21 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshCache.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LightSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpotLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -77,12 +92,39 @@
     <ClInclude Include="Singleton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshCache.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LightSource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpotLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\ColorFrag.glsl">
       <Filter>Shaders</Filter>
     </None>
     <None Include="Shaders\ColorVert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\LightSourceVert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\LightSourceFrag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\HdrShaderVert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\HdrShaderFrag.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

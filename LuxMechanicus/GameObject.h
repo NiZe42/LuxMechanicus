@@ -9,11 +9,17 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "HierarchyObject.h"
+#include "Mesh.h"
 
 class GameObject : public HierarchyObject
 {
 public:
-	GameObject(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale);
+	GameObject(glm::vec3 position, 
+		glm::vec3 rotation, 
+		glm::vec3 scale,
+		const char* vertexShaderPath,
+		const char* fragmentShaderPath,
+		const char* texturePath = nullptr);
 	~GameObject();
 
 	unsigned int GetGameObjectId() const;
@@ -22,10 +28,13 @@ public:
 	glm::vec3 GetRotation() const;
 	glm::vec3 GetScale() const;
 
+	Shader* GetShader() const;
+
 	glm::mat4 GetModelMatrix() const;
 	glm::mat4 GetViewMatrix() const;
 	glm::mat4 GetProjectionMatrix() const;
 
+	void SetMesh(Mesh* mesh);
 	void SetShader(Shader* shader);
 	void SetTexture(Texture* texture);
 
@@ -33,22 +42,27 @@ public:
 	void SetRotation(glm::vec3 rotation);
 	void SetScale(glm::vec3 scale);
 
-	void Render(glm::mat4 viewMatrix, glm::mat4 projectMatrix);
-
-private:
+	virtual void Render(glm::mat4 viewMatrix, glm::mat4 projectMatrix);
+	virtual void BindShader();
+protected:
 	unsigned int mGameObjectId;
 	static unsigned int nextGameObjectId;
 
 	unsigned int vaoId, vboId, eboId;
 
-	Shader* mShader;
-	Texture* mTexture;
+	Mesh* pMesh;
+	Shader* pShader;
+	Texture* pTexture;
 
 	glm::vec3 mPosition;
 	glm::vec3 mRotation;
 	glm::vec3 mScale;
 
-	void InitializeRenderInformation();
+private:
+
+	void InitializeShader(const char* vertexShaderPath,
+		const char* fragmentShaderPath);
+	void InitializeTexture(const char* texturePath);
 	void InitializeSquare();
 	void InitializeCube();
 };

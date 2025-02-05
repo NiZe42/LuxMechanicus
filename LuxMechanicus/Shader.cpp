@@ -4,10 +4,10 @@ unsigned int Shader::nextShaderId = 0;
 
 Shader::Shader(const char* vertexPath, const char* fragmentPath)
 {
-    if (nextShaderId == 0)
+    /*if (nextShaderId == 0)
         nextShaderId++;
 
-    mShaderProgramId = nextShaderId++;
+    mShaderProgramId = nextShaderId++;*/
 
     std::string vertexShaderCode = LoadShaderSource(GL_VERTEX_SHADER, vertexPath);
     std::string fragmentShaderCode = LoadShaderSource(GL_FRAGMENT_SHADER, fragmentPath);
@@ -99,21 +99,63 @@ void Shader::CheckShaderProgramCompilation(int ShaderProgramId) const {
 
 void Shader::SetUniformBool(const std::string& name, bool value) const {
     unsigned int location = glGetUniformLocation(mShaderProgramId, name.c_str());
+    if (location == -1) {
+        std::cout << "No such variable in the shader: " << name << std::endl;
+        return;
+    }
     glUniform1i(location, (int)value);
 }
 void Shader::SetUniformInt(const std::string& name, int value) const {
     unsigned int location = glGetUniformLocation(mShaderProgramId, name.c_str());
+    if (location == -1) {
+        std::cout << "No such variable in the shader: " << name << std::endl;
+        return;
+    }
     glUniform1i(location, value);
 }
 void Shader::SetUniformFloat(const std::string& name, float value) const {
     unsigned int location = glGetUniformLocation(mShaderProgramId, name.c_str());
+    if (location == -1) {
+        std::cout << "No such variable in the shader: " << name << std::endl;
+        return;
+    }
     glUniform1f(location, value);
 }
-
 void Shader::SetUniformMat4(const std::string& name, glm::mat4 matrix) const {
     unsigned int location = glGetUniformLocation(mShaderProgramId, name.c_str());
+    if (location == -1) {
+        std::cout << "No such variable in the shader: " << name << std::endl;
+        return;
+    }
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 }
+void Shader::SetUniformVectorList(const std::string& name, std::vector<glm::vec3> list) const{
+    if (list.empty()) return;
+    unsigned int location = glGetUniformLocation(mShaderProgramId, name.c_str());
+    if (location == -1) {
+        std::cout << "No such variable in the shader: " << name << std::endl;
+        return;
+    }
+    glUniform3fv(location, list.size(), glm::value_ptr(list[0]));
+}
+void Shader::SetUniformFloatList(const std::string& name, std::vector<float> list) const {
+    if (list.empty()) return;
+    unsigned int location = glGetUniformLocation(mShaderProgramId, name.c_str());
+    if (location == -1) {
+        std::cout << "No such variable in the shader: " << name << std::endl;
+        return;
+    }
+    glUniform1fv(location, list.size(), list.data());
+}
+void Shader::SetUniformVector(const std::string& name, glm::vec3 vector) const {
+    unsigned int location = glGetUniformLocation(mShaderProgramId, name.c_str());
+    if (location == -1) {
+        std::cout << "No such variable in the shader: " << name << std::endl;
+        return;
+    }
+    glUniform3fv(location, 1, glm::value_ptr(vector));
+}
+
 
 unsigned int Shader::GetShaderProgramId() const {
     return mShaderProgramId;

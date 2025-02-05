@@ -10,6 +10,9 @@
 #include "Renderer.h"
 #include "Camera.h"
 #include "Singleton.h"
+#include "MeshCache.h"
+#include "PointLight.h"
+#include "SpotLight.h"
 
 class Game {
 public: 

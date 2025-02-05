@@ -7,6 +7,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <vector>
 
 
 class Shader
@@ -20,7 +21,12 @@ public:
     void SetUniformBool(const std::string& name, bool value) const;
     void SetUniformInt(const std::string& name, int value) const;
     void SetUniformFloat(const std::string& name, float value) const;
+    void SetUniformVector(const std::string& name, glm::vec3 vector) const;
     void SetUniformMat4(const std::string& name, glm::mat4 matrix) const;
+    void SetUniformVectorList(const std::string& name, 
+        std::vector<glm::vec3> list) const;
+    void SetUniformFloatList(const std::string& name,
+        std::vector<float> list) const;
 
     unsigned int GetShaderProgramId() const;
 

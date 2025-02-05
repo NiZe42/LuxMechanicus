@@ -29,8 +29,8 @@ protected:
 	unsigned int mSceneId;
 	static unsigned int nextSceneId;
 
-	Shader* mShader;
-	Texture* mTexture;
+	Shader* pShader;
+	Texture* pTexture;
 	Camera* mActiveCamera;
 
 	void RenderTriangle();

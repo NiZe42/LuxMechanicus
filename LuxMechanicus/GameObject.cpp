@@ -4,19 +4,24 @@
 
 unsigned int GameObject::nextGameObjectId = 0;  
 
-GameObject::GameObject(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale) 
+GameObject::GameObject(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale,
+    const char* vervtexShaderPath, const char* fragmentShaderPath, const char* texturePath) 
     : mPosition(position), mRotation(rotation), mScale(scale) {
     if (nextGameObjectId == 0)
         nextGameObjectId++;
 
     mGameObjectId = nextGameObjectId++;
 
-    InitializeRenderInformation();
+    InitializeShader(vervtexShaderPath, fragmentShaderPath);
+
+    if (texturePath)
+        InitializeTexture(texturePath);
 }
 
 GameObject::~GameObject() {
-    delete mShader;
-    delete mTexture;
+    delete pShader;
+    delete pTexture;
+    delete pMesh;
 }
 
 unsigned int GameObject::GetGameObjectId() const {
@@ -36,21 +41,21 @@ glm::vec3 GameObject::GetScale() const {
 }
 
 glm::mat4 GameObject::GetModelMatrix() const {
-        glm::mat4 model = glm::mat4(1.0f);  
+    glm::mat4 model = glm::mat4(1.0f);  
 
-        model = glm::translate(model, mPosition);
+    model = glm::translate(model, mPosition);
 
-        // Would suffer from Gimbal Lock, would need to use quats instead
-        glm::mat4 rotationMatrix = glm::mat4(1.0f);
-        rotationMatrix = glm::rotate(rotationMatrix, glm::radians(mRotation.x), glm::vec3(1, 0, 0));
-        rotationMatrix = glm::rotate(rotationMatrix, glm::radians(mRotation.y), glm::vec3(0, 1, 0));
-        rotationMatrix = glm::rotate(rotationMatrix, glm::radians(mRotation.z), glm::vec3(0, 0, 1));
+    // Would suffer from Gimbal Lock, would need to use quats instead
+    glm::mat4 rotationMatrix = glm::mat4(1.0f);
+    rotationMatrix = glm::rotate(rotationMatrix, glm::radians(mRotation.x), glm::vec3(1, 0, 0));
+    rotationMatrix = glm::rotate(rotationMatrix, glm::radians(mRotation.y), glm::vec3(0, 1, 0));
+    rotationMatrix = glm::rotate(rotationMatrix, glm::radians(mRotation.z), glm::vec3(0, 0, 1));
 
-        glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), mScale);
+    glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), mScale);
 
-        model = model * rotationMatrix * scaleMatrix;
+    model = model * rotationMatrix * scaleMatrix;
 
-        return model;
+    return model;
 }
 
 glm::mat4 GameObject::GetViewMatrix() const {
@@ -63,16 +68,22 @@ glm::mat4 GameObject::GetProjectionMatrix() const {
     return projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 }
 
+void GameObject::SetMesh(Mesh* mesh) {
+    if (pMesh != nullptr)
+        delete pMesh;
+    pMesh = mesh;
+}
+
 void GameObject::SetShader(Shader* shader) {
-    if (mShader != nullptr)
-        delete mShader;
-    mShader = shader;
+    if (pShader != nullptr)
+        delete pShader;
+    pShader = shader;
 }
 
 void GameObject::SetTexture(Texture* texture) {
-    if (mTexture != nullptr)
-        delete mTexture;
-    mTexture = texture;
+    if (pTexture != nullptr)
+        delete pTexture;
+    pTexture = texture;
 }
 
 void GameObject::SetPosition(glm::vec3 position) {
@@ -87,13 +98,15 @@ void GameObject::SetScale(glm::vec3 scale) {
     mScale = scale;
 }
 
-void GameObject::InitializeRenderInformation() {
-    mShader = new Shader("C:/MyProjects/MyEngine/3DEngine/LuxMechanicus/Shaders/ColorVert.glsl", "C:/MyProjects/MyEngine/3DEngine/LuxMechanicus/Shaders/ColorFrag.glsl");
-    mTexture = new Texture("C:/MyProjects/MyEngine/3DEngine/LuxMechanicus/Textures/MinecraftDirtTexture.jpg ");
-
-    InitializeCube();
-    //InitializeSquare();
+void GameObject::InitializeShader(const char* vertexShaderPath, 
+    const char* fragmentShaderPath) {
+    pShader = new Shader(vertexShaderPath, fragmentShaderPath);
 }
+
+void GameObject::InitializeTexture(const char* texturePath) {
+    pTexture = new Texture(texturePath);
+}
+
 
 void GameObject::InitializeSquare() {
     float vertices[] = {
@@ -192,26 +205,35 @@ void GameObject::InitializeCube() {
     glEnableVertexAttribArray(1);
 }
 
-void GameObject::Render(glm::mat4 viewMatrix, glm::mat4 projectionMatrix) {
-    if (mShader && mTexture) {
+void GameObject::Render(glm::mat4 viewMatrix, 
+    glm::mat4 projectionMatrix) {
+    if (pShader && pMesh) {
         //std::cout << "rendering" << std::endl;
-        mShader->Bind();
-        
-        //std::cout << mTexture->GetTextureId() << std::endl;
-        mTexture->Bind();
-        mShader->SetUniformInt("ourTexture", 0);
 
-        mRotation.z += 0.1f;
-        if (mRotation.z >= 360)
-            mRotation.z = 0;
+        if (pTexture) {
+            pTexture->Bind();
+            pShader->SetUniformInt("ourTexture", 0);
 
+            mRotation.z += 0.1f;
+            if (mRotation.z >= 360)
+                mRotation.z = 0;
+        }
         glm::mat4 modelMatrix = GetModelMatrix();
 
-        mShader->SetUniformMat4("modelMatrix", modelMatrix);
-        mShader->SetUniformMat4("viewMatrix", viewMatrix);
-        mShader->SetUniformMat4("projectionMatrix", projectionMatrix);
+        pShader->SetUniformMat4("modelMatrix", modelMatrix);
+        pShader->SetUniformMat4("viewMatrix", viewMatrix);
+        pShader->SetUniformMat4("projectionMatrix", projectionMatrix);
 
-        glBindVertexArray(vaoId);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        pMesh->Render();
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
+}
+
+Shader* GameObject::GetShader() const{
+    return pShader;
+}
+
+void GameObject::BindShader() {
+    if (pShader)
+        pShader->Bind();
 }
