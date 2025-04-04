@@ -1,4 +1,6 @@
 #include "Game.h"
+#include <iostream>
+#include <filesystem>
 
 Renderer* Game::mRenderer = nullptr;
 float Game::mLastXMousePos = 0;
@@ -23,7 +25,10 @@ Game::~Game() {
 }
 
 void Game::Initialize() {
-	std::cout << "Initializing engine..." << std::endl << std::endl;
+	std::cout << "Initializing engine..." << std::endl;
+	std::cout << "Current root path is:  " << std::filesystem::current_path() << std::endl;
+
+	Environment::SetRootPath(std::filesystem::current_path().string().c_str());
 
 	mScenes = {};
 
@@ -53,21 +58,23 @@ void Game::Initialize() {
 	Scene* mainScene = new Scene();
 	AddScene(mainScene);
 
+	std::cout << std::string(Environment::GetRootPath()) + "/Shaders/ColorVert.glsl" << std::endl;
+
 	for (int i = 0; i < 10; i++)
 	{
-		GameObject* square = new GameObject(cubePositions[i], 
-			glm::vec3(rand() % 360, rand() % 360, rand() % 360), 
-			glm::vec3(0.7f), 
-			"C:/MyProjects/MyEngine/3DEngine/LuxMechanicus/Shaders/ColorVert.glsl", 
-			"C:/MyProjects/MyEngine/3DEngine/LuxMechanicus/Shaders/ColorFrag.glsl", 
-			"C:/MyProjects/MyEngine/3DEngine/LuxMechanicus/Textures/bricks.jpg");
+		GameObject* square = new GameObject(cubePositions[i],
+			glm::vec3(rand() % 360, rand() % 360, rand() % 360),
+			glm::vec3(0.7f),
+			(std::string(Environment::GetRootPath()) + "/Shaders/ColorVert.glsl").c_str(),
+			(std::string(Environment::GetRootPath()) + "/Shaders/ColorFrag.glsl").c_str(),
+			(std::string(Environment::GetRootPath()) + "/Textures/bricks.jpg").c_str());
 
 		Mesh* mesh;
 		int randomIndex = rand() % 2;
 		if (randomIndex == 0)
-			mesh = MeshCache::GetMesh("C:/MyProjects/MyEngine/3DEngine/LuxMechanicus/Models/teapot_flat.obj");
+			mesh = MeshCache::GetMesh((std::string(Environment::GetRootPath()) + "/Models/teapot_flat.obj").c_str());
 		else
-			mesh = new Mesh("C:/MyProjects/MyEngine/3DEngine/LuxMechanicus/Models/suzanna_flat.obj");
+			mesh = new Mesh((std::string(Environment::GetRootPath()) + "/Models/suzanna_flat.obj").c_str());
 
 		square->SetMesh(mesh);
 
@@ -87,11 +94,11 @@ void Game::Initialize() {
 	PointLight* lightSource1 = new PointLight(glm::vec3(1.0f),
 		glm::vec3(0.0f),
 		glm::vec3(0.5f),
-		"C:/MyProjects/MyEngine/3DEngine/LuxMechanicus/Shaders/LightSourceVert.glsl",
-		"C:/MyProjects/MyEngine/3DEngine/LuxMechanicus/Shaders/LightSourceFrag.glsl",
+		(std::string(Environment::GetRootPath()) + " /Shaders/LightSourceVert.glsl").c_str(),
+		(std::string(Environment::GetRootPath()) + " /Shaders/LightSourceFrag.glsl").c_str(),
 		glm::vec3(1.0f, 0.0f, 0.0f));
 
-	Mesh* lightSourceMesh1 = MeshCache::GetMesh("C:/MyProjects/MyEngine/3DEngine/LuxMechanicus/Models/cube_smooth.obj");
+	Mesh* lightSourceMesh1 = MeshCache::GetMesh((std::string(Environment::GetRootPath()) + "/Models/cube_smooth.obj").c_str());
 	lightSource1->SetMesh(lightSourceMesh1);
 	mainScene->AddChild(lightSource1);
 	mRenderer->AddLight(lightSource1);
@@ -99,11 +106,11 @@ void Game::Initialize() {
 	PointLight* lightSource3 = new PointLight(glm::vec3(1.0f),
 		glm::vec3(0.0f),
 		glm::vec3(0.5f),
-		"C:/MyProjects/MyEngine/3DEngine/LuxMechanicus/Shaders/LightSourceVert.glsl",
-		"C:/MyProjects/MyEngine/3DEngine/LuxMechanicus/Shaders/LightSourceFrag.glsl",
+		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceVert.glsl").c_str(),
+		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceFrag.glsl").c_str(),
 		glm::vec3(1.0f, 0.0f, 0.0f));
 
-	Mesh* lightSourceMesh3 = MeshCache::GetMesh("C:/MyProjects/MyEngine/3DEngine/LuxMechanicus/Models/cube_smooth.obj");
+	Mesh* lightSourceMesh3 = MeshCache::GetMesh(*Environment::GetRootPath() + "/Models/cube_smooth.obj");
 	lightSource3->SetMesh(lightSourceMesh3);
 	mainScene->AddChild(lightSource3);
 	mRenderer->AddLight(lightSource3);
@@ -111,11 +118,11 @@ void Game::Initialize() {
 	PointLight* lightSource4 = new PointLight(glm::vec3(1.0f),
 		glm::vec3(0.0f),
 		glm::vec3(0.5f),
-		"C:/MyProjects/MyEngine/3DEngine/LuxMechanicus/Shaders/LightSourceVert.glsl",
-		"C:/MyProjects/MyEngine/3DEngine/LuxMechanicus/Shaders/LightSourceFrag.glsl",
+		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceVert.glsl").c_str(),
+		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceFrag.glsl").c_str(),
 		glm::vec3(1.0f, 0.0f, 0.0f));
 
-	Mesh* lightSourceMesh4 = MeshCache::GetMesh("C:/MyProjects/MyEngine/3DEngine/LuxMechanicus/Models/cube_smooth.obj");
+	Mesh* lightSourceMesh4 = MeshCache::GetMesh(*Environment::GetRootPath() + "/Models/cube_smooth.obj");
 	lightSource4->SetMesh(lightSourceMesh4);
 	mainScene->AddChild(lightSource4);
 	mRenderer->AddLight(lightSource4);
@@ -123,11 +130,11 @@ void Game::Initialize() {
 	SpotLight* lightSource2 = new SpotLight(glm::vec3(-3.0f),
 		glm::vec3(0.0f),
 		glm::vec3(0.5f),
-		"C:/MyProjects/MyEngine/3DEngine/LuxMechanicus/Shaders/LightSourceVert.glsl",
-		"C:/MyProjects/MyEngine/3DEngine/LuxMechanicus/Shaders/LightSourceFrag.glsl",
+		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceVert.glsl").c_str(),
+		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceFrag.glsl").c_str(),
 		glm::vec3(0.0f, 0.0f, 1.0f));
 
-	Mesh* lightSourceMesh2 = MeshCache::GetMesh("C:/MyProjects/MyEngine/3DEngine/LuxMechanicus/Models/cube_smooth.obj");
+	Mesh* lightSourceMesh2 = MeshCache::GetMesh((std::string(Environment::GetRootPath()) + "/Models/cube_smooth.obj").c_str());
 	lightSource2->SetMesh(lightSourceMesh2);
 	mainScene->AddChild(lightSource2);
 	mRenderer->AddLight(lightSource2);

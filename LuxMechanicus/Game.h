@@ -13,6 +13,7 @@
 #include "MeshCache.h"
 #include "PointLight.h"
 #include "SpotLight.h"
+#include "Environment.h"
 
 class Game {
 public: 
