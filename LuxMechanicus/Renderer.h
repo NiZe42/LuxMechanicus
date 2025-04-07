@@ -11,6 +11,7 @@
 #include "PointLight.h"
 #include "SpotLight.h"
 #include "Shader.h"
+#include "Environment.h"
 
 
 class Renderer {

@@ -197,8 +197,8 @@ void Renderer::InitializeHDR() {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     hdrShader = new Shader(
-        "C:/MyProjects/MyEngine/3DEngine/LuxMechanicus/Shaders/HdrShaderVert.glsl",
-        "C:/MyProjects/MyEngine/3DEngine/LuxMechanicus/Shaders/HdrShaderFrag.glsl");
+        (std::string(Environment::GetRootPath()) + "/Shaders/HdrShaderVert.glsl").c_str(),
+        (std::string(Environment::GetRootPath()) + "/Shaders/HdrShaderFrag.glsl").c_str());
 
     hdrShader->Bind();
     hdrShader->SetUniformInt("hdrBuffer", 1);

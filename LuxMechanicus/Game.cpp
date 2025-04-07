@@ -94,8 +94,8 @@ void Game::Initialize() {
 	PointLight* lightSource1 = new PointLight(glm::vec3(1.0f),
 		glm::vec3(0.0f),
 		glm::vec3(0.5f),
-		(std::string(Environment::GetRootPath()) + " /Shaders/LightSourceVert.glsl").c_str(),
-		(std::string(Environment::GetRootPath()) + " /Shaders/LightSourceFrag.glsl").c_str(),
+		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceVert.glsl").c_str(),
+		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceFrag.glsl").c_str(),
 		glm::vec3(1.0f, 0.0f, 0.0f));
 
 	Mesh* lightSourceMesh1 = MeshCache::GetMesh((std::string(Environment::GetRootPath()) + "/Models/cube_smooth.obj").c_str());
@@ -110,7 +110,7 @@ void Game::Initialize() {
 		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceFrag.glsl").c_str(),
 		glm::vec3(1.0f, 0.0f, 0.0f));
 
-	Mesh* lightSourceMesh3 = MeshCache::GetMesh(*Environment::GetRootPath() + "/Models/cube_smooth.obj");
+	Mesh* lightSourceMesh3 = MeshCache::GetMesh((std::string(Environment::GetRootPath()) + "/Models/cube_smooth.obj").c_str());
 	lightSource3->SetMesh(lightSourceMesh3);
 	mainScene->AddChild(lightSource3);
 	mRenderer->AddLight(lightSource3);
@@ -122,7 +122,7 @@ void Game::Initialize() {
 		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceFrag.glsl").c_str(),
 		glm::vec3(1.0f, 0.0f, 0.0f));
 
-	Mesh* lightSourceMesh4 = MeshCache::GetMesh(*Environment::GetRootPath() + "/Models/cube_smooth.obj");
+	Mesh* lightSourceMesh4 = MeshCache::GetMesh((std::string(Environment::GetRootPath()) + "/Models/cube_smooth.obj").c_str());
 	lightSource4->SetMesh(lightSourceMesh4);
 	mainScene->AddChild(lightSource4);
 	mRenderer->AddLight(lightSource4);
