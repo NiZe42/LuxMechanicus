@@ -8,6 +8,5 @@ void Environment::SetRootPath(const char* newRootPath) {
 }
 
 const char* Environment::GetRootPath() {
-	std::cout << "sending path: " << rootPath << std::endl;
 	return rootPath.c_str();
 }

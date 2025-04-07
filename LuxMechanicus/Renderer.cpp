@@ -52,7 +52,6 @@ void Renderer::RenderGameObject(GameObject* object, glm::mat4 viewMatrix) {
     
     object->BindShader();
     
-
     Shader* shader = object->GetShader();
 
     if (!dynamic_cast<PointLight*>(object) && !dynamic_cast<SpotLight*>(object)) {

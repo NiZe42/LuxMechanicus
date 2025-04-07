@@ -58,11 +58,10 @@ void Game::Initialize() {
 	Scene* mainScene = new Scene();
 	AddScene(mainScene);
 
-	std::cout << std::string(Environment::GetRootPath()) + "/Shaders/ColorVert.glsl" << std::endl;
-
 	for (int i = 0; i < 10; i++)
 	{
-		GameObject* square = new GameObject(cubePositions[i],
+		GameObject* square = new GameObject(
+			cubePositions[i],
 			glm::vec3(rand() % 360, rand() % 360, rand() % 360),
 			glm::vec3(0.7f),
 			(std::string(Environment::GetRootPath()) + "/Shaders/ColorVert.glsl").c_str(),
@@ -80,8 +79,21 @@ void Game::Initialize() {
 
 		mainScene->AddChild(square);
 
-		std::cout << "Creating cube" << square->GetGameObjectId() << "at: " << cubePositions[i].x << ", " << cubePositions[i].y << ", " << cubePositions[i].z << std::endl;
+		std::cout << "Creating obj" << square->GetGameObjectId() << "at: " << cubePositions[i].x << ", " << cubePositions[i].y << ", " << cubePositions[i].z << std::endl;
 	}
+
+	GameObject* plane = new GameObject(
+		glm::vec3(0, -4, 0),
+		glm::vec3(0, 0, 0),
+		glm::vec3(10, 10, 10),
+		(std::string(Environment::GetRootPath()) + "/Shaders/ColorVert.glsl").c_str(),
+		(std::string(Environment::GetRootPath()) + "/Shaders/ColorFrag.glsl").c_str());
+		//(std::string(Environment::GetRootPath()) + "/Textures/bricks.jpg").c_str());
+
+	Mesh* planeMesh = MeshCache::GetMesh((std::string(Environment::GetRootPath()) + "/Models/plane.obj").c_str());
+
+	plane->SetMesh(planeMesh);
+	mainScene->AddChild(plane);
 
 	mRenderer = new Renderer();
 	mRenderer->SetScreenHeight(1080);
@@ -91,7 +103,8 @@ void Game::Initialize() {
 	camera->SetPosition(glm::vec3(0.0f, 0.0f, 5.0f));
 	mRenderer->SetActiveCamera(camera);
 
-	PointLight* lightSource1 = new PointLight(glm::vec3(1.0f),
+	PointLight* lightSource1 = new PointLight(
+		glm::vec3(1.0f),
 		glm::vec3(0.0f),
 		glm::vec3(0.5f),
 		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceVert.glsl").c_str(),
@@ -103,7 +116,8 @@ void Game::Initialize() {
 	mainScene->AddChild(lightSource1);
 	mRenderer->AddLight(lightSource1);
 
-	PointLight* lightSource3 = new PointLight(glm::vec3(1.0f),
+	PointLight* lightSource3 = new PointLight(
+		glm::vec3(1.0f),
 		glm::vec3(0.0f),
 		glm::vec3(0.5f),
 		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceVert.glsl").c_str(),
@@ -115,7 +129,8 @@ void Game::Initialize() {
 	mainScene->AddChild(lightSource3);
 	mRenderer->AddLight(lightSource3);
 
-	PointLight* lightSource4 = new PointLight(glm::vec3(1.0f),
+	PointLight* lightSource4 = new PointLight(
+		glm::vec3(1.0f),
 		glm::vec3(0.0f),
 		glm::vec3(0.5f),
 		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceVert.glsl").c_str(),
@@ -127,7 +142,8 @@ void Game::Initialize() {
 	mainScene->AddChild(lightSource4);
 	mRenderer->AddLight(lightSource4);
 
-	SpotLight* lightSource2 = new SpotLight(glm::vec3(-3.0f),
+	SpotLight* lightSource2 = new SpotLight(
+		glm::vec3(-3.0f),
 		glm::vec3(0.0f),
 		glm::vec3(0.5f),
 		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceVert.glsl").c_str(),

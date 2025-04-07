@@ -4,8 +4,13 @@
 
 unsigned int GameObject::nextGameObjectId = 0;  
 
-GameObject::GameObject(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale,
-    const char* vervtexShaderPath, const char* fragmentShaderPath, const char* texturePath) 
+GameObject::GameObject(
+    glm::vec3 position, 
+    glm::vec3 rotation, 
+    glm::vec3 scale,
+    const char* vervtexShaderPath, 
+    const char* fragmentShaderPath, 
+    const char* texturePath) 
     : mPosition(position), mRotation(rotation), mScale(scale) {
     if (nextGameObjectId == 0)
         nextGameObjectId++;
@@ -205,19 +210,22 @@ void GameObject::InitializeCube() {
     glEnableVertexAttribArray(1);
 }
 
-void GameObject::Render(glm::mat4 viewMatrix, 
-    glm::mat4 projectionMatrix) {
+void GameObject::Render(glm::mat4 viewMatrix, glm::mat4 projectionMatrix) {
     if (pShader && pMesh) {
-        //std::cout << "rendering" << std::endl;
-
+        
         if (pTexture) {
             pTexture->Bind();
             pShader->SetUniformInt("ourTexture", 0);
+            pShader->SetUniformBool("hasTexture", true);
 
             mRotation.z += 0.1f;
             if (mRotation.z >= 360)
                 mRotation.z = 0;
         }
+        else {
+            pShader->SetUniformBool("hasTexture", false);
+        }
+
         glm::mat4 modelMatrix = GetModelMatrix();
 
         pShader->SetUniformMat4("modelMatrix", modelMatrix);

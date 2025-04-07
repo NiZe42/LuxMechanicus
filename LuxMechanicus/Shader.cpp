@@ -68,7 +68,7 @@ std::string Shader::LoadShaderSource(GLenum shaderType, const char* shaderPath) 
     }
     catch (std::ifstream::failure e)
     {
-        std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+        std::cout << "Couldn't read shader file" << std::endl;
     }
     return shaderSource;
 }
@@ -81,7 +81,7 @@ void Shader::CheckShaderCompilation(int shaderId) const{
     if (!success)
     {
         glGetShaderInfoLog(shaderId, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+        std::cout << "Couldn't compile shader file\n" << infoLog << std::endl;
     };
 }
 
@@ -93,7 +93,7 @@ void Shader::CheckShaderProgramCompilation(int ShaderProgramId) const {
     if (!success)
     {
         glGetProgramInfoLog(mShaderProgramId, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+        std::cout << "Couldn't link shader\n" << infoLog << std::endl;
     }
 }
 

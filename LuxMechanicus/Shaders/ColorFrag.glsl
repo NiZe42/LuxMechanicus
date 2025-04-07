@@ -7,6 +7,7 @@ in vec3 cameraPos;
 in vec3 worldFragPos;
 in mat4 outModelMatrix;
 
+uniform bool hasTexture;
 uniform sampler2D ourTexture;
 
 //Point Lights
@@ -26,8 +27,14 @@ uniform float spotLightIntensities[10];
 
 void main( void ) {
     vec3 viewDir = normalize(cameraPos - worldFragPos);
+	
+	vec3 textureColor;
 
-	vec3 textureColor = texture(ourTexture, texCoord).xyz;
+	if(hasTexture) {
+		textureColor = texture(ourTexture, texCoord).xyz;
+	} else {
+		textureColor = vec3(1, 1, 1);
+	}
 
 	vec3 normal = normalize(outNormal);
 
