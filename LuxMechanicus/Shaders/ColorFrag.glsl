@@ -79,6 +79,5 @@ void main( void ) {
 		resultColor += (ambientLight + diffuseLight + specularLight) * textureColor * cutOffIntensity * spotLightIntensities[i];
 	}
 
-
 	FragColor = vec4(resultColor, 1.0f);
 }

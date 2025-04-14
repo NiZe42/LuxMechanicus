@@ -8,7 +8,7 @@ GameObject::GameObject(
     glm::vec3 position, 
     glm::vec3 rotation, 
     glm::vec3 scale,
-    const char* vervtexShaderPath, 
+    const char* vertexShaderPath, 
     const char* fragmentShaderPath, 
     const char* texturePath) 
     : mPosition(position), mRotation(rotation), mScale(scale) {
@@ -17,7 +17,7 @@ GameObject::GameObject(
 
     mGameObjectId = nextGameObjectId++;
 
-    InitializeShader(vervtexShaderPath, fragmentShaderPath);
+    InitializeShader(vertexShaderPath, fragmentShaderPath);
 
     if (texturePath)
         InitializeTexture(texturePath);
