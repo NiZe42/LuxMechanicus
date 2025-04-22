@@ -73,7 +73,7 @@ void Game::Initialize() {
 		if (randomIndex == 0)
 			mesh = MeshCache::GetMesh((std::string(Environment::GetRootPath()) + "/Models/teapot_flat.obj").c_str());
 		else
-			mesh = new Mesh((std::string(Environment::GetRootPath()) + "/Models/suzanna_flat.obj").c_str());
+			mesh = MeshCache::GetMesh((std::string(Environment::GetRootPath()) + "/Models/suzanna_flat.obj").c_str());
 
 		square->SetMesh(mesh);
 
@@ -90,10 +90,17 @@ void Game::Initialize() {
 		(std::string(Environment::GetRootPath()) + "/Shaders/ColorFrag.glsl").c_str());
 		//(std::string(Environment::GetRootPath()) + "/Textures/bricks.jpg").c_str());
 
-	Mesh* planeMesh = MeshCache::GetMesh((std::string(Environment::GetRootPath()) + "/Models/plane.obj").c_str());
+	Mesh* planeMesh;
+	planeMesh = MeshCache::GetMesh((std::string(Environment::GetRootPath()) + "/Models/plane.obj").c_str());
 
 	plane->SetMesh(planeMesh);
 	mainScene->AddChild(plane);
+
+	for (size_t i = 0; i < mainScene->GetChildren().size(); i++)
+	{
+		GameObject* gameobject = dynamic_cast<GameObject*>(mainScene->GetChildren()[i]);
+		std::cout << gameobject->GetGameObjectId() << std::endl;
+	}
 
 	mRenderer = new Renderer();
 	mRenderer->SetScreenHeight(1080);
@@ -142,13 +149,13 @@ void Game::Initialize() {
 	mainScene->AddChild(lightSource4);
 	mRenderer->AddLight(lightSource4);
 
-	SpotLight* lightSource2 = new SpotLight(
+	PointLight* lightSource2 = new PointLight(
 		glm::vec3(-3.0f),
 		glm::vec3(0.0f),
 		glm::vec3(0.5f),
 		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceVert.glsl").c_str(),
 		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceFrag.glsl").c_str(),
-		glm::vec3(0.0f, 0.0f, 1.0f));
+		glm::vec3(1.0f, 1.0f, 1.0f));
 
 	Mesh* lightSourceMesh2 = MeshCache::GetMesh((std::string(Environment::GetRootPath()) + "/Models/cube_smooth.obj").c_str());
 	lightSource2->SetMesh(lightSourceMesh2);

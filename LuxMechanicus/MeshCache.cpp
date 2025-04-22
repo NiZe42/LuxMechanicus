@@ -2,17 +2,16 @@
 #include <iostream>
 
 
-std::unordered_map<const char*, Mesh*> MeshCache::cache;
+std::unordered_map<std::string, Mesh*> MeshCache::cache;
 
-Mesh* MeshCache::GetMesh(const char* objFilePath) {
+Mesh* MeshCache::GetMesh(const char* objFilePath) { 
     
-    auto it = cache.find(objFilePath);
+    auto it = cache.find(std::string(objFilePath));
     if (it != cache.end()) {
         return it->second; 
     }
-
     Mesh* newMesh = new Mesh(objFilePath);
-    cache[objFilePath] = newMesh; 
+    cache[std::string(objFilePath)] = newMesh;
 
     return newMesh;
 }

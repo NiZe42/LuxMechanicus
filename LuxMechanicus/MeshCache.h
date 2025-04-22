@@ -1,4 +1,3 @@
-
 #include <unordered_map>
 #include <string>
 #include "Mesh.h"
@@ -9,6 +8,6 @@ public:
     static void ClearCache();
 
 private:
-    static std::unordered_map<const char*, Mesh*> cache;
+    static std::unordered_map<std::string, Mesh*> cache;
 };
 
