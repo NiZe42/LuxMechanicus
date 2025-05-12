@@ -16,6 +16,10 @@ void PostProcessor::ApplyEffectsAndRender() {
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, frameBuffer1->GetColorBufferId());
 
+        RenderQuad();
+
+        emptyQuadShader->unb
+
 		return;
 	}
 
