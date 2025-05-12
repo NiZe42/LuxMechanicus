@@ -43,7 +43,7 @@ private:
     int mScreenWidth, mScreenHeight;
 
     Shader* hdrShader;
-    unsigned int hdrFBOId, colorBufferId;
+    unsigned int hdrFBOId, colorBufferId, rboDepthId;
     bool useHDR;
 
     unsigned int quadVaoId, quadVboId;

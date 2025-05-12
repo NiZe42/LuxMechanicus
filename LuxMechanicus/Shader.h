@@ -17,6 +17,7 @@ public:
     ~Shader();
 
     void Bind() const;
+    void Unbind() const;
     
     void SetUniformBool(const std::string& name, bool value) const;
     void SetUniformInt(const std::string& name, int value) const;
