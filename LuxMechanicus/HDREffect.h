@@ -3,12 +3,13 @@
 
 class HDREffect : public PostProcessingEffect {
 
+public:
 	HDREffect();
 	~HDREffect();
 
+	void SetUniforms() const override;
 
 private:
 		
-
 };
 

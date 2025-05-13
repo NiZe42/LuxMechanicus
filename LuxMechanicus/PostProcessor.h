@@ -4,6 +4,7 @@
 #include <vector>
 #include "PostProcessingEffect.h"
 #include "Environment.h"
+#include "HDREffect.h"
 
 class PostProcessor
 {
@@ -14,8 +15,8 @@ public:
 
 	void ApplyEffectsAndRender();
 
-	void BindFirstFrameBuffer();
-	void UnbindFirstFrameBuffer();
+	virtual void BindFirstFrameBuffer();
+	virtual void UnbindFirstFrameBuffer();
 
 private:
 	unsigned int quadVAOId, quadVBOId;
@@ -25,9 +26,9 @@ private:
 	FrameBuffer* frameBuffer1;
 	FrameBuffer* frameBuffer2;
 
-	std::vector<std::unique_ptr<PostProcessingEffect>> effectsStack;
+	std::vector<PostProcessingEffect*> effectsStack;
 
-	void AddEffect();
+	void AddEffect(PostProcessingEffect* effect);
 
 	void Initialize();
 	void InitializeQuad();

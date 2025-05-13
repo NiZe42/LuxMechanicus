@@ -21,6 +21,7 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
     glShaderSource(vertexShaderId, 1, &vertexShaderCodePointer, NULL);
     glCompileShader(vertexShaderId);
 
+    std::cout << "Checking compilation of " << vertexPath << std::endl;
     CheckShaderCompilation(vertexShaderId);
     
     unsigned int fragmentShaderId;
@@ -29,6 +30,7 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
     glShaderSource(fragmentShaderId, 1, &fragmentShaderCodePointer, NULL);
     glCompileShader(fragmentShaderId);
     
+    std::cout << "Checking compilation of " << fragmentPath << std::endl;
     CheckShaderCompilation(fragmentShaderId);
 
     mShaderProgramId = glCreateProgram();
@@ -48,6 +50,10 @@ Shader::~Shader() {
 
 void Shader::Bind() const {
     glUseProgram(mShaderProgramId);
+}
+
+void Shader::Unbind() const {
+    glUseProgram(0);
 }
 
 std::string Shader::LoadShaderSource(GLenum shaderType, const char* shaderPath) {
