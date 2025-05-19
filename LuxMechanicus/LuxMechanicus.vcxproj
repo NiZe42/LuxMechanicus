@@ -135,15 +135,19 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Environment.cpp" />
+    <ClCompile Include="FrameBuffer.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="HDREffect.cpp" />
     <ClCompile Include="HierarchyObject.cpp" />
     <ClCompile Include="LightSource.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshCache.cpp" />
     <ClCompile Include="PointLight.cpp" />
+    <ClCompile Include="PostProcessingEffect.cpp" />
+    <ClCompile Include="PostProcessor.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -153,13 +157,17 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Environment.h" />
+    <ClInclude Include="FrameBuffer.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="HDREffect.h" />
     <ClInclude Include="HierarchyObject.h" />
     <ClInclude Include="LightSource.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshCache.h" />
     <ClInclude Include="PointLight.h" />
+    <ClInclude Include="PostProcessingEffect.h" />
+    <ClInclude Include="PostProcessor.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
@@ -170,6 +178,8 @@
   <ItemGroup>
     <None Include="Shaders\ColorFrag.glsl" />
     <None Include="Shaders\ColorVert.glsl" />
+    <None Include="Shaders\EmptyQuadFrag.glsl" />
+    <None Include="Shaders\EmptyQuadVert.glsl" />
     <None Include="Shaders\HdrShaderFrag.glsl" />
     <None Include="Shaders\HdrShaderVert.glsl" />
     <None Include="Shaders\LightSourceFrag.glsl" />
