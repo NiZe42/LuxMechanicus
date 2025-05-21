@@ -4,6 +4,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glad/glad.h>
 #include <iostream>
+#include "FrameBufferType.h"
 
 class FrameBuffer
 {
@@ -16,11 +17,15 @@ public:
 	void Unbind() const;
 
 	unsigned int GetColorBufferId() const;
+	unsigned int GetBrightBufferId() const;
+
+	FrameBufferType GetFrameBufferType() const;
 
 private:
-	unsigned int FBOId, colorBufferId, RBODepthId;
+	const FrameBufferType frameBufferType;
+
+	unsigned int FBOId, colorBufferId, brightBufferId, RBODepthId;
 
 	void Initialize();
-	
 };
 

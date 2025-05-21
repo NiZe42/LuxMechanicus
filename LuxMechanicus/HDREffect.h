@@ -9,6 +9,8 @@ public:
 
 	void SetUniforms() const override;
 
+	void Initialize() override;
+
 private:
 		
 };

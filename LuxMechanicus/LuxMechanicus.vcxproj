@@ -133,6 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BloomEffect.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="FrameBuffer.cpp" />
@@ -155,6 +156,7 @@
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BloomEffect.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="FrameBuffer.h" />
@@ -167,6 +169,7 @@
     <ClInclude Include="MeshCache.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="PostProcessingEffect.h" />
+    <ClInclude Include="PostProcessingBufferType.h" />
     <ClInclude Include="PostProcessor.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Scene.h" />

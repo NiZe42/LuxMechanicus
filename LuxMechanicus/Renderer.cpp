@@ -19,7 +19,6 @@ Renderer::~Renderer() {
 }
 
 void Renderer::Render(const std::vector<Scene*>& scenesToRender) {
-    
     postProcessor->BindFirstFrameBuffer();
 
     for (Scene* scene : scenesToRender) {

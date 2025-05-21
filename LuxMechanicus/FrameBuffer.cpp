@@ -12,9 +12,15 @@ FrameBuffer::~FrameBuffer() {
 void FrameBuffer::Initialize() {
     glGenFramebuffers(1, &FBOId);
     glBindFramebuffer(GL_FRAMEBUFFER, FBOId);
-
+     
     glGenTextures(1, &colorBufferId);
     glBindTexture(GL_TEXTURE_2D, colorBufferId);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, 1920, 1080, 0, GL_RGBA, GL_FLOAT, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glGenTextures(1, &brightBufferId);
+    glBindTexture(GL_TEXTURE_2D, brightBufferId);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, 1920, 1080, 0, GL_RGBA, GL_FLOAT, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -24,7 +30,11 @@ void FrameBuffer::Initialize() {
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1920, 1080);
 
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorBufferId, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, brightBufferId, 0);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, RBODepthId);
+
+    unsigned int attachments[2] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
+    glDrawBuffers(2, attachments);
 
     // Check if the framebuffer is complete
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
@@ -62,4 +72,12 @@ void FrameBuffer::Unbind() const {
 
 unsigned int FrameBuffer::GetColorBufferId() const {
     return colorBufferId;
+}
+
+unsigned int FrameBuffer::GetBrightBufferId() const {
+    return brightBufferId;
+}
+
+FrameBufferType FrameBuffer::GetFrameBufferType() const {
+    return frameBufferType;
 }

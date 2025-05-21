@@ -14,3 +14,7 @@ void HDREffect::SetUniforms() const {
 	effectShader->SetUniformBool("useHDR", true);
 	effectShader->SetUniformFloat("exposure", 0.5f);
 }
+
+void HDREffect::Initialize() {
+
+}

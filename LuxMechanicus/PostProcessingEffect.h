@@ -1,6 +1,9 @@
 #pragma once
 #include "Shader.h"
 #include "Environment.h"
+#include <iostream>
+#include <unordered_map>
+#include <list>
 
 class PostProcessingEffect
 {
@@ -13,10 +16,9 @@ public:
 
 	virtual void SetUniforms() const;
 
-	void Initialize();
+	virtual void Initialize();
 
 protected:
-
 	Shader* effectShader;
 };
 

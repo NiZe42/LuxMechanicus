@@ -20,7 +20,7 @@ public:
 
 private:
 	unsigned int quadVAOId, quadVBOId;
-	
+
 	Shader* emptyQuadShader;
 
 	FrameBuffer* frameBuffer1;
