@@ -7,16 +7,18 @@
 class FrameBufferPool
 {
 public:
-
 	FrameBufferPool();
 	~FrameBufferPool();
 
 	void AddFrameBuffer(FrameBuffer* frameBuffer);
 
-	FrameBuffer* GetFrameBufferOfType(FrameBufferType framebufferType) const;
+	FrameBuffer* GetFrameBufferOfType(FrameBufferType framebufferType);
+	FrameBuffer* GetCurrentlySelectedFrameBuffer() const ;
 
 private:
 	std::unordered_map<FrameBufferType, FrameBuffer*> pool;
+
+	FrameBuffer* currentFrameBuffer = nullptr;
 
 	void Initialize();
 };

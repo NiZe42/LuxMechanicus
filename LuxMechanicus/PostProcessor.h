@@ -5,6 +5,7 @@
 #include "PostProcessingEffect.h"
 #include "Environment.h"
 #include "HDREffect.h"
+#include "FrameBufferPool.h"
 
 class PostProcessor
 {
@@ -15,16 +16,15 @@ public:
 
 	void ApplyEffectsAndRender();
 
-	virtual void BindFirstFrameBuffer();
-	virtual void UnbindFirstFrameBuffer();
+	void BindFirstFrameBuffer();
+	void UnbindFirstFrameBuffer();
 
 private:
 	unsigned int quadVAOId, quadVBOId;
 
 	Shader* emptyQuadShader;
 
-	FrameBuffer* frameBuffer1;
-	FrameBuffer* frameBuffer2;
+	FrameBufferPool* frameBufferPool;
 
 	std::vector<PostProcessingEffect*> effectsStack;
 

@@ -13,11 +13,8 @@ PostProcessor::~PostProcessor() {
     if (emptyQuadShader)
         delete(emptyQuadShader);
 
-    if (frameBuffer1)
-        delete(frameBuffer1);
-
-    if (frameBuffer2)
-        delete(frameBuffer2);
+    if (frameBufferPool)
+        delete(frameBufferPool);
 
     if (effectsStack.empty())
         return;
@@ -33,7 +30,7 @@ void PostProcessor::ApplyEffectsAndRender() {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
         glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, frameBuffer1->GetColorBufferId());
+        glBindTexture(GL_TEXTURE_2D, frameBufferPool->GetCurrentlySelectedFrameBuffer()->GetColorBufferId());
 
         emptyQuadShader->Bind();
         emptyQuadShader->SetUniformInt("quadTexture", 1);
@@ -89,8 +86,7 @@ void PostProcessor::UnbindFirstFrameBuffer() {
 }
 
 void PostProcessor::Initialize() {
-    frameBuffer1 = new FrameBuffer();
-    frameBuffer2 = new FrameBuffer();
+    frameBufferPool = new FrameBufferPool();
 
     emptyQuadShader = new Shader(
         (std::string(Environment::GetRootPath()) + "/Shaders/EmptyQuadVert.glsl").c_str(),

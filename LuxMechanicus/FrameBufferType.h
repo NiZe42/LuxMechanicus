@@ -2,5 +2,6 @@
 
 enum class FrameBufferType {
 	Color,
-	ColorBright
+	ColorBright,
+	None
 };

@@ -13,5 +13,7 @@ public:
 
 private:
 		
+	const FrameBufferType REQUIREDFRAMEBUFFERTYPE = FrameBufferType::Color;
+
 };
 

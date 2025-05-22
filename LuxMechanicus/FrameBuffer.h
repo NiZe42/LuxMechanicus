@@ -10,7 +10,7 @@ class FrameBuffer
 {
 public:
 
-	FrameBuffer();
+	FrameBuffer(FrameBufferType pFrameBufferType);
 	~FrameBuffer();
 
 	void Bind() const;
@@ -22,10 +22,13 @@ public:
 	FrameBufferType GetFrameBufferType() const;
 
 private:
-	const FrameBufferType frameBufferType;
+	const FrameBufferType frameBufferType = FrameBufferType::None;
 
-	unsigned int FBOId, colorBufferId, brightBufferId, RBODepthId;
+	unsigned int FBOId = 0, 
+		colorBufferId = 0, 
+		brightBufferId = 0, 
+		RBODepthId = 0;
 
-	void Initialize();
+	void Initialize(FrameBufferType pFrameBufferType);
 };
 

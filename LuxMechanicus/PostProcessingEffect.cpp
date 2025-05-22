@@ -23,6 +23,7 @@ void PostProcessingEffect::SetUniforms() const {
     
 }
 
+// Important to call this after instantiation so we would minimize Shader Creation
 void PostProcessingEffect::Initialize() {
     if (!effectShader) {
     effectShader = new Shader(
@@ -34,6 +35,8 @@ void PostProcessingEffect::Initialize() {
     effectShader->Bind();
     effectShader->SetUniformInt("quadTexture", 1);
     effectShader->Unbind();
+}   
 
-    std::cout << "printing" << std::endl;
+FrameBufferType PostProcessingEffect::GetRequiredFrameBufferType() const {
+    return requiredFrameBufferType;
 }

@@ -4,6 +4,8 @@ HDREffect::HDREffect() {
 	effectShader = new Shader(
 		(std::string(Environment::GetRootPath()) + "/Shaders/HDRShaderVert.glsl").c_str(),
 		(std::string(Environment::GetRootPath()) + "/Shaders/HDRShaderFrag.glsl").c_str());
+
+	requiredFrameBufferType = REQUIREDFRAMEBUFFERTYPE;
 }
 
 HDREffect::~HDREffect() {

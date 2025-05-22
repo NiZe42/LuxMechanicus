@@ -4,6 +4,7 @@
 #include <iostream>
 #include <unordered_map>
 #include <list>
+#include "FrameBufferType.h"
 
 class PostProcessingEffect
 {
@@ -18,7 +19,11 @@ public:
 
 	virtual void Initialize();
 
+	FrameBufferType GetRequiredFrameBufferType() const;
+
 protected:
 	Shader* effectShader;
+
+	FrameBufferType requiredFrameBufferType = FrameBufferType::None;
 };
 
