@@ -1,5 +1,5 @@
 #pragma once
-#include <glad/glad.h> 
+#include "GLIncludes.h"
 #include <string>
 #include <fstream>
 #include <sstream>

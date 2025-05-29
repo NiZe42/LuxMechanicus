@@ -1,4 +1,5 @@
 #pragma once
+#include "GLIncludes.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -8,7 +9,6 @@
 #include <sstream>
 #include <string>
 #include <map>
-#include <glad/glad.h> 
 
 struct Vertex {
 	glm::vec3 pPosition;

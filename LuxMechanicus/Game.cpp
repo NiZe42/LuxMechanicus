@@ -181,8 +181,8 @@ void Game::RemoveScene(unsigned int sceneId) {
 
 void Game::InitializeGLFW() {
 	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 }
@@ -203,9 +203,19 @@ void Game::InitializeWindow() {
 void Game::InitializeGLAD() {
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
-		std::cout << "Failed to initialize GLAD" << std::endl;
+		std::cerr << "Failed to initialize GLAD Loader" << std::endl;
 		return;
 	}
+	if (!gladLoadGL()) {
+		std::cerr << "Failed to initialize GLAD" << std::endl;
+		exit(-1);
+	}
+
+	const GLubyte* renderer = glGetString(GL_RENDERER);
+	const GLubyte* version = glGetString(GL_VERSION);
+	std::cout << "Renderer: " << renderer << "\n";
+	std::cout << "OpenGL version: " << version << "\n";
+
 	glViewport(0, 0, 1920, 1080);
 }
 

@@ -1,5 +1,4 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include "GLIncludes.h"
 #include <iostream>
 
 #include "Game.h"

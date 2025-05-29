@@ -1,5 +1,5 @@
 #pragma once
-#include <glad/glad.h> 
+#include "GLIncludes.h"
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -17,6 +17,7 @@ public:
     ~Shader();
 
     void Bind() const;
+    void Unbind() const;
     
     void SetUniformBool(const std::string& name, bool value) const;
     void SetUniformInt(const std::string& name, int value) const;

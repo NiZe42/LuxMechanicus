@@ -12,6 +12,7 @@
 #include "SpotLight.h"
 #include "Shader.h"
 #include "Environment.h"
+#include "PostProcessor.h"
 
 
 class Renderer {
@@ -28,7 +29,7 @@ public:
     void SetActiveCamera(Camera* camera);
     static Camera* GetActiveCamera();
 
-    void AddLight(LightSource*lightSource);
+    void AddLight(LightSource* lightSource);
     static std::vector<LightSource*> GetAllLightSources();
 
     void SetProjectionMatrix(glm::mat4 projectionMatrix);
@@ -42,19 +43,12 @@ private:
 
     int mScreenWidth, mScreenHeight;
 
-    Shader* hdrShader;
-    unsigned int hdrFBOId, colorBufferId;
-    bool useHDR;
-
-    unsigned int quadVaoId, quadVboId;
+    PostProcessor* postProcessor;
 
     glm::mat4 mProjectionMatrix;
 
     void SendLightInfoToShader(Shader* shader);
     void SendCameraInfoToShader(Shader* shader);
-    void InitializeHDR();
-    void InitializeScreenQuad();
-    void RenderScreenQuad();
 };
 
 

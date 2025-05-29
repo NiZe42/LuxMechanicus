@@ -4,37 +4,33 @@
 Camera* Renderer::mActiveCamera = nullptr;
 std::vector<LightSource*> Renderer::mAllLights;
 
-Renderer::Renderer() : useHDR(true) {
+Renderer::Renderer() {
     glEnable(GL_DEPTH_TEST);
-    InitializeScreenQuad();
-    InitializeHDR();
+
+    postProcessor = new PostProcessor();
 }
 
 Renderer::~Renderer() {
     if (mActiveCamera)
         delete mActiveCamera;
 
-    if (hdrShader)
-        delete hdrShader;
+    if (postProcessor)
+        delete postProcessor;
 }
 
 void Renderer::Render(const std::vector<Scene*>& scenesToRender) {
-    glBindFramebuffer(GL_FRAMEBUFFER, hdrFBOId);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    postProcessor->BindFirstFrameBuffer();
 
     for (Scene* scene : scenesToRender) {
         RenderScene(scene);
     }
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-    hdrShader->Bind();
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, colorBufferId);
-
-    hdrShader->SetUniformBool("useHDR", useHDR);
-    hdrShader->SetUniformFloat("exposure", 0.5f);
-
-    RenderScreenQuad();
+    
+    postProcessor->UnbindFirstFrameBuffer();
+    
+    postProcessor->ApplyEffectsAndRender();
 }
 
 void Renderer::RenderScene(Scene* scene) {
@@ -150,93 +146,10 @@ void Renderer::SendCameraInfoToShader(Shader* shader) {
     shader->SetUniformVector("cameraPosition", cameraPosition);
 }
 
-void Renderer::InitializeHDR() {
-    glGenFramebuffers(1, &hdrFBOId);
-    glBindFramebuffer(GL_FRAMEBUFFER, hdrFBOId);
- 
-    glGenTextures(1, &colorBufferId);
-    glBindTexture(GL_TEXTURE_2D, colorBufferId);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, 1920, 1080, 0, GL_RGBA, GL_FLOAT, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
-    unsigned int rboDepthId;
-    glGenRenderbuffers(1, &rboDepthId);
-    glBindRenderbuffer(GL_RENDERBUFFER, rboDepthId);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1920, 1080);
-
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorBufferId, 0);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboDepthId);
-
-    // Check if the framebuffer is complete
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-        std::cerr << "Framebuffer is incomplete!" << std::endl;
-        GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-        switch (status) {
-        case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
-            std::cerr << "Framebuffer incomplete attachment" << std::endl;
-            break;
-        case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
-            std::cerr << "Framebuffer missing attachment" << std::endl;
-            break;
-        case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
-            std::cerr << "Framebuffer incomplete draw buffer" << std::endl;
-            break;
-        case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
-            std::cerr << "Framebuffer incomplete read buffer" << std::endl;
-            break;
-        case GL_FRAMEBUFFER_UNSUPPORTED:
-            std::cerr << "Framebuffer unsupported" << std::endl;
-            break;
-        default:
-            std::cerr << "Framebuffer error: " << status << std::endl;
-        }
-    }
-
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-    hdrShader = new Shader(
-        (std::string(Environment::GetRootPath()) + "/Shaders/HdrShaderVert.glsl").c_str(),
-        (std::string(Environment::GetRootPath()) + "/Shaders/HdrShaderFrag.glsl").c_str());
-
-    hdrShader->Bind();
-    hdrShader->SetUniformInt("hdrBuffer", 1);
-}
-
-
-void Renderer::InitializeScreenQuad() {
-    float quadVertices[] = {
-        -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
-        -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-        1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
-        1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-    };
-   
-    glGenVertexArrays(1, &quadVaoId);
-    
-    glGenBuffers(1, &quadVboId);
-    glBindVertexArray(quadVaoId);
-
-    glBindBuffer(GL_ARRAY_BUFFER, quadVboId);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
-    
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-    
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-}
-
 void Renderer::SetScreenHeight(int height) {
     mScreenHeight = height;
 }
 
 void Renderer::SetScreenWidth(int width) {
     mScreenWidth = width;
-}
-
-void Renderer::RenderScreenQuad() {
-    glBindVertexArray(quadVaoId);
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    glBindVertexArray(0);
 }
