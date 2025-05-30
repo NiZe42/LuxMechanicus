@@ -8,7 +8,8 @@ public:
         glm::vec3 rotation,
         glm::vec3 scale,
         const char* vertexShaderPath,
-        const char* fragmentShaderPath);
+        const char* fragmentShaderPath,
+        float intensity);
     virtual ~LightSource() = default;
 
     glm::vec3 GetColor() const;

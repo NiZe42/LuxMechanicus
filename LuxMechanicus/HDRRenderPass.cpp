@@ -35,3 +35,25 @@ void HDRRenderPass::SetUniforms(RenderTexturesPool* renderTexturesPool) const {
 	effectShader->SetUniformBool("useHDR", true);
 	effectShader->SetUniformFloat("exposure", 0.5f);
 }
+
+void HDRRenderPass::Apply(const unsigned int& quadVAOId, RenderTexturesPool* renderTexturesPool) {
+	BindFramebuffer();
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	BindEffectShader();
+	SetUniforms(renderTexturesPool);
+
+	RenderQuad(quadVAOId);
+
+	UnbindEffectShader();
+
+	UnbindFramebuffer();
+
+	for (int i = 0; i < outputRenderTextures.size(); i++) {
+		RenderTextureType renderTextureType = outputRenderTextures[i];
+		unsigned int renderTextureId = frameBuffer->GetAttachedRenderTextureIdByType(renderTextureType);
+
+		renderTexturesPool->SaveRenderTextureId(renderTextureType, renderTextureId);
+	}
+}

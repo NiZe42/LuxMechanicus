@@ -31,7 +31,6 @@ private:
 	void AddEffect(RenderPass* effect);
 
 	void Initialize();
-	void InitializeFirstFramebuffer();
 	void InitializeQuad();
 
 	void RenderQuad() const;

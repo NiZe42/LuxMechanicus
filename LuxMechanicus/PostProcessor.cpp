@@ -42,7 +42,7 @@ void PostProcessor::ApplyEffectsAndRender() {
     
     emptyQuadShader->Bind();
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, renderTexturesPool->GetRenderTextureIdOfType(RenderTextureType::ColorMap));
+    glBindTexture(GL_TEXTURE_2D, renderTexturesPool->GetRenderTextureIdOfType(RenderTextureType::BrightMap));
     emptyQuadShader->SetUniformInt("ColorMap", 0);
 
     RenderQuad();

@@ -10,7 +10,11 @@ public:
 
 	void SetUniforms(RenderTexturesPool* renderTexturesPool) const override;
 
+	void Apply(const unsigned int& quadVAOId, RenderTexturesPool* renderTexturesPool) override;
 private:
+
+	FrameBuffer pinpPongFramebuffer1;
+	FrameBuffer pingPongFramebuffer2;
 
 };
 
