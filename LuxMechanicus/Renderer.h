@@ -14,7 +14,6 @@
 #include "Environment.h"
 #include "PostProcessor.h"
 
-
 class Renderer {
 public:
     Renderer();

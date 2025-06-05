@@ -6,6 +6,7 @@
 #include "Environment.h"
 #include "HDRRenderPass.h"
 #include "RenderTexturesPool.h"
+#include "BloomEffect.h"
 
 class PostProcessor
 {
@@ -31,7 +32,6 @@ private:
 	void AddEffect(RenderPass* effect);
 
 	void Initialize();
-	void InitializeFirstFramebuffer();
 	void InitializeQuad();
 
 	void RenderQuad() const;

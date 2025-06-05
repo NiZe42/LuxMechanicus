@@ -50,9 +50,9 @@ void Renderer::RenderGameObject(GameObject* object, glm::mat4 viewMatrix) {
     
     Shader* shader = object->GetShader();
 
-    if (!dynamic_cast<PointLight*>(object) && !dynamic_cast<SpotLight*>(object)) {
-    SendLightInfoToShader(shader);
-    SendCameraInfoToShader(shader);
+    if (!dynamic_cast<LightSource*>(object)) {
+        SendLightInfoToShader(shader);
+        SendCameraInfoToShader(shader);
     }
     
     object->Render(viewMatrix, mProjectionMatrix);

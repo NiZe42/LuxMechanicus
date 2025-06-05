@@ -9,7 +9,7 @@ RenderTexturesPool::~RenderTexturesPool() {
 }
 
 // Format and dimensions of both textures should be the same, i.e. GL_TEXTURE_2D and 1920x1080.
-void RenderTexturesPool::SaveRenderTextureId(RenderTextureType renderTextureType, unsigned int renderTextureId) {
+void RenderTexturesPool::SaveRenderTextureById(RenderTextureType renderTextureType, unsigned int renderTextureId) {
     auto element = pool.find(renderTextureType);
     if (element != pool.end()) {
         glCopyImageSubData(

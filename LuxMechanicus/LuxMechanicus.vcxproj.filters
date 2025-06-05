@@ -152,6 +152,9 @@
     <ClInclude Include="RenderTexturesPool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GLIncludes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\ColorFrag.glsl">
@@ -176,6 +179,18 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="Shaders\EmptyQuadVert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\BlurFrag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\BlurVert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\BloomCombineVert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\BloomCombineFrag.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

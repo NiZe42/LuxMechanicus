@@ -9,7 +9,7 @@ PointLight::PointLight(glm::vec3 position,
     glm::vec3 color,
     float intensity,
     float constant, float linear, float quadratic)
-    : LightSource(position, rotation, scale, vertexShaderPath, fragmentShaderPath),
+    : LightSource(position, rotation, scale, vertexShaderPath, fragmentShaderPath, intensity),
     pAttenuation(glm::vec3(constant, linear, quadratic)) {
     
     pColor = color;

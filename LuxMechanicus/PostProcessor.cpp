@@ -5,6 +5,9 @@ PostProcessor::PostProcessor() {
 
     RenderPass* hdrEffect = new HDRRenderPass();
     AddEffect(hdrEffect);
+
+    RenderPass* bloomEffect = new BloomEffect();
+    AddEffect(bloomEffect);
 }
 
 PostProcessor::~PostProcessor() {
@@ -31,7 +34,7 @@ void PostProcessor::ApplyEffectsAndRender() {
 	if (renderPassStack.empty()) 
 		return;
 
-    renderTexturesPool->SaveRenderTextureId(RenderTextureType::ColorMap, firstFrameBuffer->GetAttachedRenderTextureIdByType(RenderTextureType::ColorMap));
+    renderTexturesPool->SaveRenderTextureById(RenderTextureType::ColorMap, firstFrameBuffer->GetAttachedRenderTextureIdByType(RenderTextureType::ColorMap));
 
 	for (int i = 0; i < renderPassStack.size(); i++) {
         renderPassStack[i]->Apply(quadVAOId, renderTexturesPool);

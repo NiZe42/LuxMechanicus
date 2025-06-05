@@ -224,6 +224,7 @@ void GameObject::Render(glm::mat4 viewMatrix, glm::mat4 projectionMatrix) {
         }
         else {
             pShader->SetUniformBool("hasTexture", false);
+
         }
 
         glm::mat4 modelMatrix = GetModelMatrix();

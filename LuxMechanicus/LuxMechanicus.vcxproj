@@ -182,6 +182,10 @@
     <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shaders\BloomCombineVert.glsl" />
+    <None Include="Shaders\BloomCombineFrag.glsl" />
+    <None Include="Shaders\BlurFrag.glsl" />
+    <None Include="Shaders\BlurVert.glsl" />
     <None Include="Shaders\ColorFrag.glsl" />
     <None Include="Shaders\ColorVert.glsl" />
     <None Include="Shaders\EmptyQuadFrag.glsl" />

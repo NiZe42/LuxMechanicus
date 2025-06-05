@@ -8,9 +8,13 @@ public:
 	BloomEffect();
 	~BloomEffect();
 
-	void SetUniforms(RenderTexturesPool* renderTexturesPool) const override;
+	void Apply(const unsigned int& quadVAOId, RenderTexturesPool* renderTexturesPool) override;
 
 private:
 
+	FrameBuffer* pingPongFramebuffer1;
+	FrameBuffer* pingPongFramebuffer2;
+
+	Shader* blurShader;
 };
 

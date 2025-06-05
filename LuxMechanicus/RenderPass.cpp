@@ -37,25 +37,7 @@ void RenderPass::SetUniforms(RenderTexturesPool* renderTexturesPool) const {
 }
 
 void RenderPass::Apply(const unsigned int &quadVAOId, RenderTexturesPool* renderTexturesPool) {
-    BindFramebuffer();
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    BindEffectShader();
-    SetUniforms(renderTexturesPool);
-    
-    RenderQuad(quadVAOId);
-    
-    UnbindEffectShader();
-
-    UnbindFramebuffer();
-
-    for (int i = 0; i < outputRenderTextures.size(); i++) {
-        RenderTextureType renderTextureType = outputRenderTextures[i];
-        unsigned int renderTextureId = frameBuffer->GetAttachedRenderTextureIdByType(renderTextureType);
-
-        renderTexturesPool->SaveRenderTextureId(renderTextureType, renderTextureId);
-    }
 }
 
 void RenderPass::RenderQuad(const unsigned int &quadVAOId) const {

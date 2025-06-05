@@ -10,7 +10,7 @@ SpotLight::SpotLight(glm::vec3 position,
     float intensity,
     glm::vec3 direction,
     float cutoff)
-    : LightSource(position, rotation, scale, vertexShaderPath, fragmentShaderPath),
+    : LightSource(position, rotation, scale, vertexShaderPath, fragmentShaderPath, intensity),
     m_direction(direction), pCutoff(cutoff) {
 
     pColor = color;

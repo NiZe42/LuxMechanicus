@@ -10,7 +10,7 @@ public:
 	RenderTexturesPool();
 	~RenderTexturesPool();
 
-	void SaveRenderTextureId(RenderTextureType renderTextureType, unsigned int renderTextureId);
+	void SaveRenderTextureById(RenderTextureType renderTextureType, unsigned int renderTextureId);
 
 	unsigned int GetRenderTextureIdOfType(RenderTextureType renderTextureType);
 
