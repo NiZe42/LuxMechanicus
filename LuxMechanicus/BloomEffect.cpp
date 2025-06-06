@@ -61,10 +61,12 @@ void BloomEffect::Apply(const unsigned int& quadVAOId, RenderTexturesPool* rende
 			blurShader->SetUniformInt("image", 0);
 		}
 		blurShader->SetUniformBool("isHorizontal", isHorizontal);
-
+		
 		RenderQuad(quadVAOId);
 
 		currentFramebuffer->Unbind();
+
+		isHorizontal = !isHorizontal;
 	}
 	blurShader->Unbind();
 

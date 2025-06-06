@@ -11,7 +11,7 @@ float offsetWeight[5] = float[] (0.227027, 0.1945946, 0.1216216, 0.054054, 0.016
 
 void main()
 {             
-    vec2 tex_offset = 2.0 / textureSize(image, 0); 
+    vec2 tex_offset = 5.0 / textureSize(image, 0); 
     vec3 result = texture(image, TexCoords).rgb * offsetWeight[0]; 
     if(isHorizontal) {
         for (int i = 1; i < 5; ++i) {
