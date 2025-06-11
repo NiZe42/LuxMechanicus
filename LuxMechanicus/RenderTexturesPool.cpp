@@ -44,7 +44,7 @@ void RenderTexturesPool::SaveRenderTextureById(RenderTextureType renderTextureTy
 
 
 unsigned int RenderTexturesPool::GetRenderTextureIdOfType(RenderTextureType renderTextureType) {
-    if (renderTextureType == RenderTextureType::None) {
+    if (renderTextureType == RenderTextureType::NONE) {
         std::cerr << "Invalid request for render texture" << std::endl;
         return 0;
     }

@@ -2,12 +2,12 @@
 #include <iostream>
 
 Camera* Renderer::mActiveCamera = nullptr;
-std::vector<LightSource*> Renderer::mAllLights;
 
 Renderer::Renderer() {
     glEnable(GL_DEPTH_TEST);
 
     postProcessor = new PostProcessor();
+    lightProcessor = new LightProcessor();
 }
 
 Renderer::~Renderer() {
@@ -16,6 +16,9 @@ Renderer::~Renderer() {
 
     if (postProcessor)
         delete postProcessor;
+
+    if (lightProcessor)
+        delete lightProcessor;
 }
 
 void Renderer::Render(const std::vector<Scene*>& scenesToRender) {
@@ -23,6 +26,9 @@ void Renderer::Render(const std::vector<Scene*>& scenesToRender) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     postProcessor->BindFirstFrameBuffer();
+
+    lightProcessor->UploadToGPU();
+    lightProcessor->BindSSBO(1);
 
     for (Scene* scene : scenesToRender) {
         RenderScene(scene);
@@ -51,7 +57,6 @@ void Renderer::RenderGameObject(GameObject* object, glm::mat4 viewMatrix) {
     Shader* shader = object->GetShader();
 
     if (!dynamic_cast<LightSource*>(object)) {
-        SendLightInfoToShader(shader);
         SendCameraInfoToShader(shader);
     }
     
@@ -80,70 +85,12 @@ void Renderer::SetProjectionMatrix(glm::mat4 projectionMatrix) {
 }
 
 void Renderer::AddLight(LightSource* lightSource) {
-    mAllLights.push_back(lightSource);
-}
-
-std::vector<LightSource*> Renderer::GetAllLightSources() {
-    return mAllLights;
-}
-
-void Renderer::SendLightInfoToShader(Shader* shader) {
-    std::vector<LightSource*> allLights = Renderer::GetAllLightSources();
-
-    GLuint shaderProgramId = shader->GetShaderProgramId();
-
-    std::vector<glm::vec3> pointLightColors;
-    std::vector<glm::vec3> pointLightPositions;
-    std::vector<glm::vec3> pointLightAttenuations;
-    std::vector<float> pointLightIntensities;
-
-    std::vector<glm::vec3> spotLightColors;
-    std::vector<glm::vec3> spotLightPositions;
-    std::vector<glm::vec3> spotLightDirections;
-    std::vector<float> spotLightCutoffs;
-    std::vector<float> spotLightIntensities;
-
-    int pointLightCount = 0;
-    int spotLightCount = 0;
-
-    for (LightSource* light : allLights) {
-        if (auto pointLight = dynamic_cast<PointLight*>(light)) {
-            pointLightColors.emplace_back(pointLight->GetColor());
-            pointLightPositions.emplace_back(pointLight->GetPosition());
-            pointLightAttenuations.emplace_back(pointLight->GetAttenuation());
-            pointLightIntensities.emplace_back(pointLight->GetIntensity());
-            pointLightCount++;
-        }
-        else if (auto spotLight = dynamic_cast<SpotLight*>(light)) {
-            spotLightColors.emplace_back(spotLight->GetColor());
-            spotLightPositions.emplace_back(spotLight->GetPosition());
-            spotLightDirections.emplace_back(spotLight->GetDirection());
-            spotLightCutoffs.push_back(spotLight->GetCutoff());
-            spotLightIntensities.emplace_back(spotLight->GetIntensity());
-            spotLightCount++;
-        }
-    }
-
-    shader->SetUniformInt("pointLightCount", pointLightCount);
-    shader->SetUniformInt("spotLightCount", spotLightCount);
-
-    //point light info
-    shader->SetUniformVectorList("pointLightColors", pointLightColors);
-    shader->SetUniformVectorList("pointLightPositions", pointLightPositions);
-    shader->SetUniformVectorList("pointLightAttenuations", pointLightAttenuations);
-    shader->SetUniformFloatList("pointLightIntensities", pointLightIntensities);
-
-    // spotlight info
-    shader->SetUniformVectorList("spotLightColors", spotLightColors);
-    shader->SetUniformVectorList("spotLightPositions", spotLightPositions);
-    shader->SetUniformVectorList("spotLightDirections", spotLightDirections);
-    shader->SetUniformFloatList("spotLightCutoffs", spotLightCutoffs);
-    shader->SetUniformFloatList("spotLightIntensities", spotLightIntensities);
+    lightProcessor->AddLight(lightSource->GetLightData());
 }
 
 void Renderer::SendCameraInfoToShader(Shader* shader) {
     glm::vec3 cameraPosition = Renderer::GetActiveCamera()->GetPosition();
-    shader->SetUniformVector("cameraPosition", cameraPosition);
+    shader->SetUniformVector3("cameraPosition", cameraPosition);
 }
 
 void Renderer::SetScreenHeight(int height) {

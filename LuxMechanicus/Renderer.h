@@ -8,11 +8,10 @@
 #include "Camera.h"
 #include "LightSource.h"
 #include <iostream>
-#include "PointLight.h"
-#include "SpotLight.h"
 #include "Shader.h"
 #include "Environment.h"
 #include "PostProcessor.h"
+#include "LightProcessor.h"
 
 class Renderer {
 public:
@@ -29,7 +28,6 @@ public:
     static Camera* GetActiveCamera();
 
     void AddLight(LightSource* lightSource);
-    static std::vector<LightSource*> GetAllLightSources();
 
     void SetProjectionMatrix(glm::mat4 projectionMatrix);
 
@@ -38,15 +36,14 @@ public:
 
 private:
     static Camera* mActiveCamera;
-    static std::vector<LightSource*> mAllLights;
 
     int mScreenWidth, mScreenHeight;
 
     PostProcessor* postProcessor;
+    LightProcessor* lightProcessor;
 
     glm::mat4 mProjectionMatrix;
 
-    void SendLightInfoToShader(Shader* shader);
     void SendCameraInfoToShader(Shader* shader);
 };
 

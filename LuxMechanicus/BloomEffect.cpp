@@ -9,12 +9,12 @@ BloomEffect::BloomEffect() {
 		(std::string(Environment::GetRootPath()) + "/Shaders/BloomCombineVert.glsl").c_str(),
 		(std::string(Environment::GetRootPath()) + "/Shaders/BloomCombineFrag.glsl").c_str());
 
-	inputRenderTextures.emplace_back(RenderTextureType::ColorMap);
-	inputRenderTextures.emplace_back(RenderTextureType::BrightMap);
-	outputRenderTextures.emplace_back(RenderTextureType::ColorMap);
+	inputRenderTextures.emplace_back(RenderTextureType::COLOR);
+	inputRenderTextures.emplace_back(RenderTextureType::BRIGHT);
+	outputRenderTextures.emplace_back(RenderTextureType::COLOR);
 
-	pingPongFramebuffer1 = new FrameBuffer({RenderTextureType::BrightMap});
-	pingPongFramebuffer2 = new FrameBuffer({RenderTextureType::BrightMap});
+	pingPongFramebuffer1 = new FrameBuffer({RenderTextureType::BRIGHT});
+	pingPongFramebuffer2 = new FrameBuffer({RenderTextureType::BRIGHT});
 
 	frameBuffer = new FrameBuffer(outputRenderTextures);
 }
@@ -54,10 +54,10 @@ void BloomEffect::Apply(const unsigned int& quadVAOId, RenderTexturesPool* rende
 		glActiveTexture(GL_TEXTURE0);
 
 		if (i == 0) {
-			glBindTexture(GL_TEXTURE_2D, renderTexturesPool->GetRenderTextureIdOfType(RenderTextureType::BrightMap));
+			glBindTexture(GL_TEXTURE_2D, renderTexturesPool->GetRenderTextureIdOfType(RenderTextureType::BRIGHT));
 			blurShader->SetUniformInt("image", 0);
 		} else {
-			glBindTexture(GL_TEXTURE_2D, inputFrameBuffer->GetAttachedRenderTextureIdByType(RenderTextureType::BrightMap));
+			glBindTexture(GL_TEXTURE_2D, inputFrameBuffer->GetAttachedRenderTextureIdByType(RenderTextureType::BRIGHT));
 			blurShader->SetUniformInt("image", 0);
 		}
 		blurShader->SetUniformBool("isHorizontal", isHorizontal);
@@ -77,11 +77,11 @@ void BloomEffect::Apply(const unsigned int& quadVAOId, RenderTexturesPool* rende
 	effectShader->Bind();
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, inputFrameBuffer->GetAttachedRenderTextureIdByType(RenderTextureType::BrightMap));
+	glBindTexture(GL_TEXTURE_2D, inputFrameBuffer->GetAttachedRenderTextureIdByType(RenderTextureType::BRIGHT));
 	effectShader->SetUniformInt("blurredBrightMap", 0);
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, renderTexturesPool->GetRenderTextureIdOfType(RenderTextureType::ColorMap));
+	glBindTexture(GL_TEXTURE_2D, renderTexturesPool->GetRenderTextureIdOfType(RenderTextureType::COLOR));
 	effectShader->SetUniformInt("colorMap", 1);
 
 	RenderQuad(quadVAOId);

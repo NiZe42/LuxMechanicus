@@ -57,12 +57,6 @@
     <ClCompile Include="LightSource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PointLight.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SpotLight.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Environment.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -82,6 +76,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RenderTexturesPool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LightProcessor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -122,12 +119,6 @@
     <ClInclude Include="LightSource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PointLight.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SpotLight.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Environment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -155,12 +146,18 @@
     <ClInclude Include="GLIncludes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LightType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LightProcessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LightData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\ColorFrag.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\ColorVert.glsl">
       <Filter>Shaders</Filter>
     </None>
     <None Include="Shaders\LightSourceVert.glsl">
@@ -191,6 +188,9 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="Shaders\BloomCombineFrag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\ColorVert.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

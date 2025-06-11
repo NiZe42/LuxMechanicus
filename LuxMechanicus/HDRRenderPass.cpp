@@ -5,9 +5,9 @@ HDRRenderPass::HDRRenderPass() {
 		(std::string(Environment::GetRootPath()) + "/Shaders/HDRShaderVert.glsl").c_str(),
 		(std::string(Environment::GetRootPath()) + "/Shaders/HDRShaderFrag.glsl").c_str());
 
-	inputRenderTextures.emplace_back(RenderTextureType::ColorMap);
-	outputRenderTextures.emplace_back(RenderTextureType::ColorMap);
-	outputRenderTextures.emplace_back(RenderTextureType::BrightMap);
+	inputRenderTextures.emplace_back(RenderTextureType::COLOR);
+	outputRenderTextures.emplace_back(RenderTextureType::COLOR);
+	outputRenderTextures.emplace_back(RenderTextureType::BRIGHT);
 
 	frameBuffer = new FrameBuffer(outputRenderTextures);
 }

@@ -1,6 +1,8 @@
 #pragma once
 #include "GameObject.h"
 #include <glm/glm.hpp>
+#include "LightType.h"
+#include "LightData.h"
 
 class LightSource : public GameObject {
 public:
@@ -8,22 +10,37 @@ public:
         glm::vec3 rotation,
         glm::vec3 scale,
         const char* vertexShaderPath,
-        const char* fragmentShaderPath,
-        float intensity);
+        const char* fragmentShaderPath);
     virtual ~LightSource() = default;
+
+    LightType GetLightType() const;
+    void SetLightType(LightType lightType);
+
+    glm::vec3 GetPosition() const override;
+    void SetPosition(glm::vec3 position) override;
+    
+    glm::vec3 GetAttenuation() const;
+    void SetAttenuation(glm::vec3 attenuation);
+
+    float GetIntensity() const;
+    void SetIntensity(float intensity);
 
     glm::vec3 GetColor() const;
     void SetColor(glm::vec3 color);
     
-    float GetIntensity() const;
-    void SetIntensity(float intensity);
+    glm::vec3 GetDirection() const;
+    void SetDirection(glm::vec3 direction);
 
-    virtual void ApplyLightProperties() const = 0;  // Pure virtual function for applying light properties in shaders
+    float GetCutoff() const;
+    void SetCutoff(float cutoff);
 
-    virtual void Render(glm::mat4 viewMatrix, glm::mat4 projectMatrix) override;
+    LightData GetLightData();
 
-protected:
-    glm::vec3 pColor;
-    float pIntensity;
+    void SetDefaultValues(LightType lightType);
+
+    void Render(glm::mat4 viewMatrix, glm::mat4 projectMatrix) override;
+
+private:
+    LightData lightData;
 };
 

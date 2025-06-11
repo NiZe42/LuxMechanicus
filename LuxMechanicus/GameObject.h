@@ -24,7 +24,7 @@ public:
 
 	unsigned int GetGameObjectId() const;
 
-	glm::vec3 GetPosition() const;
+	virtual glm::vec3 GetPosition() const;
 	glm::vec3 GetRotation() const;
 	glm::vec3 GetScale() const;
 
@@ -38,7 +38,7 @@ public:
 	void SetShader(Shader* shader);
 	void SetTexture(Texture* texture);
 
-	void SetPosition(glm::vec3 position);
+	virtual void SetPosition(glm::vec3 position);
 	void SetRotation(glm::vec3 rotation);
 	void SetScale(glm::vec3 scale);
 

@@ -1,9 +1,9 @@
 #pragma once
 
 enum class RenderTextureType {
-	ColorMap,
-	BrightMap,
-	None
+	COLOR,
+	BRIGHT,
+	NONE
 };
 
 
@@ -11,9 +11,9 @@ class RenderTextureTypeHelper {
 public:
     static inline std::string ToString(RenderTextureType type) {
         switch (type) {
-            case RenderTextureType::ColorMap: return "ColorMap";
-            case RenderTextureType::BrightMap: return "BrightMap";
-            case RenderTextureType::None: return "None";
+            case RenderTextureType::COLOR: return "ColorMap";
+            case RenderTextureType::BRIGHT: return "BrightMap";
+            case RenderTextureType::NONE: return "None";
             default: {
                 std::cerr << "Incorrect Texture Type";
                 return "";

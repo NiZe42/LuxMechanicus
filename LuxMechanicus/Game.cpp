@@ -110,56 +110,30 @@ void Game::Initialize() {
 	camera->SetPosition(glm::vec3(0.0f, 0.0f, 5.0f));
 	mRenderer->SetActiveCamera(camera);
 
-	PointLight* lightSource1 = new PointLight(
+	LightSource* lightSource1 = new LightSource(
 		glm::vec3(1.0f, 2.0f, 1.0f),
 		glm::vec3(0.0f),
 		glm::vec3(0.5f),
 		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceVert.glsl").c_str(),
-		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceFrag.glsl").c_str(),
-		glm::vec3(1.0f, 0.000001f, 1.0f),
-		1.0f);
+		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceFrag.glsl").c_str());
+
+	lightSource1->SetDefaultValues(LightType::POINT);
+	lightSource1->SetColor(glm::vec3(1.0f, 0.0f, 1.0f));
 
 	Mesh* lightSourceMesh1 = MeshCache::GetMesh((std::string(Environment::GetRootPath()) + "/Models/cube_smooth.obj").c_str());
 	lightSource1->SetMesh(lightSourceMesh1);
 	mainScene->AddChild(lightSource1);
 	mRenderer->AddLight(lightSource1);
 
-	/*PointLight* lightSource3 = new PointLight(
-		glm::vec3(1.0f, 2.0f, 1.0f),
-		glm::vec3(0.0f),
-		glm::vec3(0.5f),
-		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceVert.glsl").c_str(),
-		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceFrag.glsl").c_str(),
-		glm::vec3(1.0f, 0.0f, 1.0f),
-		115.0f);
-
-	Mesh* lightSourceMesh3 = MeshCache::GetMesh((std::string(Environment::GetRootPath()) + "/Models/cube_smooth.obj").c_str());
-	lightSource3->SetMesh(lightSourceMesh3);
-	mainScene->AddChild(lightSource3);
-	mRenderer->AddLight(lightSource3);
-
-	PointLight* lightSource4 = new PointLight(
-		glm::vec3(1.0f, 2.0f, 1.0f),
-		glm::vec3(0.0f),
-		glm::vec3(0.5f),
-		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceVert.glsl").c_str(),
-		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceFrag.glsl").c_str(),
-		glm::vec3(1.0f, 0.0f, 1.0f),
-		115.0f);
-
-	Mesh* lightSourceMesh4 = MeshCache::GetMesh((std::string(Environment::GetRootPath()) + "/Models/cube_smooth.obj").c_str());
-	lightSource4->SetMesh(lightSourceMesh4);
-	mainScene->AddChild(lightSource4);
-	mRenderer->AddLight(lightSource4);*/
-
-	PointLight* lightSource2 = new PointLight(
+	LightSource* lightSource2 = new LightSource(
 		glm::vec3(-3.0f, 2.0f, 2.0f),
 		glm::vec3(0.0f),
 		glm::vec3(0.5f),
 		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceVert.glsl").c_str(),
-		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceFrag.glsl").c_str(),
-		glm::vec3(1.0f, 1.0f, 1.0f),
-		1);
+		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceFrag.glsl").c_str());
+
+	lightSource2->SetDefaultValues(LightType::POINT);
+	lightSource2->SetColor(glm::vec3(0.0f, 0.0f, 1.0f));
 
 	Mesh* lightSourceMesh2 = MeshCache::GetMesh((std::string(Environment::GetRootPath()) + "/Models/cube_smooth.obj").c_str());
 	lightSource2->SetMesh(lightSourceMesh2);

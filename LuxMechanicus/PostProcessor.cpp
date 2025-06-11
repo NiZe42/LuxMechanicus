@@ -34,7 +34,7 @@ void PostProcessor::ApplyEffectsAndRender() {
 	if (renderPassStack.empty()) 
 		return;
 
-    renderTexturesPool->SaveRenderTextureById(RenderTextureType::ColorMap, firstFrameBuffer->GetAttachedRenderTextureIdByType(RenderTextureType::ColorMap));
+    renderTexturesPool->SaveRenderTextureById(RenderTextureType::COLOR, firstFrameBuffer->GetAttachedRenderTextureIdByType(RenderTextureType::COLOR));
 
 	for (int i = 0; i < renderPassStack.size(); i++) {
         renderPassStack[i]->Apply(quadVAOId, renderTexturesPool);
@@ -45,7 +45,7 @@ void PostProcessor::ApplyEffectsAndRender() {
     
     emptyQuadShader->Bind();
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, renderTexturesPool->GetRenderTextureIdOfType(RenderTextureType::ColorMap));
+    glBindTexture(GL_TEXTURE_2D, renderTexturesPool->GetRenderTextureIdOfType(RenderTextureType::COLOR));
     emptyQuadShader->SetUniformInt("ColorMap", 0);
 
     RenderQuad();
@@ -73,7 +73,7 @@ void PostProcessor::Initialize() {
         (std::string(Environment::GetRootPath()) + "/Shaders/EmptyQuadVert.glsl").c_str(),
         (std::string(Environment::GetRootPath()) + "/Shaders/EmptyQuadFrag.glsl").c_str());
 
-    firstFrameBuffer = new FrameBuffer(std::vector<RenderTextureType>{RenderTextureType::ColorMap});
+    firstFrameBuffer = new FrameBuffer(std::vector<RenderTextureType>{RenderTextureType::COLOR});
 
     InitializeQuad();
 }

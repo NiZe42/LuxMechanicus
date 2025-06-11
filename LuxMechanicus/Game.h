@@ -10,8 +10,6 @@
 #include "Camera.h"
 #include "Singleton.h"
 #include "MeshCache.h"
-#include "PointLight.h"
-#include "SpotLight.h"
 #include "Environment.h"
 
 class Game {

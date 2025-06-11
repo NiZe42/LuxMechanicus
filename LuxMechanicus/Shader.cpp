@@ -9,6 +9,9 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
 
     mShaderProgramId = nextShaderId++;*/
 
+    std::cout << "Compiling vertex shader : " << vertexPath << std::endl;
+    std::cout << "Compiling fragment shader : " << fragmentPath << std::endl;
+
     std::string vertexShaderCode = LoadShaderSource(GL_VERTEX_SHADER, vertexPath);
     std::string fragmentShaderCode = LoadShaderSource(GL_FRAGMENT_SHADER, fragmentPath);
 
@@ -151,7 +154,7 @@ void Shader::SetUniformFloatList(const std::string& name, std::vector<float> lis
     }
     glUniform1fv(location, list.size(), list.data());
 }
-void Shader::SetUniformVector(const std::string& name, glm::vec3 vector) const {
+void Shader::SetUniformVector3(const std::string& name, glm::vec3 vector) const {
     unsigned int location = glGetUniformLocation(mShaderProgramId, name.c_str());
     if (location == -1) {
         std::cout << "No such variable in the shader: " << name << std::endl;
