@@ -117,8 +117,9 @@ void Game::Initialize() {
 		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceVert.glsl").c_str(),
 		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceFrag.glsl").c_str());
 
-	lightSource1->SetDefaultValues(LightType::POINT);
+	lightSource1->SetDefaultValues(LightType::DIRECTIONAL);
 	lightSource1->SetColor(glm::vec3(1.0f, 0.0f, 1.0f));
+	lightSource1->SetDirection(glm::vec3(1.0f, -1.0f, 1.0f));
 
 	Mesh* lightSourceMesh1 = MeshCache::GetMesh((std::string(Environment::GetRootPath()) + "/Models/cube_smooth.obj").c_str());
 	lightSource1->SetMesh(lightSourceMesh1);
@@ -267,8 +268,8 @@ void Game::MouseCallback(GLFWwindow* window, double xposIn, double yposIn)
 		horizontalOffset = 0.0f;
 		verticalOffset = 0.0f;
 	} else {
-	horizontalOffset = horizontalPosition - mLastXMousePos;
-	verticalOffset = mLastYMousePos - verticalPosition;
+		horizontalOffset = horizontalPosition - mLastXMousePos;
+		verticalOffset = mLastYMousePos - verticalPosition;
 	}
 
 	mLastXMousePos = horizontalPosition;

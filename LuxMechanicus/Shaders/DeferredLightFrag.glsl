@@ -77,8 +77,16 @@ void main( void ) {
 
 			resultColor += (ambientLight + diffuseLight + specularLight) * albedo * attenuation * currentLight.intensity;
 
-		} 
-		// DirectionalLight.
+		} else if (currentLight.lightType == 2) {  // Directional Light
+
+            vec3 lightDir = normalize(-currentLight.direction); 
+
+            vec3 ambientLight = currentLight.color * ambientStrength;
+            vec3 diffuseLight = max(dot(normal, lightDir), 0.0) * currentLight.color;
+            vec3 specularLight = pow(max(dot(viewDir, reflect(-lightDir, normal)), 0.0), shininess) * currentLight.color;
+
+            resultColor += (ambientLight + diffuseLight + specularLight) * albedo * currentLight.intensity;
+        }
 	}
 
 	FragColor = vec4(resultColor, 1.0f);
