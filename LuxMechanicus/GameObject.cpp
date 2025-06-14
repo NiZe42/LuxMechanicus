@@ -63,16 +63,6 @@ glm::mat4 GameObject::GetModelMatrix() const {
     return model;
 }
 
-glm::mat4 GameObject::GetViewMatrix() const {
-    glm::mat4 view = glm::mat4(1.0f);
-    return view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-}
-
-glm::mat4 GameObject::GetProjectionMatrix() const {
-    glm::mat4 projection = glm::mat4(1.0f);
-    return projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-}
-
 void GameObject::SetMesh(Mesh* mesh) {
     if (pMesh != nullptr)
         delete pMesh;
@@ -210,32 +200,47 @@ void GameObject::InitializeCube() {
     glEnableVertexAttribArray(1);
 }
 
+// Should change the name to ForwardRender.
 void GameObject::Render(glm::mat4 viewMatrix, glm::mat4 projectionMatrix) {
     if (pShader && pMesh) {
         
         if (pTexture) {
+            glActiveTexture(GL_TEXTURE0);
             pTexture->Bind();
             pShader->SetUniformInt("ourTexture", 0);
             pShader->SetUniformBool("hasTexture", true);
 
-            mRotation.z += 0.1f;
-            if (mRotation.z >= 360)
-                mRotation.z = 0;
-        }
-        else {
+        } else {
             pShader->SetUniformBool("hasTexture", false);
         }
 
-        glm::mat4 modelMatrix = GetModelMatrix();
-
-        pShader->SetUniformMat4("modelMatrix", modelMatrix);
+        pShader->SetUniformMat4("modelMatrix", GetModelMatrix());
         pShader->SetUniformMat4("viewMatrix", viewMatrix);
         pShader->SetUniformMat4("projectionMatrix", projectionMatrix);
 
         pMesh->Render();
-        glBindTexture(GL_TEXTURE_2D, 0);
     }
 }
+
+void GameObject::DeferredRender(Shader* gShader) {
+    gShader->SetUniformMat4("modelMatrix", GetModelMatrix());
+
+    glActiveTexture(GL_TEXTURE0);
+    if(pTexture)
+        pTexture->Bind();
+    gShader->SetUniformInt("albedoMap", 0);
+
+    pMesh->Render();
+}
+
+void GameObject::SetRenderingType(RenderingType pRenderingType) {
+    renderingType = pRenderingType;
+}
+
+RenderingType GameObject::GetRenderingType() const {
+    return renderingType;
+}
+
 
 Shader* GameObject::GetShader() const{
     return pShader;

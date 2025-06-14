@@ -18,7 +18,8 @@ public:
 	~Camera();
 
 	glm::mat4 GetViewMatrix() const;
-	
+	glm::mat4 GetProjectionMatrix() const;
+
 	void ProcessMovementInput(glm::vec3 moveDirection, float deltaTime);
 	void ProcessRotationInput(float horizaontalOffset, float verticalOffset);
 

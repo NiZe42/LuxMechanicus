@@ -39,7 +39,7 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer.cpp">
+    <ClCompile Include="RenderProcessor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HierarchyObject.cpp">
@@ -81,6 +81,12 @@
     <ClCompile Include="LightProcessor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ForwardRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DeferredRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -98,7 +104,7 @@
     <ClInclude Include="GameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer.h">
+    <ClInclude Include="RenderProcessor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HierarchyObject.h">
@@ -155,6 +161,15 @@
     <ClInclude Include="LightData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RenderingType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ForwardRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DeferredRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\ColorFrag.glsl">
@@ -191,6 +206,18 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="Shaders\ColorVert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\DeferredLightFrag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\DeferredGVert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\DeferredGFrag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\DeferredLightVert.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

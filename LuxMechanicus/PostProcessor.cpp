@@ -31,14 +31,13 @@ PostProcessor::~PostProcessor() {
 
 void PostProcessor::ApplyEffectsAndRender() { 
 
-	if (renderPassStack.empty()) 
-		return;
+    if (!renderPassStack.empty()) {
+        renderTexturesPool->SaveRenderTextureById(RenderTextureType::COLOR, firstFrameBuffer->GetAttachedRenderTextureIdByType(RenderTextureType::COLOR));
 
-    renderTexturesPool->SaveRenderTextureById(RenderTextureType::COLOR, firstFrameBuffer->GetAttachedRenderTextureIdByType(RenderTextureType::COLOR));
-
-	for (int i = 0; i < renderPassStack.size(); i++) {
-        renderPassStack[i]->Apply(quadVAOId, renderTexturesPool);
-	}
+	    for (int i = 0; i < renderPassStack.size(); i++) {
+            renderPassStack[i]->Apply(quadVAOId, renderTexturesPool);
+	    }
+    }
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -54,15 +53,11 @@ void PostProcessor::ApplyEffectsAndRender() {
 }
 
 void PostProcessor::BindFirstFrameBuffer() {
-    if (renderPassStack.empty())
-        return;
     firstFrameBuffer->Bind();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void PostProcessor::UnbindFirstFrameBuffer() {
-    if (renderPassStack.empty())
-        return;
     firstFrameBuffer->Unbind();
 }
 
@@ -109,4 +104,8 @@ void PostProcessor::RenderQuad() const {
     glBindVertexArray(quadVAOId);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     glBindVertexArray(0);
+}
+
+FrameBuffer* PostProcessor::GetFirstFrameBuffer() {
+    return firstFrameBuffer;
 }

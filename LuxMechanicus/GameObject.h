@@ -10,6 +10,7 @@
 #include "Texture.h"
 #include "HierarchyObject.h"
 #include "Mesh.h"
+#include "RenderingType.h"
 
 class GameObject : public HierarchyObject
 {
@@ -31,8 +32,6 @@ public:
 	Shader* GetShader() const;
 
 	glm::mat4 GetModelMatrix() const;
-	glm::mat4 GetViewMatrix() const;
-	glm::mat4 GetProjectionMatrix() const;
 
 	void SetMesh(Mesh* mesh);
 	void SetShader(Shader* shader);
@@ -42,7 +41,11 @@ public:
 	void SetRotation(glm::vec3 rotation);
 	void SetScale(glm::vec3 scale);
 
+	void SetRenderingType(RenderingType renderingType);
+	RenderingType GetRenderingType() const;
+
 	virtual void Render(glm::mat4 viewMatrix, glm::mat4 projectMatrix);
+	virtual void DeferredRender(Shader* gShader);
 	virtual void BindShader();
 protected:
 	unsigned int mGameObjectId;
@@ -58,6 +61,7 @@ protected:
 	glm::vec3 mRotation;
 	glm::vec3 mScale;
 
+	RenderingType renderingType = RenderingType::DEFERRED_RENDERING;
 private:
 
 	void InitializeShader(const char* vertexShaderPath,

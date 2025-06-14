@@ -135,7 +135,9 @@
   <ItemGroup>
     <ClCompile Include="BloomEffect.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="DeferredRenderer.cpp" />
     <ClCompile Include="Environment.cpp" />
+    <ClCompile Include="ForwardRenderer.cpp" />
     <ClCompile Include="FrameBuffer.cpp" />
     <ClCompile Include="LightProcessor.cpp" />
     <ClCompile Include="RenderTexturesPool.cpp" />
@@ -150,7 +152,7 @@
     <ClCompile Include="MeshCache.cpp" />
     <ClCompile Include="RenderPass.cpp" />
     <ClCompile Include="PostProcessor.cpp" />
-    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="RenderProcessor.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -158,12 +160,15 @@
   <ItemGroup>
     <ClInclude Include="BloomEffect.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="DeferredRenderer.h" />
     <ClInclude Include="Environment.h" />
+    <ClInclude Include="ForwardRenderer.h" />
     <ClInclude Include="FrameBuffer.h" />
     <ClInclude Include="GLIncludes.h" />
     <ClInclude Include="LightData.h" />
     <ClInclude Include="LightProcessor.h" />
     <ClInclude Include="LightType.h" />
+    <ClInclude Include="RenderingType.h" />
     <ClInclude Include="RenderTexturesPool.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
@@ -175,7 +180,7 @@
     <ClInclude Include="RenderPass.h" />
     <ClInclude Include="RenderTextureType.h" />
     <ClInclude Include="PostProcessor.h" />
-    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="RenderProcessor.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Singleton.h" />
@@ -188,6 +193,10 @@
     <None Include="Shaders\BlurVert.glsl" />
     <None Include="Shaders\ColorFrag.glsl" />
     <None Include="Shaders\ColorVert.glsl" />
+    <None Include="Shaders\DeferredGVert.glsl" />
+    <None Include="Shaders\DeferredGFrag.glsl" />
+    <None Include="Shaders\DeferredLightVert.glsl" />
+    <None Include="Shaders\DeferredLightFrag.glsl" />
     <None Include="Shaders\EmptyQuadFrag.glsl" />
     <None Include="Shaders\EmptyQuadVert.glsl" />
     <None Include="Shaders\HdrShaderFrag.glsl" />

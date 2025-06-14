@@ -19,6 +19,9 @@ public:
 	void Unbind() const;
 
 	unsigned int GetAttachedRenderTextureIdByType(RenderTextureType renderTextureType) const;
+	unsigned int GetRBODepthId() const;
+
+	unsigned int GetFrameBufferId() const;
 
 private:
 

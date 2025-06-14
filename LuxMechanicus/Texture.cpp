@@ -21,8 +21,7 @@ Texture::~Texture() {
 	
 }
 
-void Texture::Bind() const{
-	glActiveTexture(GL_TEXTURE0);
+void Texture::Bind() const {
 	glBindTexture(GL_TEXTURE_2D, mTextureId);
 }
 

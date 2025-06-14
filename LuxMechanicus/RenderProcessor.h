@@ -12,24 +12,20 @@
 #include "Environment.h"
 #include "PostProcessor.h"
 #include "LightProcessor.h"
+#include "ForwardRenderer.h"
+#include "DeferredRenderer.h"
 
-class Renderer {
+class RenderProcessor {
 public:
-    Renderer();
-    ~Renderer();
+    RenderProcessor();
+    ~RenderProcessor();
 
     void Render(const std::vector<Scene*>& scenesToRender);
-
-    void RenderScene(Scene* scene);
-
-    void RenderGameObject(GameObject* object, glm::mat4 viewMatrix);
 
     void SetActiveCamera(Camera* camera);
     static Camera* GetActiveCamera();
 
     void AddLight(LightSource* lightSource);
-
-    void SetProjectionMatrix(glm::mat4 projectionMatrix);
 
     void SetScreenWidth(int width);
     void SetScreenHeight(int height);
@@ -41,10 +37,8 @@ private:
 
     PostProcessor* postProcessor;
     LightProcessor* lightProcessor;
-
-    glm::mat4 mProjectionMatrix;
-
-    void SendCameraInfoToShader(Shader* shader);
+    ForwardRenderer* forwardRenderer;
+    DeferredRenderer* deferredRenderer;
 };
 
 

@@ -25,6 +25,12 @@ glm::mat4 Camera::GetViewMatrix() const {
     return viewMatrix;
 }
 
+
+// Locked Camera for now.
+glm::mat4 Camera::GetProjectionMatrix() const {
+    return glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.1f, 100.0f);
+}
+
 // Moves the camera along local axis
 void Camera::ProcessMovementInput(glm::vec3 moveDirection, float deltaTime) {
     if (moveDirection == glm::vec3(0.0f))

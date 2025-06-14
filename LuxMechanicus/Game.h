@@ -6,7 +6,7 @@
 #include <iostream>
 #include <vector>
 #include "Scene.h"
-#include "Renderer.h"
+#include "RenderProcessor.h"
 #include "Camera.h"
 #include "Singleton.h"
 #include "MeshCache.h"
@@ -23,7 +23,7 @@ public:
 	void AddScene(Scene* scene);
 	void RemoveScene(unsigned int sceneId);
 
-	Renderer* GetRenderer() const;
+	RenderProcessor* GetRenderer() const;
 
 	static void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 	static void MouseCallback(GLFWwindow* window, double xposIn, double yposIn);
@@ -31,7 +31,7 @@ public:
 private:
 	GLFWwindow* mWindow;
 
-	static Renderer* mRenderer;
+	static RenderProcessor* rendererProcessor;
 	std::vector<Scene*> mScenes;
 
 	float mLastFrameTime;

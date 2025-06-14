@@ -6,7 +6,7 @@ FrameBuffer::FrameBuffer(const std::vector<RenderTextureType> &outputRenderTextu
 }
 
 FrameBuffer::~FrameBuffer() {
-
+    glDeleteFramebuffers(1, &FBOId);
 }
 
 void FrameBuffer::Initialize(const std::vector<RenderTextureType> &outputRenderTextures) {
@@ -77,9 +77,17 @@ void FrameBuffer::Unbind() const {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
+unsigned int FrameBuffer::GetRBODepthId() const {
+    return RBODepthId;
+}
+
 unsigned int FrameBuffer::GetAttachedRenderTextureIdByType(RenderTextureType renderTextureType) const {
     if (attachedRenderTextures.size() == 0)
         std::cerr << "No attached Render Textures" << std::endl;
     return attachedRenderTextures.at(renderTextureType);
+}
+
+unsigned int FrameBuffer::GetFrameBufferId() const {
+    return FBOId;
 }
 

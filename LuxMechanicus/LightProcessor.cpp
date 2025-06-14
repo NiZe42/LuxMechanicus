@@ -22,9 +22,9 @@ void LightProcessor::UploadToGPU() {
     glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(LightData) * lights.size(), lights.data(), GL_DYNAMIC_DRAW);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
-    for (int i = 0; i < lights.size(); i++) {
+    /*for (int i = 0; i < lights.size(); i++) {
         std::cout << LightData::ToString(lights[i]) << std::endl;
-    }
+    }*/
 }
 
 void LightProcessor::BindSSBO(unsigned int binding) {

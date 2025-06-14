@@ -20,6 +20,8 @@ public:
 	void BindFirstFrameBuffer();
 	void UnbindFirstFrameBuffer();
 
+	FrameBuffer* GetFirstFrameBuffer();
+
 private:
 	unsigned int quadVAOId, quadVBOId;
 
