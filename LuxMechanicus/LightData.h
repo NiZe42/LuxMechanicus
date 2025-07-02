@@ -1,6 +1,9 @@
 #pragma once
+#include <iostream>
+#include <sstream>
+#include "LightType.h"
 
-struct /*alignas(16) */ LightData {
+struct alignas(16) LightData {
     glm::vec3 position;
     float pad0;  // 16 bytes.
     
@@ -14,10 +17,14 @@ struct /*alignas(16) */ LightData {
     float pad3; // 64 bytes.
 
     LightType lightType;
+    bool castShadows; 
+    bool pad4[3];
     float intensity; 
+    int shadowMapIndex;// 80 bytes.
+
     float cutoff; //SPOT properties.
-    float pad4; // 80 bytes.
-  
+    float pad5[3]; // 96 bytes
+
     static std::string ToString(const LightData& light) {
         std::ostringstream string;
         string << "LightData {\n";
@@ -26,6 +33,8 @@ struct /*alignas(16) */ LightData {
         string << "  Attenuation: (" << light.attenuation.x << ", " << light.attenuation.y << ", " << light.attenuation.z << ")\n";
         string << "  Intensity: " << light.intensity << "\n";
         string << "  Color: (" << light.color.r << ", " << light.color.g << ", " << light.color.b << ")\n";
+        string << "  CastShadow: (" << light.castShadows << ")\n";
+        string << "  Shadow Map Index: (" << light.shadowMapIndex << ")\n";
         string << "  Direction: (" << light.direction.x << ", " << light.direction.y << ", " << light.direction.z << ")\n";
         string << "  Cutoff: " << light.cutoff << "\n";
         string << "}";

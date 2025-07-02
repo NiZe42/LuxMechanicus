@@ -70,24 +70,45 @@ void LightSource::SetCutoff(float cutoff) {
     lightData.cutoff = cutoff;
 }
 
+bool LightSource::GetCastShadows() const {
+    return lightData.castShadows;
+}
+
+void LightSource::SetCastShadows(bool castShadows) {
+    lightData.castShadows = castShadows;
+}
+
+int LightSource::GetshadowMapIndex() const {
+    return lightData.shadowMapIndex;
+}
+
+void LightSource::SetshadowMapIndex(int shadowMapIndex) {
+    lightData.shadowMapIndex = shadowMapIndex;
+}
+
+
 void LightSource::SetDefaultValues(LightType lightType) {
     SetLightType(lightType);
     SetAttenuation(glm::vec3(1.0f, 0.09f, 0.032f));
     SetIntensity(1.0f);
     SetColor(glm::vec3(1.0f));
+    SetshadowMapIndex(-1);
 
     switch (lightType) {
     case LightType::DIRECTIONAL:
+        SetCastShadows(true);
         SetDirection(glm::vec3(1.0f, 0.0f, 0.0f));
         SetCutoff(0.0f);
         break;
 
     case LightType::POINT:
+        SetCastShadows(false);
         SetDirection(glm::vec3(0.0f, 0.0f, 0.0f));
         SetCutoff(0.0f);
         break;
 
     case LightType::SPOT:
+        SetCastShadows(false);
         SetDirection(glm::vec3(1.0f, 0.0f, 0.0f));
         SetCutoff(40.0f);
         break;

@@ -28,6 +28,12 @@ public:
     glm::vec3 GetColor() const;
     void SetColor(glm::vec3 color);
     
+    bool GetCastShadows() const;
+    void SetCastShadows(bool castShadows);
+
+    int GetshadowMapIndex() const;
+    void SetshadowMapIndex(int shadowMapIndex);
+
     glm::vec3 GetDirection() const;
     void SetDirection(glm::vec3 direction);
 
