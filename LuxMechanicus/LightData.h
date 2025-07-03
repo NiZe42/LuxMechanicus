@@ -17,10 +17,13 @@ struct alignas(16) LightData {
     float pad3; // 64 bytes.
 
     LightType lightType;
-    bool castShadows; 
+    bool castShadows; // on GPU bool is packed into 4 bytes. 
+                      // Insane waste, need to manually handle it at some point.
     bool pad4[3];
     float intensity; 
-    int shadowMapIndex;// 80 bytes.
+    int shadowMapIndex; // Index at which shadowmap is stored at shadow atlas.
+                        // Indexes could have gaps in between them as shadow maps are designed to be removed/added.
+                        // 80 bytes.
 
     float cutoff; //SPOT properties.
     float pad5[3]; // 96 bytes

@@ -11,13 +11,23 @@ uniform vec3 cameraPosition;
 
 struct LightData {
     vec3 position;
+
     vec3 attenuation;
+
     vec3 color;
+
     vec3 direction;
-	float pad;
+    float pad0;
+
     int lightType;
-    float intensity;
-    float cutoff;
+    bool castShadows;
+	float intensity;
+	int shadowMapIndex;
+
+	float cutoff;
+	float pad1;
+	float pad2;
+	float pad3;
 };
 
 layout(std430, binding = 1) buffer LightBuffer {

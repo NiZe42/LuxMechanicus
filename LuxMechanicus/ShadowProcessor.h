@@ -2,27 +2,39 @@
 #include "GLIncludes.h"
 #include <glm/glm.hpp>
 #include <vector>
+#include <ostream>
+#include <unordered_map>
 #include "LightData.h"
+#include "LightSource.h"
+#include "FrameBuffer.h"
 
-class ShadowProcessor
-{
+class ShadowProcessor {
 public:
+    const static int SHADOW_MAP_RES = 1024;
+    const static int ATLAS_RES = 4096;
+    const static int MAX_SHADOW_ATLASES = 8; // // GPU slots 8-15 reserved.
+    const static int SHADOWS_PER_ATLAS = (ATLAS_RES / SHADOW_MAP_RES) * (ATLAS_RES / SHADOW_MAP_RES);
 
-	const static int SHADOW_MAP_RES = 1024;
-	const static int ATLAS_RES = 4096;
-	const static int SHADOWS_PER_ATLAS = (ATLAS_RES / SHADOW_MAP_RES) * (ATLAS_RES / SHADOW_MAP_RES); // 16 for 1024x1024 in 4096x4096
+    ShadowProcessor();
+    ~ShadowProcessor();
 
-	ShadowProcessor();
-	~ShadowProcessor();
+    void AllocateShadowAtlases(const std::vector<LightSource>& shadowCasters);
 
-	struct ShadowAtlas {
-		GLuint textureID;
-	};
+    void BindAtlasFramebuffer(int atlasIndex);
+    void UnbindAtlasFramebuffer();
+
+    void BindShadowAtlases();
+    void UnbindShadowAtlases();
+
+    int GetAtlasTextureForLight(const LightSource& light) const;
+    glm::ivec2 GetAtlasSlot(int shadowIndex) const;
 
 private:
-	void AllocateShadowAtlases(std::vector<LightData> lightdata);
+    struct ShadowAtlas {
+        GLuint textureID;
+    };
 
-	std::vector<ShadowAtlas> shadowAtlases;
-
+    std::vector<ShadowAtlas> shadowAtlases;
+    std::vector<FrameBuffer*> atlasFramebuffers;
+    std::unordered_map<int, LightSource> currentShadowCasters;
 };
-
