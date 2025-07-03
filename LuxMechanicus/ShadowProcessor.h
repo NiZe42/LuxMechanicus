@@ -12,7 +12,7 @@ class ShadowProcessor {
 public:
     const static int SHADOW_MAP_RES = 1024;
     const static int ATLAS_RES = 4096;
-    const static int MAX_SHADOW_ATLASES = 8; // // GPU slots 8-15 reserved.
+    const static int MAX_SHADOW_ATLASES = 8;
     const static int SHADOWS_PER_ATLAS = (ATLAS_RES / SHADOW_MAP_RES) * (ATLAS_RES / SHADOW_MAP_RES);
 
     ShadowProcessor();

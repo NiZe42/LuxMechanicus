@@ -68,7 +68,10 @@ void PostProcessor::Initialize() {
         (std::string(Environment::GetRootPath()) + "/Shaders/EmptyQuadVert.glsl").c_str(),
         (std::string(Environment::GetRootPath()) + "/Shaders/EmptyQuadFrag.glsl").c_str());
 
-    firstFrameBuffer = new FrameBuffer(std::vector<RenderTextureType>{RenderTextureType::COLOR});
+    firstFrameBuffer = FrameBuffer::Builder::Builder()
+        .WithRenderTextures({RenderTextureType::COLOR})
+        .WithDepthRBO()
+        .Build();
 
     InitializeQuad();
 }

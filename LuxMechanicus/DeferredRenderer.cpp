@@ -27,7 +27,10 @@ void DeferredRenderer::Initialize(unsigned int width, unsigned int height) {
         RenderTextureType::G_ALBEDO_SPEC
     };
 
-    gFrameBuffer = new FrameBuffer(gOutputTextures);
+    gFrameBuffer = FrameBuffer::Builder::Builder()
+        .WithRenderTextures(gOutputTextures)
+        .WithDepthRBO()
+        .Build();
 
     InitializeQuad();
 }

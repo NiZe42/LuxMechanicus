@@ -3,58 +3,15 @@
 #pragma region Framebuffer 
 
 FrameBuffer::FrameBuffer() {
-
-}
-
-FrameBuffer::FrameBuffer(
-    const std::vector<RenderTextureType>& outputRenderTextures,
-    int width,
-    int height) {
-    Initialize(outputRenderTextures, width, height);
+    glGenFramebuffers(1, &FBOId);
+    glBindFramebuffer(GL_FRAMEBUFFER, FBOId);
 }
 
 FrameBuffer::~FrameBuffer() {
     glDeleteFramebuffers(1, &FBOId);
 }
 
-void FrameBuffer::Initialize(
-    const std::vector<RenderTextureType>& outputRenderTextures,
-    int screenWidth,
-    int screenHeight) {
-
-    int outputRenderTexturesCount = outputRenderTextures.size();
-
-    glGenFramebuffers(1, &FBOId);
-    glBindFramebuffer(GL_FRAMEBUFFER, FBOId);
-
-    for (int i = 0; i < outputRenderTexturesCount; i++) {
-        unsigned int renderTextureId;
-
-        glGenTextures(1, &renderTextureId);
-        glBindTexture(GL_TEXTURE_2D, renderTextureId);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, screenWidth, screenHeight, 0, GL_RGBA, GL_FLOAT, NULL);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        attachedRenderTextures[outputRenderTextures[i]] = renderTextureId;
-
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, renderTextureId, 0);
-    }
-
-    glGenRenderbuffers(1, &RBODepthId);
-    glBindRenderbuffer(GL_RENDERBUFFER, RBODepthId);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, screenWidth, screenHeight);
-
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, RBODepthId);
-
-    std::vector<unsigned int> attachments;
-
-    for (int i = 0; i < outputRenderTexturesCount; i++) {
-        attachments.push_back(GL_COLOR_ATTACHMENT0 + i);
-    }
-
-    glDrawBuffers(outputRenderTexturesCount, attachments.data());
-
+void FrameBuffer::CheckFrameBuffer() const {
     // Check if the framebuffer is complete
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         std::cerr << "Framebuffer is incomplete!" << std::endl;
@@ -89,8 +46,45 @@ void FrameBuffer::Unbind() const {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
+FrameBuffer::DepthAttachmentType FrameBuffer::GetDepthAttachmentType() const {
+    return depthAttachmentType;
+}
+
+void FrameBuffer::SetDepthAttachmentType(FrameBuffer::DepthAttachmentType newDepthAttachmentType) {
+    depthAttachmentType = newDepthAttachmentType;
+}
+
 unsigned int FrameBuffer::GetRBODepthId() const {
+    if (GetDepthAttachmentType() != DepthAttachmentType::RENDERBUFFER) {
+        std::cerr << "The FrameBuffer has a different type of depth attachment: " 
+            << DepthAttachmentHelper::ToString(depthAttachmentType) 
+            << ". You are requesting " 
+            << DepthAttachmentHelper::ToString(DepthAttachmentType::RENDERBUFFER) 
+            << "." << std::endl;
+    }
     return RBODepthId;
+}
+
+unsigned int FrameBuffer::GetDepthTextureId() const {
+    if (GetDepthAttachmentType() != DepthAttachmentType::TEXTURE_2D) {
+        std::cerr << "The FrameBuffer has a different type of depth attachment: "
+            << DepthAttachmentHelper::ToString(depthAttachmentType)
+            << ". You are requesting "
+            << DepthAttachmentHelper::ToString(DepthAttachmentType::TEXTURE_2D)
+            << "." << std::endl;
+    }
+    return depthTextureId;
+}
+
+unsigned int FrameBuffer::GetDepthArrayId() const {
+    if (GetDepthAttachmentType() != DepthAttachmentType::TEXTURE_2D_LAYERED_ARRAY) {
+        std::cerr << "The FrameBuffer has a different type of depth attachment: "
+            << DepthAttachmentHelper::ToString(depthAttachmentType)
+            << ". You are requesting "
+            << DepthAttachmentHelper::ToString(DepthAttachmentType::TEXTURE_2D_LAYERED_ARRAY)
+            << "." << std::endl;
+    }
+    return depthArrayId;
 }
 
 unsigned int FrameBuffer::GetAttachedRenderTextureIdByType(RenderTextureType renderTextureType) const {
@@ -108,7 +102,7 @@ unsigned int FrameBuffer::GetFrameBufferId() const {
 #pragma region Builder 
 
 FrameBuffer::Builder::Builder() {
-    framebuffer = FrameBuffer();
+    frameBuffer = new FrameBuffer();
 }
 
 FrameBuffer::Builder& FrameBuffer::Builder::WithRenderTextures(
@@ -116,106 +110,99 @@ FrameBuffer::Builder& FrameBuffer::Builder::WithRenderTextures(
     int width,
     int height) {
 
-    if (framebuffer.depthAttachmentType != DepthAttachmentType::NONE) {
+    int outputRenderTexturesCount = outputRenderTextures.size();
+
+    if (frameBuffer->GetDepthAttachmentType() != DepthAttachmentType::NONE) {
         std::cerr << "Warning: Adding render textures after depth attachment." << std::endl;
     }
 
-    framebuffer.screenWidth = width;
-    framebuffer.screenHeight = height;
+    for (int i = 0; i < outputRenderTexturesCount; i++) {
+        unsigned int renderTextureId;
 
-    glGenFramebuffers(1, &framebuffer.FBOId);
-    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer.FBOId);
-
-    for (int i = 0; i < outputRenderTextures.size(); ++i) {
-        GLuint textureID;
-        glGenTextures(1, &textureID);
-        glBindTexture(GL_TEXTURE_2D, textureID);
+        glGenTextures(1, &renderTextureId);
+        glBindTexture(GL_TEXTURE_2D, renderTextureId);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        framebuffer.attachedRenderTextures[outputRenderTextures[i]] = textureID;
+        frameBuffer->attachedRenderTextures[outputRenderTextures[i]] = renderTextureId;
 
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, textureID, 0);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, renderTextureId, 0);
     }
 
-    std::vector<GLenum> drawBuffers;
-    for (int i = 0; i < outputRenderTextures.size(); ++i) {
-        drawBuffers.push_back(GL_COLOR_ATTACHMENT0 + i);
+    std::vector<unsigned int> attachments;
+
+    for (int i = 0; i < outputRenderTexturesCount; i++) {
+        attachments.push_back(GL_COLOR_ATTACHMENT0 + i);
     }
-    glDrawBuffers(drawBuffers.size(), drawBuffers.data());
+
+    glDrawBuffers(outputRenderTexturesCount, attachments.data());
 
     return *this;
 }
 
 FrameBuffer::Builder& FrameBuffer::Builder::WithDepthRBO(int width, int height) {
-    if (framebuffer.depthAttachmentType != DepthAttachmentType::NONE) {
+    if (frameBuffer->GetDepthAttachmentType() != DepthAttachmentType::NONE) {
         std::cerr << "Only one depth attachment is allowed." << std::endl;
         return *this;
     }
 
-    framebuffer.depthAttachmentType = DepthAttachmentType::RENDERBUFFER;
+    frameBuffer->SetDepthAttachmentType(DepthAttachmentType::RENDERBUFFER);
 
-    glGenRenderbuffers(1, &framebuffer.RBODepthId);
-    glBindRenderbuffer(GL_RENDERBUFFER, framebuffer.RBODepthId);
+    glGenRenderbuffers(1, &frameBuffer->RBODepthId);
+    glBindRenderbuffer(GL_RENDERBUFFER, frameBuffer->RBODepthId);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, framebuffer.RBODepthId);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, frameBuffer->RBODepthId);
 
     return *this;
 }
 
 FrameBuffer::Builder& FrameBuffer::Builder::WithDepthTexture(int width, int height) {
-    if (framebuffer.depthAttachmentType != DepthAttachmentType::NONE) {
+    if (frameBuffer->GetDepthAttachmentType() != DepthAttachmentType::NONE) {
         std::cerr << "Only one depth attachment is allowed." << std::endl;
         return *this;
     }
 
-    framebuffer.depthAttachmentType = DepthAttachmentType::TEXTURE_2D;
+    frameBuffer->SetDepthAttachmentType(DepthAttachmentType::TEXTURE_2D);
 
-    GLuint depthTextureID;
-    glGenTextures(1, &depthTextureID);
-    glBindTexture(GL_TEXTURE_2D, depthTextureID);
+    glGenTextures(1, &frameBuffer->depthTextureId);
+    glBindTexture(GL_TEXTURE_2D, frameBuffer->depthTextureId);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-    framebuffer.depthTextureID = depthTextureID;
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTextureID, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, frameBuffer->depthTextureId, 0);
 
     return *this;
 }
 
 FrameBuffer::Builder& FrameBuffer::Builder::WithDepthTextureArray(int width, int height) {
-    if (framebuffer.depthAttachmentType != DepthAttachmentType::NONE) {
+    if (frameBuffer->GetDepthAttachmentType() != DepthAttachmentType::NONE) {
         std::cerr << "Only one depth attachment is allowed." << std::endl;
         return *this;
     }
 
-    framebuffer.depthAttachmentType = DepthAttachmentType::TEXTURE_2D_ARRAY_LAYER;
+    frameBuffer->SetDepthAttachmentType(DepthAttachmentType::TEXTURE_2D_LAYERED_ARRAY);
 
-    GLuint depthArrayID;
-    glGenTextures(1, &depthArrayID);
-    glBindTexture(GL_TEXTURE_2D_ARRAY, depthArrayID);
+    glGenTextures(1, &frameBuffer->depthArrayId);
+    glBindTexture(GL_TEXTURE_2D_ARRAY, frameBuffer->depthArrayId);
     glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_DEPTH_COMPONENT24, width, height, 8, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-    framebuffer.depthTextureArrayID = depthArrayID;
-    glFramebufferTextureLayer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthArrayID, 0, 0);
+    glFramebufferTextureLayer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, frameBuffer->depthArrayId, 0, 0);
 
     return *this;
 }
 
-FrameBuffer FrameBuffer::Builder::Build() {
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-        std::cerr << "Framebuffer is incomplete!" << std::endl;
-    }
+FrameBuffer* FrameBuffer::Builder::Build() {
+    frameBuffer->CheckFrameBuffer();
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    return framebuffer;
+    return frameBuffer;
 }
 
 #pragma endregion
