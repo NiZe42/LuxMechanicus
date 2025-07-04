@@ -29,7 +29,7 @@ public:
 			int height = 1080);
 		Builder& WithDepthRBO(int width = 1920, int height = 1080);
 		Builder& WithDepthTexture(int width = 1920, int height = 1080);
-		Builder& WithDepthTextureArray(int width = 1920, int height = 1080);
+		Builder& WithDepthTextureArray(int count = 8, int width = 1920, int height = 1080);
 		FrameBuffer* Build();
 	private:
 		FrameBuffer* frameBuffer;

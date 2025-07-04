@@ -31,7 +31,7 @@ public:
 private:
 	GLFWwindow* mWindow;
 
-	static RenderProcessor* rendererProcessor;
+	static RenderProcessor* renderProcessor;
 	std::vector<Scene*> mScenes;
 
 	float mLastFrameTime;

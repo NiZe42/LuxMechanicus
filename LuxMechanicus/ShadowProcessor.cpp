@@ -1,93 +1,116 @@
 #include "ShadowProcessor.h"
-#include <cmath>
+#include <iostream>
 
-ShadowProcessor::ShadowProcessor() {}
+ShadowProcessor::ShadowProcessor() {
+    glGenBuffers(1, &SSBOId);
+    shadowPassShader = new Shader((std::string(Environment::GetRootPath()) + "/Shaders/ShadowPassVert.glsl").c_str(),
+        (std::string(Environment::GetRootPath()) + "/Shaders/ShadowPassGeom.glsl").c_str(),
+        (std::string(Environment::GetRootPath()) + "/Shaders/ShadowPassFrag.glsl").c_str());
+}
 
 ShadowProcessor::~ShadowProcessor() {
-    for (auto& atlas : shadowAtlases) {
-        glDeleteTextures(1, &atlas.textureID);
+    if (shadowPassFrameBuffer) delete shadowPassFrameBuffer;
+    if (shadowPassShader) delete shadowPassShader;
+    glDeleteBuffers(1, &SSBOId);
+}
+
+void ShadowProcessor::ShadowPass(const std::vector<Scene*>& scenesToRender) {
+    glViewport(0, 0, ATLAS_RES, ATLAS_RES);
+    BindAtlasFramebuffer();
+    shadowPassShader->Bind();
+
+    for (Scene* scene : scenesToRender) {
+        for (HierarchyObject* child : scene->GetChildren()) {
+            GameObject* object = dynamic_cast<GameObject*>(child);
+            if (object && object->GetRenderingType() != RenderingType::FORWARD_RENDERING) {
+                RenderGameObject(object);
+            }
+        }
     }
 
-    for (auto& fb : atlasFramebuffers) {
-        delete fb;
+    shadowPassShader->Unbind();
+    UnbindAtlasFramebuffer();
+    glViewport(0, 0, 1920, 1080);
+}
+
+void ShadowProcessor::RenderGameObject(GameObject* object) {
+    //std::cout << "Rendering gameobject" << object->GetGameObjectId() << std::endl;
+
+    object->ShadowRender(shadowPassShader);
+
+    for (HierarchyObject* child : object->GetChildren()) {
+        GameObject* childObject = dynamic_cast<GameObject*>(child);
+        if (childObject && childObject->GetRenderingType() != RenderingType::FORWARD_RENDERING) {
+            RenderGameObject(childObject);
+        }
     }
 }
 
-void ShadowProcessor::AllocateShadowAtlases(const std::vector<LightSource>& shadowCasters) {
-    for (auto& atlas : shadowAtlases) {
-        glDeleteTextures(1, &atlas.textureID);
-    }
-
-    for (auto& fb : atlasFramebuffers) {
-        delete fb;
-    }
-    atlasFramebuffers.clear();
-
-    shadowAtlases.clear();
+void ShadowProcessor::AllocateShadowAtlases(const std::vector<LightData>& lights) {
     currentShadowCasters.clear();
+    if (shadowPassFrameBuffer) delete shadowPassFrameBuffer;
 
-    float numAtlases = shadowCasters.size() / (float)SHADOWS_PER_ATLAS;
-    if (numAtlases > floorf(numAtlases))
-        numAtlases = ceilf(numAtlases);
+    int shadowIndex = 0;
+    for (const auto& light : lights) {
+        if (!light.castShadows) continue;
 
-    if (numAtlases > MAX_SHADOW_ATLASES) {
-        std::cerr << "Exceeded maximum shadow atlas count (8). Clamping." << std::endl;
-        numAtlases = MAX_SHADOW_ATLASES;
+        ShadowCasterData data = ShadowCasterData(
+            light.lightIndex, 
+            shadowIndex, 
+            light.GetDirectionalLightVPMatrix());
+
+        shadowIndex++;
+
+        currentShadowCasters.emplace(light.lightIndex, data);
     }
 
-    for (int i = 0; i < (int)numAtlases; i++) {
-        ShadowAtlas newAtlas;
-        glGenTextures(1, &newAtlas.textureID);
-        glBindTexture(GL_TEXTURE_2D, newAtlas.textureID);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, ATLAS_RES, ATLAS_RES, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    int shadowCastersCount = currentShadowCasters.size();
 
-        shadowAtlases.push_back(newAtlas);
-    }
+    int layerCount = shadowCastersCount / SHADOWS_PER_ATLAS;
+    int moduloLayerCount = shadowCastersCount % SHADOWS_PER_ATLAS;
 
-    for (int i = 0; i < shadowCasters.size(); i++) {
-        LightSource light = shadowCasters[i];
-        light.SetshadowMapIndex(i);
-        currentShadowCasters.emplace(i, light);
-    }
+    if (moduloLayerCount != 0)
+        layerCount += 1;
+
+    // Create framebuffer that will attach different layers for rendering
+    shadowPassFrameBuffer = FrameBuffer::Builder::Builder()
+        .WithDepthTextureArray(layerCount, ATLAS_RES, ATLAS_RES)
+        .Build();
 }
 
-// Texture from 8 to 16 are ShadowAtlases
-void ShadowProcessor::BindShadowAtlases() {
-    for (int i = 0; i < shadowAtlases.size(); i++) {
-        glActiveTexture(GL_TEXTURE8 + i);
-        glBindTexture(GL_TEXTURE_2D, shadowAtlases[i].textureID);
+void ShadowProcessor::UploadShadowCastersToGPU() {
+    std::vector<ShadowCasterData> shadowCasters;
+    shadowCasters.reserve(currentShadowCasters.size());
+
+    for (const auto& pair : currentShadowCasters) {
+        shadowCasters.push_back(pair.second);
     }
+
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, SSBOId);
+    glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(ShadowCasterData) * currentShadowCasters.size(), shadowCasters.data(), GL_DYNAMIC_DRAW);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 }
 
-void ShadowProcessor::UnbindShadowAtlases() {
-    for (int i = 0; i < shadowAtlases.size(); i++) {
-        glActiveTexture(GL_TEXTURE8 + i);
-        glBindTexture(GL_TEXTURE_2D, 0);
-    }
+void ShadowProcessor::BindSSBO(unsigned int binding) {
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, binding, SSBOId);
 }
 
-int ShadowProcessor::GetAtlasTextureForLight(const LightSource& light) const {
-    if (!light.GetCastShadows()) {
-        std::cerr << "The passed light cannot cast shadows." << std::endl;
-        return -1;
-    }
+void ShadowProcessor::BindAtlasFramebuffer() {
+    shadowPassFrameBuffer->Bind();
+    glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
+}
 
-    auto it = currentShadowCasters.find(light.GetshadowMapIndex());
-    if (it != currentShadowCasters.end()) {
-        int index = it->second.GetshadowMapIndex();
-        int atlasIndex = index / SHADOWS_PER_ATLAS;
-        return shadowAtlases[atlasIndex].textureID;
-    }
-    std::cerr << "The passed light is not in Shadow Atlases" << std::endl;
-    return -1;
+void ShadowProcessor::UnbindAtlasFramebuffer() {
+    shadowPassFrameBuffer->Unbind();
+}
+
+FrameBuffer* ShadowProcessor::GetFrameBuffer() const {
+    return shadowPassFrameBuffer;
 }
 
 glm::ivec2 ShadowProcessor::GetAtlasSlot(int shadowIndex) const {
-    int x = (shadowIndex % SHADOWS_PER_ATLAS) % SHADOWS_PER_ATLAS;
-    int y = (shadowIndex % SHADOWS_PER_ATLAS) / SHADOWS_PER_ATLAS;
-    return glm::ivec2(x, y);
+    int row = shadowIndex / (ATLAS_RES / SHADOW_MAP_RES);
+    int col = shadowIndex % (ATLAS_RES / SHADOW_MAP_RES);
+    return glm::ivec2(col * SHADOW_MAP_RES, row * SHADOW_MAP_RES);
 }

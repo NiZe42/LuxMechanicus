@@ -7,6 +7,8 @@ uniform sampler2D gPosition;
 uniform sampler2D gNormal;
 uniform sampler2D gAlbedoSpec;
 
+uniform sampler2DArray shadowAtlasArray;
+
 uniform vec3 cameraPosition;
 
 struct LightData {
@@ -22,16 +24,29 @@ struct LightData {
     int lightType;
     bool castShadows;
 	float intensity;
-	int shadowMapIndex;
-
 	float cutoff;
-	float pad1;
+
+	uint lightIndex;
 	float pad2;
 	float pad3;
+	float pad4;
 };
 
 layout(std430, binding = 1) buffer LightBuffer {
     LightData lights[];
+};
+
+struct ShadowCasterData {
+    uint lightIndex;
+    int shadowCasterId;
+    float pad0;
+    float pad1;
+
+    mat4 lightVPMatrix;
+};
+
+layout(std430, binding = 2) buffer shadowBuffer {
+    ShadowCasterData shadowCasters[];
 };
 
 void main( void ) {
@@ -100,4 +115,8 @@ void main( void ) {
 	}
 
 	FragColor = vec4(resultColor, 1.0f);
+}
+
+float CalculateShadow(){
+	return 0.0f;
 }

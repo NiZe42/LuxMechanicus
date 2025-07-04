@@ -1,6 +1,8 @@
 #include "LightSource.h"
 #include "Shader.h" 
 
+unsigned int LightSource::lightIndexCounter = 0;
+
 LightSource::LightSource(glm::vec3 position,
     glm::vec3 rotation,
     glm::vec3 scale,
@@ -78,21 +80,21 @@ void LightSource::SetCastShadows(bool castShadows) {
     lightData.castShadows = castShadows;
 }
 
-int LightSource::GetshadowMapIndex() const {
-    return lightData.shadowMapIndex;
+unsigned int LightSource::GetLightIndex() const {
+    return lightData.lightIndex;
 }
 
-void LightSource::SetshadowMapIndex(int shadowMapIndex) {
-    lightData.shadowMapIndex = shadowMapIndex;
+void LightSource::SetLightIndex(unsigned int lightIndex) {
+    lightData.lightIndex = lightIndex;
 }
-
 
 void LightSource::SetDefaultValues(LightType lightType) {
     SetLightType(lightType);
     SetAttenuation(glm::vec3(1.0f, 0.09f, 0.032f));
     SetIntensity(1.0f);
     SetColor(glm::vec3(1.0f));
-    SetshadowMapIndex(-1);
+    SetLightIndex(lightIndexCounter);
+    lightIndexCounter++;
 
     switch (lightType) {
     case LightType::DIRECTIONAL:

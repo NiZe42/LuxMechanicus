@@ -233,6 +233,11 @@ void GameObject::DeferredRender(Shader* gShader) {
     pMesh->Render();
 }
 
+void GameObject::ShadowRender(Shader* shadowShader) {
+    shadowShader->SetUniformMat4("modelMatrix", GetModelMatrix());
+    pMesh->Render();
+}
+
 void GameObject::SetRenderingType(RenderingType pRenderingType) {
     renderingType = pRenderingType;
 }

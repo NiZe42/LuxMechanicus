@@ -14,11 +14,14 @@
 #include "LightProcessor.h"
 #include "ForwardRenderer.h"
 #include "DeferredRenderer.h"
+#include "ShadowProcessor.h"
 
 class RenderProcessor {
 public:
     RenderProcessor();
     ~RenderProcessor();
+
+    void PrepareStaticInfo();
 
     void Render(const std::vector<Scene*>& scenesToRender);
 
@@ -36,6 +39,7 @@ private:
     int mScreenWidth, mScreenHeight;
 
     PostProcessor* postProcessor;
+    ShadowProcessor* shadowProcessor;
     LightProcessor* lightProcessor;
     ForwardRenderer* forwardRenderer;
     DeferredRenderer* deferredRenderer;

@@ -178,23 +178,25 @@ FrameBuffer::Builder& FrameBuffer::Builder::WithDepthTexture(int width, int heig
     return *this;
 }
 
-FrameBuffer::Builder& FrameBuffer::Builder::WithDepthTextureArray(int width, int height) {
+FrameBuffer::Builder& FrameBuffer::Builder::WithDepthTextureArray(int count, int width, int height) {
     if (frameBuffer->GetDepthAttachmentType() != DepthAttachmentType::NONE) {
         std::cerr << "Only one depth attachment is allowed." << std::endl;
         return *this;
     }
+    // Will break if it is more than 2048 layers (on some machines).
+    // TODO: Dynamically clamp the size.
 
     frameBuffer->SetDepthAttachmentType(DepthAttachmentType::TEXTURE_2D_LAYERED_ARRAY);
 
     glGenTextures(1, &frameBuffer->depthArrayId);
     glBindTexture(GL_TEXTURE_2D_ARRAY, frameBuffer->depthArrayId);
-    glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_DEPTH_COMPONENT24, width, height, 8, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+    glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_DEPTH_COMPONENT24, width, height, count, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-    glFramebufferTextureLayer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, frameBuffer->depthArrayId, 0, 0);
+    glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, frameBuffer->depthArrayId, 0);
 
     return *this;
 }

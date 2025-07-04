@@ -7,6 +7,7 @@ RenderProcessor::RenderProcessor() {
     glEnable(GL_DEPTH_TEST);
 
     postProcessor = new PostProcessor();
+    shadowProcessor = new ShadowProcessor();
     lightProcessor = new LightProcessor();
     deferredRenderer = new DeferredRenderer();
     forwardRenderer = new ForwardRenderer();
@@ -21,18 +22,29 @@ RenderProcessor::~RenderProcessor() {
 
     if (lightProcessor)
         delete lightProcessor;
+
+    if (shadowProcessor)
+        delete shadowProcessor;
+}
+
+void RenderProcessor::PrepareStaticInfo() {
+    lightProcessor->UploadToGPU();
+    lightProcessor->BindSSBO(1);
+
+    shadowProcessor->AllocateShadowAtlases(lightProcessor->GetLights());
+    shadowProcessor->UploadShadowCastersToGPU();
+    shadowProcessor->BindSSBO(2);
 }
 
 void RenderProcessor::Render(const std::vector<Scene*>& scenesToRender) {
+    shadowProcessor->ShadowPass(scenesToRender);
 
     deferredRenderer->GeometryPass(scenesToRender, *mActiveCamera);
 
     postProcessor->BindFirstFrameBuffer();
-   
-    lightProcessor->UploadToGPU();
-    lightProcessor->BindSSBO(1);
 
-    deferredRenderer->LightingPass(*mActiveCamera);
+    unsigned int depthArrayid = shadowProcessor->GetFrameBuffer()->GetDepthArrayId();
+    deferredRenderer->LightingPass(*mActiveCamera, depthArrayid);
 
     FrameBuffer* gFrameBuffer = deferredRenderer->GetGFrameBuffer();
     FrameBuffer* firstFrameBuffer = postProcessor->GetFirstFrameBuffer();

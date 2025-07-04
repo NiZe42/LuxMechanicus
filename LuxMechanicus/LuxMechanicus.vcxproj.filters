@@ -226,5 +226,14 @@
     <None Include="Shaders\DeferredLightVert.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="Shaders\ShadowPassFrag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\ShadowPassGeom.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\ShadowPassVert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

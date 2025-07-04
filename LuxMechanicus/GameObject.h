@@ -46,6 +46,7 @@ public:
 
 	virtual void Render(glm::mat4 viewMatrix, glm::mat4 projectMatrix);
 	virtual void DeferredRender(Shader* gShader);
+	void ShadowRender(Shader* shadowShader);
 	virtual void BindShader();
 protected:
 	unsigned int mGameObjectId;
