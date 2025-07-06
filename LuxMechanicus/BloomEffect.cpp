@@ -13,10 +13,17 @@ BloomEffect::BloomEffect() {
 	inputRenderTextures.emplace_back(RenderTextureType::BRIGHT);
 	outputRenderTextures.emplace_back(RenderTextureType::COLOR);
 
-	pingPongFramebuffer1 = new FrameBuffer({RenderTextureType::BRIGHT});
-	pingPongFramebuffer2 = new FrameBuffer({RenderTextureType::BRIGHT});
+	pingPongFramebuffer1 = FrameBuffer::Builder::Builder()
+		.WithRenderTextures({ RenderTextureType::BRIGHT })
+		.Build();
 
-	frameBuffer = new FrameBuffer(outputRenderTextures);
+	pingPongFramebuffer2 = FrameBuffer::Builder::Builder()
+		.WithRenderTextures({ RenderTextureType::BRIGHT })
+		.Build();
+
+	frameBuffer = FrameBuffer::Builder::Builder()
+		.WithRenderTextures(outputRenderTextures)
+		.Build();
 }
 
 BloomEffect::~BloomEffect() {

@@ -9,7 +9,9 @@ HDRRenderPass::HDRRenderPass() {
 	outputRenderTextures.emplace_back(RenderTextureType::COLOR);
 	outputRenderTextures.emplace_back(RenderTextureType::BRIGHT);
 
-	frameBuffer = new FrameBuffer(outputRenderTextures);
+	frameBuffer = FrameBuffer::Builder::Builder()
+		.WithRenderTextures(outputRenderTextures)
+		.Build();
 }
 
 HDRRenderPass::~HDRRenderPass() {

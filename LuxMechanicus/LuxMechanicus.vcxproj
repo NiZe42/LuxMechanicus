@@ -155,6 +155,7 @@
     <ClCompile Include="RenderProcessor.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="ShadowProcessor.cpp" />
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -183,6 +184,7 @@
     <ClInclude Include="RenderProcessor.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="ShadowProcessor.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Texture.h" />
   </ItemGroup>
@@ -203,6 +205,11 @@
     <None Include="Shaders\HdrShaderVert.glsl" />
     <None Include="Shaders\LightSourceFrag.glsl" />
     <None Include="Shaders\LightSourceVert.glsl" />
+    <None Include="Shaders\ShadowPassFrag.glsl" />
+    <None Include="Shaders\ShadowPassGeom.glsl" />
+    <None Include="Shaders\ShadowPassVert.glsl" />
+    <None Include="Shaders\TestQuadFrag.glsl" />
+    <None Include="Shaders\TestQuadVert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

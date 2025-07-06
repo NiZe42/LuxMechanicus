@@ -12,8 +12,10 @@
 
 class Shader
 {
+    // TODO: Implement Builder.
 public:
     Shader(const char* vertexPath, const char* fragmentPath);
+    Shader(const char* vertexPath, const char* geometeryPath, const char* fragmentPath);
     ~Shader();
 
     void Bind() const;

@@ -31,7 +31,7 @@ public:
 private:
 	GLFWwindow* mWindow;
 
-	static RenderProcessor* rendererProcessor;
+	static RenderProcessor* renderProcessor;
 	std::vector<Scene*> mScenes;
 
 	float mLastFrameTime;
@@ -42,6 +42,8 @@ private:
 
 	static float mLastXMousePos;
 	static float mLastYMousePos;
+
+	bool isInitialized = false;
 
 	void InitializeGLFW();
 	void InitializeWindow();

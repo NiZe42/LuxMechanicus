@@ -27,7 +27,10 @@ void DeferredRenderer::Initialize(unsigned int width, unsigned int height) {
         RenderTextureType::G_ALBEDO_SPEC
     };
 
-    gFrameBuffer = new FrameBuffer(gOutputTextures);
+    gFrameBuffer = FrameBuffer::Builder::Builder()
+        .WithRenderTextures(gOutputTextures)
+        .WithDepthRBO()
+        .Build();
 
     InitializeQuad();
 }
@@ -54,7 +57,7 @@ void DeferredRenderer::GeometryPass(const std::vector<Scene*>& scenesToRender, c
     gFrameBuffer->Unbind();
 }
 
-void DeferredRenderer::LightingPass(const Camera& camera) {
+void DeferredRenderer::LightingPass(const Camera& camera, unsigned int DepthLayeredTextureArrayId) {
     lightingShader->Bind();
     lightingShader->SetUniformVector3("cameraPosition", camera.GetPosition());
 
@@ -69,6 +72,10 @@ void DeferredRenderer::LightingPass(const Camera& camera) {
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, gFrameBuffer->GetAttachedRenderTextureIdByType(RenderTextureType::G_ALBEDO_SPEC));
     lightingShader->SetUniformInt("gAlbedoSpec", 2);
+
+    glActiveTexture(GL_TEXTURE3);
+    glBindTexture(GL_TEXTURE_2D_ARRAY, DepthLayeredTextureArrayId);
+    lightingShader->SetUniformInt("shadowAtlasArray", 3);
 
     RenderFullscreenQuad();
 

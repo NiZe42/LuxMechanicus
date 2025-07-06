@@ -28,11 +28,17 @@ public:
     glm::vec3 GetColor() const;
     void SetColor(glm::vec3 color);
     
+    bool GetCastShadows() const;
+    void SetCastShadows(bool castShadows);
+
     glm::vec3 GetDirection() const;
     void SetDirection(glm::vec3 direction);
 
     float GetCutoff() const;
     void SetCutoff(float cutoff);
+
+    unsigned int GetLightIndex() const;
+    void SetLightIndex(unsigned int lightIndex);
 
     LightData GetLightData();
 
@@ -41,6 +47,8 @@ public:
     void Render(glm::mat4 viewMatrix, glm::mat4 projectMatrix) override;
 
 private:
+
+    static unsigned int lightIndexCounter;
     LightData lightData;
 };
 

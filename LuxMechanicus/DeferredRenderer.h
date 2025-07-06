@@ -19,14 +19,14 @@ public:
     void Initialize(unsigned int width, unsigned int height);
 
     void GeometryPass(const std::vector<Scene*>& scenesToRender, const Camera& camera);
-    void LightingPass(const Camera& camera);
+    void LightingPass(const Camera& camera, unsigned int DepthLayeredTextureArrayId);
 
     FrameBuffer* GetGFrameBuffer();
 
+    void RenderFullscreenQuad();
 private:
     void InitializeQuad();
     
-    void RenderFullscreenQuad();
 
     void RenderGameObject(GameObject* object);
 

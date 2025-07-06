@@ -16,6 +16,8 @@ public:
     void UploadToGPU();              
     void BindSSBO(unsigned int binding); 
 
+    const std::vector<LightData>& GetLights() const;
+
 private:
     GLuint SSBOId;
     std::vector<LightData> lights;

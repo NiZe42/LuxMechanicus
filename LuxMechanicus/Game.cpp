@@ -2,7 +2,7 @@
 #include <iostream>
 #include <filesystem>
 
-RenderProcessor* Game::rendererProcessor = nullptr;
+RenderProcessor* Game::renderProcessor = nullptr;
 float Game::mLastXMousePos = 0;
 float Game::mLastYMousePos = 0;
 
@@ -11,7 +11,7 @@ Game::Game() {
 }
 
 Game::~Game() {
-	delete rendererProcessor;
+	delete renderProcessor;
 
 	if (mScenes.size() == 0)
 		return;
@@ -48,7 +48,7 @@ void Game::Initialize() {
 	glm::vec3(-1.5f, -2.2f, -2.5f),
 	glm::vec3(-3.8f, -2.0f, -12.3f),
 	glm::vec3(2.4f, -0.4f, -3.5f),
-	glm::vec3(-1.7f,  3.0f, -7.5f),
+	glm::vec3(-1.7f,  -3.2f, -7.5f),
 	glm::vec3(1.3f, -2.0f, -2.5f),
 	glm::vec3(1.5f,  2.0f, -2.5f),
 	glm::vec3(1.5f,  0.2f, -1.5f),
@@ -102,31 +102,46 @@ void Game::Initialize() {
 		std::cout << gameobject->GetGameObjectId() << std::endl;
 	}
 
-	rendererProcessor = new RenderProcessor();
-	rendererProcessor->SetScreenHeight(1080);
-	rendererProcessor->SetScreenWidth(1920);
+	renderProcessor = new RenderProcessor();
+	renderProcessor->SetScreenHeight(1080);
+	renderProcessor->SetScreenWidth(1920);
 
 	Camera* camera = new Camera(2.0f, 0.1f);
 	camera->SetPosition(glm::vec3(0.0f, 0.0f, 5.0f));
-	rendererProcessor->SetActiveCamera(camera);
+	renderProcessor->SetActiveCamera(camera);
 
-	LightSource* lightSource1 = new LightSource(
-		glm::vec3(1.0f, 2.0f, 1.0f),
-		glm::vec3(0.0f),
-		glm::vec3(0.5f),
-		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceVert.glsl").c_str(),
-		(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceFrag.glsl").c_str());
+	for (int i = 0; i < 16; i++) {
+		LightSource* lightSource1 = new LightSource(
+			glm::vec3(1.0f, 2.0f + i, 1.0f),
+			glm::vec3(0.0f),
+			glm::vec3(0.5f),
+			(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceVert.glsl").c_str(),
+			(std::string(Environment::GetRootPath()) + "/Shaders/LightSourceFrag.glsl").c_str());
 
-	lightSource1->SetDefaultValues(LightType::DIRECTIONAL);
-	lightSource1->SetColor(glm::vec3(1.0f, 0.0f, 1.0f));
-	lightSource1->SetDirection(glm::vec3(1.0f, -1.0f, 1.0f));
+		lightSource1->SetDefaultValues(LightType::DIRECTIONAL);
+		glm::vec3 direction = glm::normalize(glm::vec3(
+			cos(i * 0.4f),
+			-1.0f,
+			sin(i * 0.4f)
+		));
+		lightSource1->SetDirection(direction);
 
-	Mesh* lightSourceMesh1 = MeshCache::GetMesh((std::string(Environment::GetRootPath()) + "/Models/cube_smooth.obj").c_str());
-	lightSource1->SetMesh(lightSourceMesh1);
-	mainScene->AddChild(lightSource1);
-	rendererProcessor->AddLight(lightSource1);
+		float hue = i / 16.0f; // [0, 1]
+		glm::vec3 color = glm::vec3(
+			0.5f + 0.5f * sin(6.2831f * hue),
+			0.5f + 0.5f * sin(6.2831f * hue + 2.094f),  // + 120°
+			0.5f + 0.5f * sin(6.2831f * hue + 4.188f)   // + 240°
+		);
+		lightSource1->SetColor(color);
 
-	LightSource* lightSource2 = new LightSource(
+		lightSource1->SetIntensity(0.2f);
+		Mesh* lightSourceMesh1 = MeshCache::GetMesh((std::string(Environment::GetRootPath()) + "/Models/cube_smooth.obj").c_str());
+		lightSource1->SetMesh(lightSourceMesh1);
+		mainScene->AddChild(lightSource1);
+		renderProcessor->AddLight(lightSource1);
+	}
+
+	/*LightSource* lightSource2 = new LightSource(
 		glm::vec3(-3.0f, 2.0f, 2.0f),
 		glm::vec3(0.0f),
 		glm::vec3(0.5f),
@@ -139,9 +154,10 @@ void Game::Initialize() {
 	Mesh* lightSourceMesh2 = MeshCache::GetMesh((std::string(Environment::GetRootPath()) + "/Models/cube_smooth.obj").c_str());
 	lightSource2->SetMesh(lightSourceMesh2);
 	mainScene->AddChild(lightSource2);
-	rendererProcessor->AddLight(lightSource2);
+	renderProcessor->AddLight(lightSource2);*/
 
 	std::cout << "Engine initialized." << std::endl << std::endl;
+	isInitialized = true;
 }
 
 void Game::AddScene(Scene* scene) {
@@ -199,15 +215,19 @@ void Game::InitializeGLAD() {
 }
 
 void Game::RenderLoop() {
+	renderProcessor->PrepareStaticInfo();
 	while (!glfwWindowShouldClose(mWindow))
 	{
+		if (!isInitialized)
+			continue;
+
 		CalculateDeltaTime();
 		ProcessInput();
 		
 		glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		rendererProcessor->Render(mScenes);
+		renderProcessor->Render(mScenes);
 
 		glfwSwapBuffers(mWindow);
 		glfwPollEvents();
@@ -219,7 +239,7 @@ void Game::ProcessInput() {
 	if (glfwGetKey(mWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(mWindow, true);
 
-	Camera* camera = rendererProcessor->GetActiveCamera();
+	Camera* camera = renderProcessor->GetActiveCamera();
 
 	glm::vec3 direction = glm::vec3(0.0f);
 
@@ -239,7 +259,7 @@ void Game::ProcessInput() {
 }
 
 RenderProcessor* Game::GetRenderer() const{
-	return rendererProcessor;
+	return renderProcessor;
 }
 
 void Game::CalculateDeltaTime() {
@@ -275,12 +295,12 @@ void Game::MouseCallback(GLFWwindow* window, double xposIn, double yposIn)
 	mLastXMousePos = horizontalPosition;
 	mLastYMousePos = verticalPosition;
 	
-	Camera* camera = rendererProcessor->GetActiveCamera();
+	Camera* camera = renderProcessor->GetActiveCamera();
 	camera->ProcessRotationInput(horizontalOffset, verticalOffset);
 }
 
 void Game::FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
-	rendererProcessor->SetScreenWidth(width);
-	rendererProcessor->SetScreenHeight(height);
+	renderProcessor->SetScreenWidth(width);
+	renderProcessor->SetScreenHeight(height);
 }

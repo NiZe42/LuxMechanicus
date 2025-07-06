@@ -87,6 +87,9 @@
     <ClCompile Include="DeferredRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ShadowProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -170,6 +173,9 @@
     <ClInclude Include="DeferredRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ShadowProcessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\ColorFrag.glsl">
@@ -218,6 +224,21 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="Shaders\DeferredLightVert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\ShadowPassFrag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\ShadowPassGeom.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\ShadowPassVert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\TestQuadFrag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\TestQuadVert.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

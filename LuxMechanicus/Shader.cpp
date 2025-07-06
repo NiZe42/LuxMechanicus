@@ -45,6 +45,57 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
     glDeleteShader(fragmentShaderId);
 }
 
+Shader::Shader(const char* vertexPath, const char* geometryPath, const char* fragmentPath)
+{
+    std::cout << "Compiling vertex shader : " << vertexPath << std::endl;
+    std::string vertexShaderCode = LoadShaderSource(GL_VERTEX_SHADER, vertexPath);
+    const char* vertexShaderCodePointer = vertexShaderCode.c_str();
+
+    unsigned int vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShaderId, 1, &vertexShaderCodePointer, NULL);
+    glCompileShader(vertexShaderId);
+    CheckShaderCompilation(vertexShaderId);
+
+    std::cout << "Compiling fragment shader : " << fragmentPath << std::endl;
+    std::string fragmentShaderCode = LoadShaderSource(GL_FRAGMENT_SHADER, fragmentPath);
+    const char* fragmentShaderCodePointer = fragmentShaderCode.c_str();
+
+    unsigned int fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShaderId, 1, &fragmentShaderCodePointer, NULL);
+    glCompileShader(fragmentShaderId);
+    CheckShaderCompilation(fragmentShaderId);
+
+    unsigned int geometryShaderId = 0;
+    bool hasGeometryShader = geometryPath != nullptr && geometryPath[0] != '\0';
+    if (hasGeometryShader) {
+        std::cout << "Compiling geometry shader : " << geometryPath << std::endl;
+        std::string geometryShaderCode = LoadShaderSource(GL_GEOMETRY_SHADER, geometryPath);
+        const char* geometryShaderCodePointer = geometryShaderCode.c_str();
+
+        geometryShaderId = glCreateShader(GL_GEOMETRY_SHADER);
+        glShaderSource(geometryShaderId, 1, &geometryShaderCodePointer, NULL);
+        glCompileShader(geometryShaderId);
+        CheckShaderCompilation(geometryShaderId);
+    }
+
+    mShaderProgramId = glCreateProgram();
+    glAttachShader(mShaderProgramId, vertexShaderId);
+    if (hasGeometryShader) {
+        glAttachShader(mShaderProgramId, geometryShaderId);
+    }
+    glAttachShader(mShaderProgramId, fragmentShaderId);
+
+    glLinkProgram(mShaderProgramId);
+    CheckShaderProgramCompilation(mShaderProgramId);
+
+    glDeleteShader(vertexShaderId);
+    glDeleteShader(fragmentShaderId);
+    if (hasGeometryShader) {
+        glDeleteShader(geometryShaderId);
+    }
+}
+
+
 Shader::~Shader() {
     glDeleteProgram(mShaderProgramId);
 }

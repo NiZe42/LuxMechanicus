@@ -1,6 +1,8 @@
 #include "LightSource.h"
 #include "Shader.h" 
 
+unsigned int LightSource::lightIndexCounter = 0;
+
 LightSource::LightSource(glm::vec3 position,
     glm::vec3 rotation,
     glm::vec3 scale,
@@ -60,6 +62,12 @@ glm::vec3 LightSource::GetDirection() const {
 
 void LightSource::SetDirection(glm::vec3 direction) {
     lightData.direction = direction;
+    if (lightData.lightType == LightType::DIRECTIONAL) {
+        glm::vec3 lightDirNormalized = glm::normalize(lightData.direction);
+
+        glm::vec3 eye = glm::vec3(0.0f, 0.0f, 0.0f) - lightDirNormalized * 10.0f;
+        SetPosition(eye);
+    }
 }
 
 float LightSource::GetCutoff() const {
@@ -70,24 +78,49 @@ void LightSource::SetCutoff(float cutoff) {
     lightData.cutoff = cutoff;
 }
 
+bool LightSource::GetCastShadows() const {
+    return lightData.castShadows;
+}
+
+void LightSource::SetCastShadows(bool castShadows) {
+    lightData.castShadows = castShadows;
+}
+
+unsigned int LightSource::GetLightIndex() const {
+    return lightData.lightIndex;
+}
+
+void LightSource::SetLightIndex(unsigned int lightIndex) {
+    lightData.lightIndex = lightIndex;
+}
+
 void LightSource::SetDefaultValues(LightType lightType) {
     SetLightType(lightType);
     SetAttenuation(glm::vec3(1.0f, 0.09f, 0.032f));
     SetIntensity(1.0f);
     SetColor(glm::vec3(1.0f));
+    SetLightIndex(lightIndexCounter);
+    lightIndexCounter++;
 
     switch (lightType) {
     case LightType::DIRECTIONAL:
+        SetCastShadows(true);
         SetDirection(glm::vec3(1.0f, 0.0f, 0.0f));
+        glm::vec3 lightDirNormalized = glm::normalize(lightData.direction);
+
+        glm::vec3 eye = glm::vec3(0.0f, 0.0f, 0.0f) - lightDirNormalized * 10.0f;
+        SetPosition(eye);
         SetCutoff(0.0f);
         break;
 
     case LightType::POINT:
+        SetCastShadows(false);
         SetDirection(glm::vec3(0.0f, 0.0f, 0.0f));
         SetCutoff(0.0f);
         break;
 
     case LightType::SPOT:
+        SetCastShadows(false);
         SetDirection(glm::vec3(1.0f, 0.0f, 0.0f));
         SetCutoff(40.0f);
         break;
