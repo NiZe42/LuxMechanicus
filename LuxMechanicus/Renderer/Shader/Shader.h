@@ -13,6 +13,7 @@
 class Shader
 {
     // TODO: Implement Builder.
+    // That cool builder that would not allow you to create it incomplete.
 public:
     Shader(const char* vertexPath, const char* fragmentPath);
     Shader(const char* vertexPath, const char* geometeryPath, const char* fragmentPath);

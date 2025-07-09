@@ -110,7 +110,7 @@ void Game::Initialize() {
 	camera->SetPosition(glm::vec3(0.0f, 0.0f, 5.0f));
 	renderProcessor->SetActiveCamera(camera);
 
-	for (int i = 0; i < 16; i++) {
+	for (int i = 0; i < 68; i++) {
 		LightSource* lightSource1 = new LightSource(
 			glm::vec3(1.0f, 2.0f + i, 1.0f),
 			glm::vec3(0.0f),
@@ -134,7 +134,8 @@ void Game::Initialize() {
 		);
 		lightSource1->SetColor(color);
 
-		lightSource1->SetIntensity(0.2f);
+		lightSource1->SetIntensity(0.1f);
+
 		Mesh* lightSourceMesh1 = MeshCache::GetMesh((std::string(Environment::GetRootPath()) + "/Models/cube_smooth.obj").c_str());
 		lightSource1->SetMesh(lightSourceMesh1);
 		mainScene->AddChild(lightSource1);

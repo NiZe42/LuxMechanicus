@@ -39,23 +39,6 @@ void RenderProcessor::PrepareStaticInfo() {
 void RenderProcessor::Render(const std::vector<Scene*>& scenesToRender) {
     shadowProcessor->ShadowPass(scenesToRender);
 
-    /*glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glClear(GL_DEPTH_BUFFER_BIT || GL_COLOR_BUFFER_BIT);
-    glViewport(0, 0, 1024, 1024);
-
-    Shader* shader = new Shader((std::string(Environment::GetRootPath()) + "/Shaders/TestQuadVert.glsl").c_str(),
-        (std::string(Environment::GetRootPath()) + "/Shaders/TestQuadFrag.glsl").c_str());
-    shader->Bind();
-
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D_ARRAY, shadowProcessor->GetFrameBuffer()->GetDepthArrayId());
-   
-    shader->SetUniformInt("depthMap", 0);
-
-    deferredRenderer->RenderFullscreenQuad();
-    delete shader;
-    return;*/
-
     deferredRenderer->GeometryPass(scenesToRender, *mActiveCamera);
 
     postProcessor->BindFirstFrameBuffer();
