@@ -1,15 +1,15 @@
 #pragma once
 
-#include "GLIncludes.h"
+#include "..\..\..\..\Utils\GLIncludes.h"
 #include <vector>
-#include "Camera.h"
-#include "Scene.h"
-#include "Shader.h"
-#include "LightProcessor.h"
-#include "Mesh.h"
+#include "..\..\..\..\Game\Camera\Camera.h"
+#include "..\..\..\..\Game\Scenes\Scene.h"
+#include "..\..\..\..\Renderer\Shader\Shader.h"
+#include "..\..\..\..\Renderer\Lighting\LightProcessor.h"
+#include "..\..\..\..\Renderer\Mesh\Mesh.h"
 #include <iostream>
-#include "FrameBuffer.h"
-#include "Environment.h"
+#include "..\..\..\..\Renderer\FrameBuffer\FrameBuffer.h"
+#include "..\..\..\..\Utils\Environment.h"
 
 class DeferredRenderer {
 public:

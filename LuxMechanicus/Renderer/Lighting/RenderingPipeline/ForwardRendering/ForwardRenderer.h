@@ -1,11 +1,11 @@
 #pragma once
 
-#include "GLIncludes.h"
+#include "..\..\..\..\Utils\GLIncludes.h"
 #include <vector>
-#include "Camera.h"
-#include "Scene.h"
-#include "Shader.h"
-#include "LightProcessor.h"
+#include "..\..\..\..\Game\Camera\Camera.h"
+#include "..\..\..\..\Game\GameObject\GameObject.h"
+#include "..\..\..\Shader\Shader.h"
+#include "..\..\LightProcessor.h"
 
 class ForwardRenderer {
 public:

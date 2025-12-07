@@ -6,11 +6,11 @@
 #include <sstream>
 #include <iostream>
 #include <vector>
-#include "Shader.h"
-#include "Texture.h"
-#include "HierarchyObject.h"
-#include "Mesh.h"
-#include "RenderingType.h"
+#include "..\..\Renderer\Shader\Shader.h"
+#include "..\..\Renderer\Material\Texture.h"
+#include "..\Scenes\HierarchyObject.h"
+#include "..\..\Renderer\Mesh\Mesh.h"
+#include "..\..\Renderer\Lighting\RenderingPipeline\RenderingType.h"
 
 class GameObject : public HierarchyObject
 {

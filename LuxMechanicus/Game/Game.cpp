@@ -110,7 +110,7 @@ void Game::Initialize() {
 	camera->SetPosition(glm::vec3(0.0f, 0.0f, 5.0f));
 	renderProcessor->SetActiveCamera(camera);
 
-	for (int i = 0; i < 68; i++) {
+	for (int i = 0; i < 10; i++) {
 		LightSource* lightSource1 = new LightSource(
 			glm::vec3(1.0f, 2.0f + i, 1.0f),
 			glm::vec3(0.0f),

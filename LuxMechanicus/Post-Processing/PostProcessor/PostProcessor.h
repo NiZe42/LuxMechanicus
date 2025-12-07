@@ -1,12 +1,12 @@
 #pragma once
-#include "Framebuffer.h"
+#include "..\..\Renderer\FrameBuffer\FrameBuffer.h"
 #include <iostream>
 #include <vector>
-#include "RenderPass.h"
-#include "Environment.h"
-#include "HDRRenderPass.h"
+#include "..\..\Renderer\RenderPass.h"
+#include "..\..\Utils\Environment.h"
+#include "..\PreliminaryPass\HDRRenderPass.h"
 #include "RenderTexturesPool.h"
-#include "BloomEffect.h"
+#include "..\Bloom\BloomEffect.h"
 
 class PostProcessor
 {

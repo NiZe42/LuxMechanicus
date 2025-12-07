@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "..\..\Game\GameObject\GameObject.h"
 #include <glm/glm.hpp>
 #include "LightType.h"
 #include "LightData.h"

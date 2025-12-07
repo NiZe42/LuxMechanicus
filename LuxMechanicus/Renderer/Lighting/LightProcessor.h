@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "GLIncludes.h"
+#include "..\..\Utils\GLIncludes.h"
 #include "LightSource.h"
 #include <iostream>
 

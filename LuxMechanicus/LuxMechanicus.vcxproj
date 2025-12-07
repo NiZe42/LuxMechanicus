@@ -18,6 +18,110 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Game\Camera\Camera.cpp" />
+    <ClCompile Include="Game\Game.cpp" />
+    <ClCompile Include="Game\GameObject\GameObject.cpp" />
+    <ClCompile Include="Game\Scenes\HierarchyObject.cpp" />
+    <ClCompile Include="Game\Scenes\Scene.cpp" />
+    <ClCompile Include="glad.c" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Post-Processing\Bloom\BloomEffect.cpp" />
+    <ClCompile Include="Post-Processing\PostProcessor\PostProcessor.cpp" />
+    <ClCompile Include="Post-Processing\PostProcessor\RenderTexturesPool.cpp" />
+    <ClCompile Include="Post-Processing\PreliminaryPass\HDRRenderPass.cpp" />
+    <ClCompile Include="Renderer\FrameBuffer\FrameBuffer.cpp" />
+    <ClCompile Include="Renderer\Lighting\LightProcessor.cpp" />
+    <ClCompile Include="Renderer\Lighting\LightSource.cpp" />
+    <ClCompile Include="Renderer\Lighting\RenderingPipeline\DeferredRendering\DeferredRenderer.cpp" />
+    <ClCompile Include="Renderer\Lighting\RenderingPipeline\ForwardRendering\ForwardRenderer.cpp" />
+    <ClCompile Include="Renderer\Lighting\ShadowProcessor.cpp" />
+    <ClCompile Include="Renderer\Material\Texture.cpp" />
+    <ClCompile Include="Renderer\Mesh\Mesh.cpp" />
+    <ClCompile Include="Renderer\Mesh\MeshCache.cpp" />
+    <ClCompile Include="Renderer\RenderProcessor\RenderProcessor.cpp" />
+    <ClCompile Include="Renderer\RenderPass.cpp" />
+    <ClCompile Include="Renderer\Shader\Shader.cpp" />
+    <ClCompile Include="Utils\Environment.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Game\Camera\Camera.h" />
+    <ClInclude Include="Game\Game.h" />
+    <ClInclude Include="Game\GameObject\GameObject.h" />
+    <ClInclude Include="Game\Scenes\HierarchyObject.h" />
+    <ClInclude Include="Game\Scenes\Scene.h" />
+    <ClInclude Include="Post-Processing\Bloom\BloomEffect.h" />
+    <ClInclude Include="Post-Processing\PostProcessor\PostProcessor.h" />
+    <ClInclude Include="Post-Processing\PostProcessor\RenderTexturesPool.h" />
+    <ClInclude Include="Post-Processing\PostProcessor\RenderTextureType.h" />
+    <ClInclude Include="Post-Processing\PreliminaryPass\HDRRenderPass.h" />
+    <ClInclude Include="Renderer\FrameBuffer\FrameBuffer.h" />
+    <ClInclude Include="Renderer\Lighting\LightData.h" />
+    <ClInclude Include="Renderer\Lighting\LightProcessor.h" />
+    <ClInclude Include="Renderer\Lighting\LightSource.h" />
+    <ClInclude Include="Renderer\Lighting\LightType.h" />
+    <ClInclude Include="Renderer\Lighting\RenderingPipeline\DeferredRendering\DeferredRenderer.h" />
+    <ClInclude Include="Renderer\Lighting\RenderingPipeline\ForwardRendering\ForwardRenderer.h" />
+    <ClInclude Include="Renderer\Lighting\RenderingPipeline\RenderingType.h" />
+    <ClInclude Include="Renderer\Lighting\ShadowProcessor.h" />
+    <ClInclude Include="Renderer\Material\Texture.h" />
+    <ClInclude Include="Renderer\Mesh\Mesh.h" />
+    <ClInclude Include="Renderer\Mesh\MeshCache.h" />
+    <ClInclude Include="Renderer\RenderProcessor\RenderProcessor.h" />
+    <ClInclude Include="Renderer\RenderPass.h" />
+    <ClInclude Include="Renderer\Shader\Shader.h" />
+    <ClInclude Include="stb_image.h" />
+    <ClInclude Include="Utils\Environment.h" />
+    <ClInclude Include="Utils\GLIncludes.h" />
+    <ClInclude Include="Utils\Singleton.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".vs\LuxMechanicus\FileContentIndex\5cb38087-8035-4fd1-be0a-8efa18538193.vsidx" />
+    <None Include=".vs\LuxMechanicus\FileContentIndex\904df6e7-f68a-47a9-9583-0d2b002ccae6.vsidx" />
+    <None Include=".vs\LuxMechanicus\FileContentIndex\90c7595c-3f7c-426e-a7b1-cc317cb5bfa0.vsidx" />
+    <None Include=".vs\LuxMechanicus\v17\Browse.VC.db" />
+    <None Include=".vs\LuxMechanicus\v17\DocumentLayout.json" />
+    <None Include=".vs\ProjectSettings.json" />
+    <None Include=".vs\slnx.sqlite" />
+    <None Include=".vs\VSWorkspaceState.json" />
+    <None Include="CppProperties.json" />
+    <None Include="Shaders\BloomCombineFrag.glsl" />
+    <None Include="Shaders\BloomCombineVert.glsl" />
+    <None Include="Shaders\BlurFrag.glsl" />
+    <None Include="Shaders\BlurVert.glsl" />
+    <None Include="Shaders\ColorFrag.glsl" />
+    <None Include="Shaders\ColorVert.glsl" />
+    <None Include="Shaders\DeferredGFrag.glsl" />
+    <None Include="Shaders\DeferredGVert.glsl" />
+    <None Include="Shaders\DeferredLightFrag.glsl" />
+    <None Include="Shaders\DeferredLightVert.glsl" />
+    <None Include="Shaders\EmptyQuadFrag.glsl" />
+    <None Include="Shaders\EmptyQuadVert.glsl" />
+    <None Include="Shaders\HdrShaderFrag.glsl" />
+    <None Include="Shaders\HdrShaderVert.glsl" />
+    <None Include="Shaders\LightSourceFrag.glsl" />
+    <None Include="Shaders\LightSourceVert.glsl" />
+    <None Include="Shaders\ShadowPassFrag.glsl" />
+    <None Include="Shaders\ShadowPassGeom.glsl" />
+    <None Include="Shaders\ShadowPassVert.glsl" />
+    <None Include="Shaders\TestQuadFrag.glsl" />
+    <None Include="Shaders\TestQuadVert.glsl" />
+    <None Include="x64\Debug\glad.nativecodeanalysis.sarif" />
+    <None Include="x64\Debug\LuxMechanicus.exe.recipe" />
+    <None Include="x64\Debug\LuxMechanicus.tlog\LuxMechanicus.lastbuildstate" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Textures\bricks.jpg" />
+    <Image Include="Textures\land.jpg" />
+    <Image Include="Textures\MinecraftDirtTexture.jpg" />
+    <Image Include="Textures\runicfloor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="x64\Debug\CodeAnalysisResultManifest.txt" />
+    <Text Include="x64\Debug\LuxMechanicus.Build.CppClean.log" />
+    <Text Include="x64\Debug\LuxMechanicus.log" />
+    <Text Include="x64\Debug\LuxMechanicus.vcxproj.FileListAbsolute.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

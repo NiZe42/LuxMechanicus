@@ -1,16 +1,16 @@
 #pragma once
-#include "GLIncludes.h"
+#include "..\Utils\GLIncludes.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 #include <vector>
-#include "Scene.h"
-#include "RenderProcessor.h"
-#include "Camera.h"
-#include "Singleton.h"
-#include "MeshCache.h"
-#include "Environment.h"
+#include "..\Game\Scenes\Scene.h"
+#include "..\Renderer\RenderProcessor\RenderProcessor.h"
+#include "..\Game\Camera\Camera.h"
+#include "..\Utils\Singleton.h"
+#include "..\Renderer\Mesh\MeshCache.h"
+#include "..\Utils\Environment.h"
 
 class Game {
 public: 

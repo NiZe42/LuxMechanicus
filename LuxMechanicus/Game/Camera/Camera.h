@@ -6,9 +6,9 @@
 #include <sstream>
 #include <iostream>
 #include <vector>
-#include "Shader.h"
-#include "Texture.h"
-#include "HierarchyObject.h"
+#include "..\..\Renderer\Shader\Shader.h"
+#include "..\..\Renderer\Material\Texture.h"
+#include "..\Scenes\HierarchyObject.h"
 
 class Camera : HierarchyObject
 {

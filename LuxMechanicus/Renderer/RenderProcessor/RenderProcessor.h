@@ -3,18 +3,18 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
-#include "Scene.h"
-#include "GameObject.h"
-#include "Camera.h"
-#include "LightSource.h"
+#include "..\..\Game\Scenes\Scene.h"
+#include "..\..\Game\GameObject\GameObject.h"
+#include "..\..\Game\Camera\Camera.h"
+#include "..\Lighting\LightSource.h"
 #include <iostream>
-#include "Shader.h"
-#include "Environment.h"
-#include "PostProcessor.h"
-#include "LightProcessor.h"
-#include "ForwardRenderer.h"
-#include "DeferredRenderer.h"
-#include "ShadowProcessor.h"
+#include "..\Shader\Shader.h"
+#include "..\..\Utils\Environment.h"
+#include "..\..\Post-Processing\PostProcessor\PostProcessor.h"
+#include "..\Lighting\LightProcessor.h"
+#include "..\Lighting\RenderingPipeline\ForwardRendering\ForwardRenderer.h"
+#include "..\Lighting\RenderingPipeline\DeferredRendering\DeferredRenderer.h"
+#include "..\Lighting\ShadowProcessor.h"
 
 class RenderProcessor {
 public:

@@ -1,6 +1,6 @@
 #include "GameObject.h"
-#include "Shader.h"
-#include "Texture.h"
+#include "..\..\Renderer\Shader\Shader.h"
+#include "..\..\Renderer\Material\Texture.h"
 
 unsigned int GameObject::nextGameObjectId = 0;  
 

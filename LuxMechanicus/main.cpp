@@ -1,7 +1,7 @@
-#include "GLIncludes.h"
+#include "Utils\GLIncludes.h"
 #include <iostream>
 
-#include "Game.h"
+#include "Game\Game.h"
 
 int main()
 {

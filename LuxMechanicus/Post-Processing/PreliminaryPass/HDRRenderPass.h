@@ -1,5 +1,5 @@
 #pragma once
-#include "RenderPass.h"
+#include "..\..\Renderer\RenderPass.h"
 
 class HDRRenderPass : public RenderPass {
 

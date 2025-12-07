@@ -1,6 +1,6 @@
 #pragma once
-#include "RenderPass.h"
-#include "FrameBuffer.h"
+#include "..\..\Renderer\RenderPass.h"
+#include "..\..\Renderer\FrameBuffer\FrameBuffer.h"
 
 class BloomEffect : public RenderPass {
 

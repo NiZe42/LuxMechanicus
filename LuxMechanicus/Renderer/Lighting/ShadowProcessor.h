@@ -1,13 +1,13 @@
 #pragma once
-#include "GLIncludes.h"
+#include "..\..\Utils\GLIncludes.h"
 #include <glm/glm.hpp>
 #include <vector>
 #include <unordered_map>
 #include "LightData.h"
 #include "LightSource.h"
-#include "FrameBuffer.h"
-#include "Scene.h"
-#include "Environment.h"
+#include "..\FrameBuffer\FrameBuffer.h"
+#include "..\..\Game\Scenes\Scene.h"
+#include "..\..\Utils\Environment.h"
 
 class ShadowProcessor {
 public:

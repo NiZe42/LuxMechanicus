@@ -1,17 +1,17 @@
 #pragma once
-#include "GLIncludes.h"
+#include "..\..\Utils\GLIncludes.h"
 #include <string>
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include "GameObject.h"
-#include "Shader.h"
-#include "Texture.h"
+#include "..\GameObject\GameObject.h"
+#include "..\..\Renderer\Shader\Shader.h"
+#include "..\..\Renderer\Material\Texture.h"
 #include <glm/glm.hpp>
 #include <vector>
 #include <unordered_map>
 #include "HierarchyObject.h"
-#include "Camera.h"
+#include "..\Camera\Camera.h"
 
 class Scene : public HierarchyObject
 {

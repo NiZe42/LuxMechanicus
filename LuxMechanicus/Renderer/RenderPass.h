@@ -1,11 +1,11 @@
 #pragma once
-#include "Shader.h"
-#include "Environment.h"
+#include "..\Renderer\Shader\Shader.h"
+#include "..\Utils\Environment.h"
 #include <iostream>
 #include <list>
-#include "RenderTextureType.h"
-#include "FrameBuffer.h"
-#include "RenderTexturesPool.h"
+#include "..\Post-Processing\PostProcessor\RenderTextureType.h"
+#include "..\Renderer\FrameBuffer\FrameBuffer.h"
+#include "..\Post-Processing\PostProcessor\RenderTexturesPool.h"
 
 class RenderPass
 {

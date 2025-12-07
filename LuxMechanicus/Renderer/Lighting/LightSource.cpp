@@ -1,5 +1,5 @@
 #include "LightSource.h"
-#include "Shader.h" 
+#include "..\Shader\Shader.h" 
 
 unsigned int LightSource::lightIndexCounter = 0;
 
