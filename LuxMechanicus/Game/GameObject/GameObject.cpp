@@ -1,6 +1,7 @@
 #include "GameObject.h"
 #include "..\..\Renderer\Shader\Shader.h"
 #include "..\..\Renderer\Material\Texture.h"
+#include "..\..\Profiler\Profiler.h"
 
 unsigned int GameObject::nextGameObjectId = 0;  
 
@@ -219,6 +220,7 @@ void GameObject::Render(glm::mat4 viewMatrix, glm::mat4 projectionMatrix) {
         pShader->SetUniformMat4("projectionMatrix", projectionMatrix);
 
         pMesh->Render();
+        Profiler::currentDrawCalls++;
     }
 }
 
@@ -231,11 +233,13 @@ void GameObject::DeferredRender(Shader* gShader) {
     gShader->SetUniformInt("albedoMap", 0);
 
     pMesh->Render();
+    Profiler::currentDrawCalls++;
 }
 
 void GameObject::ShadowRender(Shader* shadowShader) {
     shadowShader->SetUniformMat4("modelMatrix", GetModelMatrix());
     pMesh->Render();
+    Profiler::currentDrawCalls++;
 }
 
 void GameObject::SetRenderingType(RenderingType pRenderingType) {

@@ -7,6 +7,7 @@
 #include "..\PreliminaryPass\HDRRenderPass.h"
 #include "RenderTexturesPool.h"
 #include "..\Bloom\BloomEffect.h"
+#include "..\..\Profiler\Profiler.h"
 
 class PostProcessor
 {

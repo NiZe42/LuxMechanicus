@@ -105,6 +105,7 @@ void PostProcessor::AddEffect(RenderPass* renderPass) {
 
 void PostProcessor::RenderQuad() const {
     glBindVertexArray(quadVAOId);
+    Profiler::currentDrawCalls++;
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     glBindVertexArray(0);
 }

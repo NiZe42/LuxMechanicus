@@ -6,12 +6,22 @@ RenderProcessor* Game::renderProcessor = nullptr;
 float Game::mLastXMousePos = 0;
 float Game::mLastYMousePos = 0;
 
+Game* Game::Instance = nullptr;
+
 Game::Game() {
+	if (Instance)
+		return;
+
+	Instance = this;
+
 	Initialize();
 }
 
 Game::~Game() {
 	delete renderProcessor;
+
+	if (profiler)
+		delete profiler;
 
 	if (mScenes.size() == 0)
 		return;
@@ -38,6 +48,7 @@ void Game::Initialize() {
 
 	glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetCursorPosCallback(mWindow, MouseCallback);
+	glfwSetKeyCallback(mWindow, WriteToCsvCallback);
 
 	mLastFrameTime = static_cast<float>(glfwGetTime());
 	mFrameCounter = 0;
@@ -55,13 +66,17 @@ void Game::Initialize() {
 	glm::vec3(-1.3f,  1.0f, -1.5f)
 	};
 
+	profiler = new Profiler();
+
 	Scene* mainScene = new Scene();
 	AddScene(mainScene);
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 500; i++)
 	{
 		GameObject* square = new GameObject(
-			cubePositions[i],
+			glm::vec3((rand() % 200 - 100) * 0.1f,
+			(rand() % 200 - 100) * 0.1f,
+			(rand() % 200 - 100) * 0.1f),
 			glm::vec3(rand() % 360, rand() % 360, rand() % 360),
 			glm::vec3(0.7f),
 			(std::string(Environment::GetRootPath()) + "/Shaders/ColorVert.glsl").c_str(),
@@ -110,7 +125,7 @@ void Game::Initialize() {
 	camera->SetPosition(glm::vec3(0.0f, 0.0f, 5.0f));
 	renderProcessor->SetActiveCamera(camera);
 
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 2; i++) {
 		LightSource* lightSource1 = new LightSource(
 			glm::vec3(1.0f, 2.0f + i, 1.0f),
 			glm::vec3(0.0f),
@@ -134,7 +149,7 @@ void Game::Initialize() {
 		);
 		lightSource1->SetColor(color);
 
-		lightSource1->SetIntensity(0.1f);
+		lightSource1->SetIntensity(0.5f);
 
 		Mesh* lightSourceMesh1 = MeshCache::GetMesh((std::string(Environment::GetRootPath()) + "/Models/cube_smooth.obj").c_str());
 		lightSource1->SetMesh(lightSourceMesh1);
@@ -225,10 +240,14 @@ void Game::RenderLoop() {
 		CalculateDeltaTime();
 		ProcessInput();
 		
+		profiler->BeginFrame();
+
 		glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		renderProcessor->Render(mScenes);
+
+		profiler->EndFrame();
 
 		glfwSwapBuffers(mWindow);
 		glfwPollEvents();
@@ -252,7 +271,7 @@ void Game::ProcessInput() {
 		direction.x -= 1;
 	if (glfwGetKey(mWindow, GLFW_KEY_D) == GLFW_PRESS)
 		direction.x += 1;
-
+	
 	//std::cout << direction.x << ";" << direction.y << ";" << direction.z << std::endl;
 	//std::cout << mDeltaTime << std::endl;
 
@@ -298,6 +317,30 @@ void Game::MouseCallback(GLFWwindow* window, double xposIn, double yposIn)
 	
 	Camera* camera = renderProcessor->GetActiveCamera();
 	camera->ProcessRotationInput(horizontalOffset, verticalOffset);
+}
+
+void Game::WriteToCsvCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	if (key == GLFW_KEY_P && action == GLFW_PRESS)
+	{
+		std::cout << "pressed" << std::endl;
+
+		auto now = std::chrono::system_clock::now();
+		std::time_t nowC = std::chrono::system_clock::to_time_t(now);
+
+		std::tm localTime;
+		localtime_s(&localTime, &nowC);  
+
+		std::ostringstream filename;
+		filename << "Logs/profiler_log_"
+			<< std::put_time(&localTime, "%d-%m-%Y-%H-%M-%S")
+			<< ".txt";
+
+		if (Instance && Instance->profiler)
+		{
+			Instance->profiler->WriteAllToCSV(filename.str());
+		}
+	}
 }
 
 void Game::FramebufferSizeCallback(GLFWwindow* window, int width, int height) {

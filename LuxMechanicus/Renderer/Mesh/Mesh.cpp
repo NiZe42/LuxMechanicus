@@ -1,4 +1,5 @@
 #include "Mesh.h"
+#include "..\..\Profiler\Profiler.h"
 
 Mesh::Mesh(const char* objFilePath) {
 	LoadFromSimpleObjFile(objFilePath);

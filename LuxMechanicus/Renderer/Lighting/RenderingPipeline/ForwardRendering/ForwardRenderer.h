@@ -1,5 +1,4 @@
 #pragma once
-
 #include "..\..\..\..\Utils\GLIncludes.h"
 #include <vector>
 #include "..\..\..\..\Game\Camera\Camera.h"

@@ -30,6 +30,7 @@
     <ClCompile Include="Post-Processing\PostProcessor\PostProcessor.cpp" />
     <ClCompile Include="Post-Processing\PostProcessor\RenderTexturesPool.cpp" />
     <ClCompile Include="Post-Processing\PreliminaryPass\HDRRenderPass.cpp" />
+    <ClCompile Include="Profiler\Profiler.cpp" />
     <ClCompile Include="Renderer\FrameBuffer\FrameBuffer.cpp" />
     <ClCompile Include="Renderer\Lighting\LightProcessor.cpp" />
     <ClCompile Include="Renderer\Lighting\LightSource.cpp" />
@@ -55,6 +56,7 @@
     <ClInclude Include="Post-Processing\PostProcessor\RenderTexturesPool.h" />
     <ClInclude Include="Post-Processing\PostProcessor\RenderTextureType.h" />
     <ClInclude Include="Post-Processing\PreliminaryPass\HDRRenderPass.h" />
+    <ClInclude Include="Profiler\Profiler.h" />
     <ClInclude Include="Renderer\FrameBuffer\FrameBuffer.h" />
     <ClInclude Include="Renderer\Lighting\LightData.h" />
     <ClInclude Include="Renderer\Lighting\LightProcessor.h" />

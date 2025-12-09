@@ -14,8 +14,6 @@ RenderProcessor::RenderProcessor() {
 }
 
 RenderProcessor::~RenderProcessor() {
-    if (mActiveCamera)
-        delete mActiveCamera;
 
     if (postProcessor)
         delete postProcessor;
@@ -25,6 +23,12 @@ RenderProcessor::~RenderProcessor() {
 
     if (shadowProcessor)
         delete shadowProcessor;
+
+    if (deferredRenderer)
+        delete deferredRenderer;
+
+    if (forwardRenderer)
+        delete forwardRenderer;
 }
 
 void RenderProcessor::PrepareStaticInfo() {

@@ -1,5 +1,4 @@
 #pragma once
-
 #include "..\..\..\..\Utils\GLIncludes.h"
 #include <vector>
 #include "..\..\..\..\Game\Camera\Camera.h"
@@ -10,6 +9,7 @@
 #include <iostream>
 #include "..\..\..\..\Renderer\FrameBuffer\FrameBuffer.h"
 #include "..\..\..\..\Utils\Environment.h"
+#include "..\..\..\..\Profiler\Profiler.h"
 
 class DeferredRenderer {
 public:

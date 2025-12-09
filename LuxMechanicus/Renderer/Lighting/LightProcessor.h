@@ -1,5 +1,4 @@
 #pragma once
-
 #include <vector>
 #include "..\..\Utils\GLIncludes.h"
 #include "LightSource.h"

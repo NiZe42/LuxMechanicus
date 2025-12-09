@@ -31,6 +31,7 @@
     <ClCompile Include="Utils\Environment.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Profiler\Profiler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Camera\Camera.h" />
@@ -62,6 +63,7 @@
     <ClInclude Include="Utils\GLIncludes.h" />
     <ClInclude Include="Utils\Singleton.h" />
     <ClInclude Include="stb_image.h" />
+    <ClInclude Include="Profiler\Profiler.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CppProperties.json" />
