@@ -1,7 +1,6 @@
 #include "MeshCache.h"
 #include <iostream>
 
-
 std::unordered_map<std::string, Mesh*> MeshCache::cache;
 
 Mesh* MeshCache::GetMesh(const char* objFilePath) { 

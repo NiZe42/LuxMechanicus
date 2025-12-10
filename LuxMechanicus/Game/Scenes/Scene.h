@@ -12,27 +12,26 @@
 #include <unordered_map>
 #include "HierarchyObject.h"
 #include "..\Camera\Camera.h"
+#include "../../Renderer/Lighting/LightSource.h"
 
 class Scene : public HierarchyObject
 {
 public:
 	Scene();
-	~Scene();
-
-	void Render();
+	virtual ~Scene();
 
 	unsigned int GetSceneId() const;
 
+	virtual void Initialize();
+
 	std::unordered_map<unsigned int, GameObject> sceneGameObjects;
+	std::vector<LightSource*> lightSources;
+	Camera* GetActiveCamera();
 
 protected:
 	unsigned int mSceneId;
 	static unsigned int nextSceneId;
 
-	Shader* pShader;
-	Texture* pTexture;
-	Camera* mActiveCamera;
-
-	void RenderTriangle();
+	Camera* activeCamera;
 };
 

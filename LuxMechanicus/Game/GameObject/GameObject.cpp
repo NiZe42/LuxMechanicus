@@ -27,7 +27,8 @@ GameObject::GameObject(
 GameObject::~GameObject() {
     delete pShader;
     delete pTexture;
-    delete pMesh;
+    //if(pMesh)
+    //    delete pMesh;
 }
 
 unsigned int GameObject::GetGameObjectId() const {

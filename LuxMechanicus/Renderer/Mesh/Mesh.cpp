@@ -1,10 +1,15 @@
 #include "Mesh.h"
 #include "..\..\Profiler\Profiler.h"
 
+unsigned int Mesh::nextMeshId = 0;
+
 Mesh::Mesh(const char* objFilePath) {
 	LoadFromSimpleObjFile(objFilePath);
 
 	SetupMesh();
+
+    Id = nextMeshId;
+    nextMeshId++;
 }
 
 Mesh::~Mesh() {

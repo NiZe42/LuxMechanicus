@@ -6,6 +6,7 @@
 #include <iostream>
 #include <vector>
 #include "..\Game\Scenes\Scene.h"
+#include "..\Game\Scenes\SceneList\SameMeshSameMaterialScene.h"
 #include "..\Renderer\RenderProcessor\RenderProcessor.h"
 #include "..\Game\Camera\Camera.h"
 #include "..\Utils\Singleton.h"

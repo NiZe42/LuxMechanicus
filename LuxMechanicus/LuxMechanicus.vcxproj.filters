@@ -64,6 +64,7 @@
     <ClInclude Include="Utils\Singleton.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="Profiler\Profiler.h" />
+    <ClInclude Include="Game\Scenes\SceneList\SameMeshSameMaterialScene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CppProperties.json" />

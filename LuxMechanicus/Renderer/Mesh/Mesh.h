@@ -65,5 +65,10 @@ private:
 	void SetupMesh();
 
 	void LoadFromSimpleObjFile(const char* objFilePath);
+
+	unsigned int GetId() const;
+
+	unsigned int Id;
+	static unsigned int nextMeshId;
 };
 
