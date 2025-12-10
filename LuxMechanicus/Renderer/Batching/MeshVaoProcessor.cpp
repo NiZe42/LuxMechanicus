@@ -21,14 +21,14 @@ void MeshVaoProcessor::BuildVaoFromScene(Scene* scene)
         Mesh* mesh = object->GetMesh();
         if (!mesh) continue;
 
+        object->meshMergeIndexOffset = finalIndices.size();
+        object->meshMergeIndexCount = mesh->pIndices.size();
+
         for (const Vertex& v : mesh->pVertices)
             finalVertices.push_back(v);
 
         for (unsigned int idx : mesh->pIndices)
             finalIndices.push_back(idx + vertexOffset);
-
-        object->meshMergeIndexOffset = finalIndices.size();
-        object->meshMergeIndexCount = mesh->pIndices.size();
 
         vertexOffset += mesh->pVertices.size();
     }
@@ -45,13 +45,13 @@ void MeshVaoProcessor::BuildVaoFromScene(Scene* scene)
     glBufferData(GL_ARRAY_BUFFER,
         finalVertices.size() * sizeof(Vertex),
         finalVertices.data(),
-        GL_DYNAMIC_DRAW);   
+        GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pEboId);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER,
         finalIndices.size() * sizeof(unsigned int),
         finalIndices.data(),
-        GL_DYNAMIC_DRAW);
+        GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
