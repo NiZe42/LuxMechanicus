@@ -65,6 +65,10 @@ glm::mat4 GameObject::GetModelMatrix() const {
     return model;
 }
 
+Mesh* GameObject::GetMesh() const{
+    return pMesh;
+}
+
 void GameObject::SetMesh(Mesh* mesh) {
     if (pMesh != nullptr)
         delete pMesh;
@@ -232,14 +236,26 @@ void GameObject::DeferredRender(Shader* gShader) {
     if(pTexture)
         pTexture->Bind();
     gShader->SetUniformInt("albedoMap", 0);
-
-    pMesh->Render();
+    glDrawElements(
+        GL_TRIANGLES,
+        meshMergeIndexCount,
+        GL_UNSIGNED_INT,
+        (void*)(meshMergeIndexOffset * sizeof(unsigned int))
+    );
+    //pMesh->Render();
     Profiler::currentDrawCalls++;
 }
 
 void GameObject::ShadowRender(Shader* shadowShader) {
     shadowShader->SetUniformMat4("modelMatrix", GetModelMatrix());
-    pMesh->Render();
+    
+    glDrawElements(
+        GL_TRIANGLES,
+        meshMergeIndexCount,
+        GL_UNSIGNED_INT,
+        (void*)(meshMergeIndexOffset * sizeof(unsigned int))
+    );
+    //pMesh->Render();
     Profiler::currentDrawCalls++;
 }
 
