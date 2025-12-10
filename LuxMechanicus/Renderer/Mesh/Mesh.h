@@ -54,13 +54,13 @@ public:
 	std::vector<unsigned int> GetIndices() const;
 
 	void Render();
+	std::vector<Vertex> pVertices;
+	std::vector<unsigned int> pIndices;
+	std::map<IndexVertex, unsigned int> vertexToindexMap;
 
 private:
 	unsigned int pVaoId, pVboId, pEboId;
 
-	std::vector<Vertex> pVertices;
-	std::vector<unsigned int> pIndices;
-	std::map<IndexVertex, unsigned int> vertexToindexMap;
 
 	void SetupMesh();
 

@@ -21,6 +21,9 @@ public:
 		const char* texturePath = nullptr);
 	~GameObject();
 
+	size_t meshMergeIndexOffset;
+	size_t meshMergeIndexCount;
+
 	unsigned int GetGameObjectId() const;
 
 	virtual glm::vec3 GetPosition() const;
@@ -30,6 +33,8 @@ public:
 	Shader* GetShader() const;
 
 	glm::mat4 GetModelMatrix() const;
+
+	Mesh* GetMesh() const;
 
 	void SetMesh(Mesh* mesh);
 	void SetShader(Shader* shader);

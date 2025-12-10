@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Renderer\Batching\MeshVaoProcessor.cpp" />
+    <ClCompile Include="Renderer\Batching\Batcher.cpp" />
     <ClCompile Include="Game\Camera\Camera.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Game\GameObject\GameObject.cpp" />
@@ -46,6 +48,8 @@
     <ClCompile Include="Utils\Environment.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Renderer\Batching\MeshVaoProcessor.h" />
+    <ClInclude Include="Renderer\Batching\Batcher.h" />
     <ClInclude Include="Game\Camera\Camera.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Game\GameObject\GameObject.h" />

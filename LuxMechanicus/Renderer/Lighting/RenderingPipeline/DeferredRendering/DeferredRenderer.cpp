@@ -35,7 +35,11 @@ void DeferredRenderer::Initialize(unsigned int width, unsigned int height) {
     InitializeQuad();
 }
 
-void DeferredRenderer::GeometryPass(const std::vector<Scene*>& scenesToRender, const Camera& camera) {
+void DeferredRenderer::GeometryPass(
+    const std::vector<Scene*>& scenesToRender, 
+    const Camera& camera, 
+    MeshVaoProcessor* meshVaoProcessor) {
+
     gFrameBuffer->Bind();
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -44,14 +48,9 @@ void DeferredRenderer::GeometryPass(const std::vector<Scene*>& scenesToRender, c
     geometryShader->SetUniformMat4("viewMatrix", camera.GetViewMatrix());
     geometryShader->SetUniformMat4("projectionMatrix", camera.GetProjectionMatrix());
 
-    for (Scene* scene : scenesToRender) {
-        for (HierarchyObject* child : scene->GetChildren()) {
-            GameObject* object = dynamic_cast<GameObject*>(child);
-            if (object && object->GetRenderingType() != RenderingType::FORWARD_RENDERING) {
-                RenderGameObject(object);
-            }
-        }
-    }
+    glBindVertexArray(meshVaoProcessor->GetVaoId());
+    RenderScene(scenesToRender[0]);
+    glBindVertexArray(0);
 
     geometryShader->Unbind();
     gFrameBuffer->Unbind();
@@ -80,6 +79,15 @@ void DeferredRenderer::LightingPass(const Camera& camera, unsigned int DepthLaye
     RenderFullscreenQuad();
 
     lightingShader->Unbind();
+}
+
+void DeferredRenderer::RenderScene(Scene* scene) {
+    for (HierarchyObject* child : scene->GetChildren()) {
+        GameObject* object = dynamic_cast<GameObject*>(child);
+        if (object && object->GetRenderingType() != RenderingType::FORWARD_RENDERING) {
+            RenderGameObject(object);
+        }
+    }
 }
 
 void DeferredRenderer::RenderGameObject(GameObject* object) {

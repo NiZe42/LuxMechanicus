@@ -8,6 +8,7 @@
 #include "..\FrameBuffer\FrameBuffer.h"
 #include "..\..\Game\Scenes\Scene.h"
 #include "..\..\Utils\Environment.h"
+#include "../Batching/MeshVaoProcessor.h"
 
 class ShadowProcessor {
 public:
@@ -18,7 +19,10 @@ public:
     ShadowProcessor();
     ~ShadowProcessor();
 
-    void ShadowPass(const std::vector<Scene*>& scenesToRender);
+    void ShadowPass(
+        const std::vector<Scene*>& scenesToRender, 
+        MeshVaoProcessor* meshVaoProcessor);
+    void RenderScene(Scene* scene);
     void RenderGameObject(GameObject* object);
 
     void AllocateShadowAtlases(const std::vector<LightData>& lights);

@@ -15,13 +15,14 @@
 #include "..\Lighting\RenderingPipeline\ForwardRendering\ForwardRenderer.h"
 #include "..\Lighting\RenderingPipeline\DeferredRendering\DeferredRenderer.h"
 #include "..\Lighting\ShadowProcessor.h"
+#include "../Batching/MeshVaoProcessor.h"
 
 class RenderProcessor {
 public:
     RenderProcessor();
     ~RenderProcessor();
 
-    void PrepareStaticInfo();
+    void PrepareStaticInfo(Scene* scene);
 
     void Render(const std::vector<Scene*>& scenesToRender);
 
@@ -38,6 +39,7 @@ private:
 
     int mScreenWidth, mScreenHeight;
 
+    MeshVaoProcessor* meshVaoProcessor;
     PostProcessor* postProcessor;
     ShadowProcessor* shadowProcessor;
     LightProcessor* lightProcessor;

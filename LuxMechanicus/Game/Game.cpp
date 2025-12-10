@@ -128,7 +128,7 @@ void Game::InitializeGLAD() {
 }
 
 void Game::RenderLoop() {
-	renderProcessor->PrepareStaticInfo();
+	renderProcessor->PrepareStaticInfo(mScenes[0]);
 	while (!glfwWindowShouldClose(mWindow))
 	{
 		if (!isInitialized)

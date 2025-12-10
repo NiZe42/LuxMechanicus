@@ -32,6 +32,8 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Profiler\Profiler.cpp" />
+    <ClCompile Include="Renderer\Batching\Batcher.cpp" />
+    <ClCompile Include="Renderer\Batching\MeshVaoProcessor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Camera\Camera.h" />
@@ -65,6 +67,8 @@
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="Profiler\Profiler.h" />
     <ClInclude Include="Game\Scenes\SceneList\SameMeshSameMaterialScene.h" />
+    <ClInclude Include="Renderer\Batching\Batcher.h" />
+    <ClInclude Include="Renderer\Batching\MeshVaoProcessor.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CppProperties.json" />

@@ -14,27 +14,34 @@ ShadowProcessor::~ShadowProcessor() {
     glDeleteBuffers(1, &SSBOId);
 }
 
-void ShadowProcessor::ShadowPass(const std::vector<Scene*>& scenesToRender) {
+void ShadowProcessor::ShadowPass(
+    const std::vector<Scene*>& scenesToRender,
+    MeshVaoProcessor* meshVaoProcessor) {
+
     BindAtlasFramebuffer();
     glViewport(0, 0, 4096, 4096);
     glClear(GL_DEPTH_BUFFER_BIT);
     glCullFace(GL_FRONT);
     
     shadowPassShader->Bind();
-
-    for (Scene* scene : scenesToRender) {
-        for (HierarchyObject* child : scene->GetChildren()) {
-            GameObject* object = dynamic_cast<GameObject*>(child);
-            if (object && object->GetRenderingType() != RenderingType::FORWARD_RENDERING) {
-                RenderGameObject(object);
-            }
-        }
-    }
+    
+    glBindVertexArray(meshVaoProcessor->GetVaoId());
+    RenderScene(scenesToRender[0]);
+    glBindVertexArray(0);
 
     shadowPassShader->Unbind();
     UnbindAtlasFramebuffer();
     glViewport(0, 0, 1920, 1080);
     glCullFace(GL_BACK);
+}
+
+void ShadowProcessor::RenderScene(Scene* scene) {
+    for (HierarchyObject* child : scene->GetChildren()) {
+        GameObject* object = dynamic_cast<GameObject*>(child);
+        if (object && object->GetRenderingType() != RenderingType::FORWARD_RENDERING) {
+            RenderGameObject(object);
+        }
+    }
 }
 
 void ShadowProcessor::RenderGameObject(GameObject* object) {

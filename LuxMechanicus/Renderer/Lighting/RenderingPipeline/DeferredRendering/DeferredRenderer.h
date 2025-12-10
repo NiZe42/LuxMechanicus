@@ -10,6 +10,7 @@
 #include "..\..\..\..\Renderer\FrameBuffer\FrameBuffer.h"
 #include "..\..\..\..\Utils\Environment.h"
 #include "..\..\..\..\Profiler\Profiler.h"
+#include "../../../Batching/MeshVaoProcessor.h"
 
 class DeferredRenderer {
 public:
@@ -18,7 +19,11 @@ public:
 
     void Initialize(unsigned int width, unsigned int height);
 
-    void GeometryPass(const std::vector<Scene*>& scenesToRender, const Camera& camera);
+    void GeometryPass(
+        const std::vector<Scene*>& scenesToRender, 
+        const Camera& camera, 
+        MeshVaoProcessor* meshVaoProcessor);
+
     void LightingPass(const Camera& camera, unsigned int DepthLayeredTextureArrayId);
 
     FrameBuffer* GetGFrameBuffer();
@@ -27,7 +32,7 @@ public:
 private:
     void InitializeQuad();
     
-
+    void RenderScene(Scene* scene);
     void RenderGameObject(GameObject* object);
 
     FrameBuffer* gFrameBuffer;
