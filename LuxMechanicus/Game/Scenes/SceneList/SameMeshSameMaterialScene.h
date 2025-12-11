@@ -58,8 +58,8 @@ public:
 			glm::vec3(0, 0, 0),
 			glm::vec3(10, 10, 10),
 			(std::string(Environment::GetRootPath()) + "/Shaders/ColorVert.glsl").c_str(),
-			(std::string(Environment::GetRootPath()) + "/Shaders/ColorFrag.glsl").c_str());
-		//(std::string(Environment::GetRootPath()) + "/Textures/bricks.jpg").c_str());
+			(std::string(Environment::GetRootPath()) + "/Shaders/ColorFrag.glsl").c_str(),
+			(std::string(Environment::GetRootPath()) + "/Textures/bricks.jpg").c_str());
 
 		Mesh* planeMesh;
 		planeMesh = MeshCache::GetMesh((std::string(Environment::GetRootPath()) + "/Models/plane.obj").c_str());
