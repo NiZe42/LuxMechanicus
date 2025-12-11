@@ -15,7 +15,7 @@
 #include "..\Lighting\RenderingPipeline\ForwardRendering\ForwardRenderer.h"
 #include "..\Lighting\RenderingPipeline\DeferredRendering\DeferredRenderer.h"
 #include "..\Lighting\ShadowProcessor.h"
-#include "../Batching/MeshVaoProcessor.h"
+#include "../Batching/Batcher.h"
 
 class RenderProcessor {
 public:
@@ -39,7 +39,7 @@ private:
 
     int mScreenWidth, mScreenHeight;
 
-    MeshVaoProcessor* meshVaoProcessor;
+    Batcher* batcher;
     PostProcessor* postProcessor;
     ShadowProcessor* shadowProcessor;
     LightProcessor* lightProcessor;

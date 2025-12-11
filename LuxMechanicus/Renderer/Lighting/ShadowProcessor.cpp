@@ -16,7 +16,7 @@ ShadowProcessor::~ShadowProcessor() {
 
 void ShadowProcessor::ShadowPass(
     const std::vector<Scene*>& scenesToRender,
-    MeshVaoProcessor* meshVaoProcessor) {
+    Batcher* batcher) {
 
     BindAtlasFramebuffer();
     glViewport(0, 0, 4096, 4096);
@@ -25,9 +25,9 @@ void ShadowProcessor::ShadowPass(
     
     shadowPassShader->Bind();
     
-    glBindVertexArray(meshVaoProcessor->GetVaoId());
-    RenderScene(scenesToRender[0]);
-    glBindVertexArray(0);
+    //glBindVertexArray(meshVaoProcessor->GetVaoId());
+    batcher->RenderScene(false);
+    //glBindVertexArray(0);
 
     shadowPassShader->Unbind();
     UnbindAtlasFramebuffer();

@@ -10,7 +10,7 @@
 #include "..\..\..\..\Renderer\FrameBuffer\FrameBuffer.h"
 #include "..\..\..\..\Utils\Environment.h"
 #include "..\..\..\..\Profiler\Profiler.h"
-#include "../../../Batching/MeshVaoProcessor.h"
+#include "../../../Batching/Batcher.h"
 
 class DeferredRenderer {
 public:
@@ -22,7 +22,7 @@ public:
     void GeometryPass(
         const std::vector<Scene*>& scenesToRender, 
         const Camera& camera, 
-        MeshVaoProcessor* meshVaoProcessor);
+        Batcher* batcher);
 
     void LightingPass(const Camera& camera, unsigned int DepthLayeredTextureArrayId);
 

@@ -7,7 +7,7 @@ layout(location = 2) out vec4 gAlbedoSpec;
 in vec2 texCoords;
 in vec3 normal;
 in vec3 worldFragPos;
-in mat4 outModelMatrix;
+//in mat4 outModelMatrix;
 
 uniform sampler2D albedoMap;
 

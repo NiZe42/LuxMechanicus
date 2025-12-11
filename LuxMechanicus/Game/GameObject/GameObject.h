@@ -30,11 +30,11 @@ public:
 	glm::vec3 GetRotation() const;
 	glm::vec3 GetScale() const;
 
-	Shader* GetShader() const;
-
 	glm::mat4 GetModelMatrix() const;
 
 	Mesh* GetMesh() const;
+	Shader* GetShader() const;
+	Texture* GetTexture() const;
 
 	void SetMesh(Mesh* mesh);
 	void SetShader(Shader* shader);

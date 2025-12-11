@@ -8,7 +8,7 @@
 #include "..\FrameBuffer\FrameBuffer.h"
 #include "..\..\Game\Scenes\Scene.h"
 #include "..\..\Utils\Environment.h"
-#include "../Batching/MeshVaoProcessor.h"
+#include "../Batching/Batcher.h"
 
 class ShadowProcessor {
 public:
@@ -21,7 +21,7 @@ public:
 
     void ShadowPass(
         const std::vector<Scene*>& scenesToRender, 
-        MeshVaoProcessor* meshVaoProcessor);
+        Batcher* batcher);
     void RenderScene(Scene* scene);
     void RenderGameObject(GameObject* object);
 

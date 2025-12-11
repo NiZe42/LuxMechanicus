@@ -6,7 +6,7 @@ Camera* RenderProcessor::mActiveCamera = nullptr;
 RenderProcessor::RenderProcessor() {
     glEnable(GL_DEPTH_TEST);
 
-    meshVaoProcessor = new MeshVaoProcessor();
+    batcher = new Batcher();
     postProcessor = new PostProcessor();
     shadowProcessor = new ShadowProcessor();
     lightProcessor = new LightProcessor();
@@ -16,8 +16,8 @@ RenderProcessor::RenderProcessor() {
 
 RenderProcessor::~RenderProcessor() {
 
-    if (meshVaoProcessor)
-        delete meshVaoProcessor;
+    if (batcher)
+        delete batcher;
 
     if (postProcessor)
         delete postProcessor;
@@ -43,16 +43,16 @@ void RenderProcessor::PrepareStaticInfo(Scene* scene) {
     shadowProcessor->UploadShadowCastersToGPU();
     shadowProcessor->BindSSBO(2);
 
-    meshVaoProcessor->BuildVaoFromScene(scene);
+    batcher->BatchScene(scene);
 }
 
 void RenderProcessor::Render(const std::vector<Scene*>& scenesToRender) {
-    shadowProcessor->ShadowPass(scenesToRender, meshVaoProcessor);
+    shadowProcessor->ShadowPass(scenesToRender, batcher);
 
     deferredRenderer->GeometryPass(
         scenesToRender, 
         *mActiveCamera, 
-        meshVaoProcessor);
+        batcher);
 
     postProcessor->BindFirstFrameBuffer();
 

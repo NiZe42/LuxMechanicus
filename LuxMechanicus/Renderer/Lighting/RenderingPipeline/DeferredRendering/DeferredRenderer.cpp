@@ -38,7 +38,7 @@ void DeferredRenderer::Initialize(unsigned int width, unsigned int height) {
 void DeferredRenderer::GeometryPass(
     const std::vector<Scene*>& scenesToRender, 
     const Camera& camera, 
-    MeshVaoProcessor* meshVaoProcessor) {
+    Batcher* batcher) {
 
     gFrameBuffer->Bind();
     glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -48,9 +48,9 @@ void DeferredRenderer::GeometryPass(
     geometryShader->SetUniformMat4("viewMatrix", camera.GetViewMatrix());
     geometryShader->SetUniformMat4("projectionMatrix", camera.GetProjectionMatrix());
 
-    glBindVertexArray(meshVaoProcessor->GetVaoId());
-    RenderScene(scenesToRender[0]);
-    glBindVertexArray(0);
+    //glBindVertexArray(meshVaoProcessor->GetVaoId());
+    batcher->RenderScene(true);
+    //glBindVertexArray(0);
 
     geometryShader->Unbind();
     gFrameBuffer->Unbind();

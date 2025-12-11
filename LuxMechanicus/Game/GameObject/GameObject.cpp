@@ -49,7 +49,7 @@ glm::vec3 GameObject::GetScale() const {
 
 glm::mat4 GameObject::GetModelMatrix() const {
     glm::mat4 model = glm::mat4(1.0f);  
-
+   
     model = glm::translate(model, mPosition);
 
     // Would suffer from Gimbal Lock, would need to use quats instead
@@ -67,6 +67,10 @@ glm::mat4 GameObject::GetModelMatrix() const {
 
 Mesh* GameObject::GetMesh() const{
     return pMesh;
+}
+
+Texture* GameObject::GetTexture() const {
+    return pTexture;
 }
 
 void GameObject::SetMesh(Mesh* mesh) {
