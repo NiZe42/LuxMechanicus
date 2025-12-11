@@ -18,7 +18,16 @@ struct BatcherRenderable
 struct DrawInstance
 {
     BatcherRenderable* renderable;
-    uint64_t sortKey = 0;
+    uint64_t materialKey = 0;
+    uint64_t meshKey = 0;
+};
+
+struct DrawElementsIndirectCommand {
+    GLuint count;       
+    GLuint instanceCount;
+    GLuint firstIndex; 
+    GLuint baseVertex;  
+    GLuint baseInstance;
 };
 
 class Batcher
@@ -32,13 +41,21 @@ public:
 
 private:
 
-    uint64_t GenerateSortKey(Shader* shader, Texture* texture,  Mesh* mesh) const;
-    void SortInstances(std::vector<DrawInstance>& list);
+    uint64_t GenerateMaterialKey(
+        Shader* shader,
+        Texture* texture) const;
+    uint64_t GenerateMeshKey(Mesh* mesh) const;
+    void SortInstancesByMaterial(std::vector<DrawInstance>& list);
 
-private:
+    void CreateDrawIndirectCommands(DrawInstance* instances,
+        uint32_t count,
+        uint32_t batchStart,
+        std::vector<DrawElementsIndirectCommand>& outCommands);
+
     MeshVaoProcessor* mMeshVaoProcessor;
 
     GLuint mInstanceVbo = 0;
+    GLuint mIndirectBuffer = 0;
 
     std::vector<BatcherRenderable> mRenderables;
     std::vector<DrawInstance> mDrawInstances;
