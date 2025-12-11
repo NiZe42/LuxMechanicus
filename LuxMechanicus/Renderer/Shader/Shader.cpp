@@ -9,6 +9,8 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
 
     mShaderProgramId = nextShaderId++;*/
 
+    engineShaderId = std::hash<std::string>()(vertexPath);
+
     std::cout << "Compiling vertex shader : " << vertexPath << std::endl;
     std::cout << "Compiling fragment shader : " << fragmentPath << std::endl;
 

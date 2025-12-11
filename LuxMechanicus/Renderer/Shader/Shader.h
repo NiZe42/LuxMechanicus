@@ -33,6 +33,7 @@ public:
         std::vector<float> list) const;
 
     unsigned int GetShaderProgramId() const;
+    unsigned int engineShaderId;
 
 private:
     unsigned int mShaderProgramId;

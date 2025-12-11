@@ -20,8 +20,8 @@ uint64_t Batcher::GenerateSortKey(
     Mesh* mesh) const
 {
     uint64_t key = 0;
-    key ^= (uint64_t)shader->GetShaderProgramId();
-    key ^= (uint64_t)texture->GetTextureId();
+    key ^= (uint64_t)shader->engineShaderId;
+    key ^= (uint64_t)texture->engineTextureId;
     key ^= ((uint64_t)mesh << 1);
     return key;
 }

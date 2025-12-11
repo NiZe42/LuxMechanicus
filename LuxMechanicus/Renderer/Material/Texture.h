@@ -16,8 +16,10 @@ public:
 
 	unsigned int GetTextureId() const;
 
+	unsigned int engineTextureId;
 protected:
 	unsigned int mTextureId;
+
 
 	void LoadTextureFromPath(const char* texturePath);
 };

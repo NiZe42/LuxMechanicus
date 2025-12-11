@@ -15,6 +15,8 @@ Texture::Texture(const char* texturePath) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	LoadTextureFromPath(texturePath);
+
+	engineTextureId = std::hash<std::string>()(texturePath);
 }
 
 Texture::~Texture() {
