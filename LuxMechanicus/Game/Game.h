@@ -7,6 +7,9 @@
 #include <vector>
 #include "..\Game\Scenes\Scene.h"
 #include "..\Game\Scenes\SceneList\SameMeshSameMaterialScene.h"
+#include "..\Game\Scenes\SceneList\SameMeshDifferentMaterialsScene.h"
+#include "..\Game\Scenes\SceneList\DifferentMeshSameMaterialScene.h"
+#include "..\Game\Scenes\SceneList\DifferentMeshDifferentMaterialsScene.h"
 #include "..\Renderer\RenderProcessor\RenderProcessor.h"
 #include "..\Game\Camera\Camera.h"
 #include "..\Utils\Singleton.h"

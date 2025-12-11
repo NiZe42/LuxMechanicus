@@ -51,6 +51,9 @@
     <ClInclude Include="Game\GameObject\GameObject.h" />
     <ClInclude Include="Game\Scenes\HierarchyObject.h" />
     <ClInclude Include="Game\Scenes\Scene.h" />
+    <ClInclude Include="Game\Scenes\SceneList\DifferentMeshDifferentMaterialsScene.h" />
+    <ClInclude Include="Game\Scenes\SceneList\DifferentMeshSameMaterialScene.h" />
+    <ClInclude Include="Game\Scenes\SceneList\SameMeshDifferentMaterialsScene.h" />
     <ClInclude Include="Game\Scenes\SceneList\SameMeshSameMaterialScene.h" />
     <ClInclude Include="Post-Processing\Bloom\BloomEffect.h" />
     <ClInclude Include="Post-Processing\PostProcessor\PostProcessor.h" />

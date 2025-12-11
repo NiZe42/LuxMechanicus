@@ -5,7 +5,7 @@
 #include "../../../Renderer/Lighting/LightSource.h"
 #include "..\..\Camera\Camera.h"
 
-class SameMeshSameMaterialScene : public Scene
+class DifferentMeshDifferentMaterialsScene : public Scene
 {
 
 public:
@@ -29,6 +29,32 @@ public:
 
 		for (int i = 0; i < 500; i++)
 		{
+
+			std::string texturePath = "/Textures/bricks.jpg";
+			std::string meshPath = "/Models/teapot_flat.obj";
+			int randomIndex = rand() % 5;
+
+			switch (randomIndex) {
+			case 0:
+				texturePath = "/Textures/land.jpg";
+				meshPath = "/Models/cone_smooth.obj";
+				break;
+			case 1:
+				texturePath = "/Textures/water.jpg";
+				meshPath = "/Models/cube_smooth.obj";
+				break;
+			case 2:
+				texturePath = "/Textures/MinecraftDirtTexture.jpg";
+				meshPath = "/Models/cylinder_smooth.obj";
+				break;
+			case 3:
+				texturePath = "/Textures/diffuse1.jpg";
+				meshPath = "/Models/suzanna_flat.obj";
+				break;
+			default:
+				break;
+			}
+
 			GameObject* square = new GameObject(
 				glm::vec3((rand() % 200 - 100) * 0.1f,
 					(rand() % 200 - 100) * 0.1f,
@@ -37,12 +63,12 @@ public:
 				glm::vec3(0.7f),
 				(std::string(Environment::GetRootPath()) + "/Shaders/ColorVert.glsl").c_str(),
 				(std::string(Environment::GetRootPath()) + "/Shaders/ColorFrag.glsl").c_str(),
-				(std::string(Environment::GetRootPath()) + "/Textures/bricks.jpg").c_str());
+				(std::string(Environment::GetRootPath()) + texturePath).c_str());
 
 			Mesh* mesh;
-			int randomIndex = rand() % 2;
+
 			//if (randomIndex == 0)
-				mesh = MeshCache::GetMesh((std::string(Environment::GetRootPath()) + "/Models/teapot_flat.obj").c_str());
+			mesh = MeshCache::GetMesh((std::string(Environment::GetRootPath()) + meshPath).c_str());
 			//else
 			//	mesh = MeshCache::GetMesh((std::string(Environment::GetRootPath()) + "/Models/suzanna_flat.obj").c_str());
 

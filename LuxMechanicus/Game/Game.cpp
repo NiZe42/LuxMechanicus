@@ -59,7 +59,7 @@ void Game::Initialize() {
 	renderProcessor->SetScreenHeight(1080);
 	renderProcessor->SetScreenWidth(1920);
 
-	Scene* mainScene = new SameMeshSameMaterialScene();
+	Scene* mainScene = new DifferentMeshDifferentMaterialsScene();
 	mainScene->Initialize();
 	AddScene(mainScene);
 
